@@ -30,6 +30,8 @@ framework:
     assets: ~
     php_errors:
         log: true
+    templating:
+        engines: ['twig']
 
 # Twig Configuration
 twig:
@@ -66,3 +68,28 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+    assets:
+        jquery:
+            inputs:
+                - '%kernel.root_dir%/../vendor/jquery/jquery/jquery-1.11.1.js'
+            output: 'assets/js/jquery.js'
+        bootstrap_js:
+            inputs:
+                - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'
+                - '%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js'
+                - '%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
+                - '%kernel.root_dir%/../web/plugins/bootstrap-table-fixed-columns-master/bootstrap-table-fixed-columns.js'
+            output: 'assets/js/bootstrap.js'
+        bootstrap_css:
+            inputs:
+                - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css'
+                - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap-theme.min.css'
+                - '%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css'
+                - '%kernel.root_dir%/../web/plugins/bootstrap-table-fixed-columns-master/bootstrap-table-fixed-columns.css'
+            output: 'assets/css/bootstrap.css'

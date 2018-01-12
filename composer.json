@@ -19,20 +19,37 @@
             "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
         ]
     },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "jquery/jquery",
+                "version": "1.11.1",
+                "dist": {
+                    "url": "https://code.jquery.com/jquery-1.11.1.js",
+                    "type": "file"
+                }
+            }
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "incenteev/composer-parameter-handler": "^2.0",
+        "jquery/jquery": "^1.11",
         "knplabs/knp-menu-bundle": "^2.2",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",
+        "symfony/assetic-bundle": "^2.8",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/security": "^3.4",
         "symfony/swiftmailer-bundle": "^2.6.4",
         "symfony/symfony": "3.4.*",
-        "twig/twig": "^1.0||^2.0"
+        "twbs/bootstrap": "^3.3",
+        "twig/twig": "^1.0||^2.0",
+        "wenzhixin/bootstrap-table": "^1.11"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",

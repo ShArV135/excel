@@ -1,0 +1,33 @@
+.timetable {
+    font-family: Calibri;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    border: 1px;
+    font-size: 11px;
+    white-space: nowrap;
+    table-layout: fixed;
+    background: #fff;
+}
+
+.timetable th {
+    font-size: 14px;
+    border: 1px solid #9EB6CE;
+    padding: 0;
+    width: 40px;
+    background: #fff;
+}
+
+.timetable td {
+    border: 1px solid #D0D7E5;
+    padding: 2px !important;
+
+}
+
+.timetable-fixed-cell {
+    width: 130px !important;
+    overflow: hidden;
+}
+
+.fixed-table-header-columns {
+    z-index: 999;
+}

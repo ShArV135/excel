@@ -3,8 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/bootstrap-theme.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -31,8 +30,8 @@
 
             {% block body %}{% endblock %}
         </div>
-        <script src="{{ asset('js/jquery.min.js') }}"></script>
-        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/jquery.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

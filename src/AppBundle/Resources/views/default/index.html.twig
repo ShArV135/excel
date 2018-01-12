@@ -1,5 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% set page_header = 'Табель' %}
 
+{% block body %}
+    <div class="row" style="position: relative">
+    <table
+            class="timetable"
+           data-toggle="table"
+           data-height="500"
+           data-fixed-columns="true"
+           data-fixed-number="9"
+    >
+        <thead>
+        <tr>
+            <th class="timetable-fixed-cell">Менеджер</th>
+            <th class="timetable-fixed-cell">Заказчик</th>
+            <th class="timetable-fixed-cell">Поставщик</th>
+            <th class="timetable-fixed-cell">Объект</th>
+            <th class="timetable-fixed-cell">Механизм</th>
+            <th class="timetable-fixed-cell">Комментарий</th>
+            <th class="timetable-fixed-cell">Цена<br>заказчику</th>
+            <th class="timetable-fixed-cell">Цена<br>поставщика</th>
+            <th class="timetable-fixed-cell">Сумма<br>часов</th>
+            {% for i in 1..31 %}
+                <th>{{ i }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for j in 1..50 %}
+            <tr>
+                <td class="timetable-fixed-cell">Менеджер {{ j }}</td>
+                <td class="timetable-fixed-cell">ЗАКАЗЧИК</td>
+                <td class="timetable-fixed-cell">ПОСТАВЩИК</td>
+                <td class="timetable-fixed-cell">ОБЪЕКТ</td>
+                <td class="timetable-fixed-cell">МЕХАНИЗМ</td>
+                <td class="timetable-fixed-cell">Комментарий</td>
+                <td class="timetable-fixed-cell">ЦЕНА ЗАКАЗЧИКУ, маш/ч</td>
+                <td class="timetable-fixed-cell">ЦЕНА ПОСТАВЩИКА, маш/ч</td>
+                <td class="timetable-fixed-cell">Сумма часов</td>
+                {% for i in 1..31 %}
+                    <td>{{ i }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
 {% endblock %}
+
+{% block stylesheets %} {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/timetable.css') }}">
+{% endblock %}
+
