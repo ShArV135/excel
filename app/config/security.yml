@@ -1,0 +1,29 @@
+security:
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+    providers:
+        user_db:
+            entity:
+                class: AppBundle:User
+                property: username
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js|plugins)/
+            security: false
+        main:
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+            logout:
+                path:   /logout
+                target: /
+    role_hierarchy:
+        ROLE_CUSTOMER_MANAGER: ROLE_USER
+        ROLE_PROVIDER_MANAGER: ROLE_USER
+        ROLE_GENERAL_MANAGER: ROLE_USER
+        ROLE_DISPATCHER: ROLE_USER
+    access_control:
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: [ROLE_USER] }

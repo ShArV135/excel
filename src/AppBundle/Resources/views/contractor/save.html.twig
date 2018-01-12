@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        {{ form_start(form) }}
+        <div class="col-md-6">
+            {{ form_row(form.name) }}
+            {{ form_row(form.inn) }}
+            {% if form.manager is defined %}
+                {{ form_row(form.manager) }}
+            {% endif %}
+            {{ form_rest(form) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

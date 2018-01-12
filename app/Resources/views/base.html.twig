@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-theme.min.css') }}" rel="stylesheet">
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                {{ knp_menu_render('AppBundle:Builder:mainMenu') }}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><p class="navbar-text">{{ app.user.username }}</p></li>
+                    <li><a href="{{ path('logout') }}">Выход</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid" style="margin-top: 50px;">
+            <div class="page-header">
+                <h2>{{ page_header|default }}</h2>
+            </div>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </div>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% set page_header = 'Контрагенты' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="btn-group pull-right" role="group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Добавить контрагента
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    {% if not is_granted('ROLE_PROVIDER_MANAGER') %}
+                        <li><a href="{{ path('contractor_create', {'type': 'customer'}) }}">Заказчика</a></li>
+                    {% endif %}
+                    {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                        <li><a href="{{ path('contractor_create', {'type': 'provider'}) }}">Поставщика</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>ИНН</th>
+                <th>Тип контрагента</th>
+                <th>Менеджер по продажам</th>
+                <th class="col-md-1">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for contractor in contractors %}
+                <tr>
+                    <td>{{ contractor.id }}</td>
+                    <td><a href="{{ path('contractor_update', {'contractor': contractor.id}) }}">{{ contractor.name }}</a></td>
+                    <td>{{ contractor.inn }}</td>
+                    <td>{{ contractor.type == 'provider' ? 'Поставщик' : contractor.type == 'customer' ? 'Заказчик' : '' }}</td>
+                    <td>
+                        {% if contractor.manager %}
+                            {{ contractor.manager.username }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('contractor_delete', {'contractor': contractor.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
