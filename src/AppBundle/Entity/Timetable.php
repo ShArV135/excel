@@ -28,7 +28,6 @@ class Timetable
      */
     private $name;
 
-
     /**
      * Get id
      *

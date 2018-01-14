@@ -181,7 +181,7 @@ class ContractorController extends Controller
         try {
             $em = $this->getDoctrine()->getManager();
             $em->remove($contractor);
-            $em->flush($contractor);
+            $em->flush();
             $this->addFlash('success', 'Контрагент удален.');
         } catch (\Exception $e) {
             $this->addFlash('warning', 'При удалении возникла ошибка.');

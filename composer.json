@@ -30,6 +30,17 @@
                     "type": "file"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "jquery/jquery-ui",
+                "version": "1.11.1",
+                "dist": {
+                    "url": "https://code.jquery.com/ui/1.11.1/jquery-ui.js",
+                    "type": "file"
+                }
+            }
         }
     ],
     "require": {
@@ -38,6 +49,7 @@
         "doctrine/orm": "^2.5",
         "incenteev/composer-parameter-handler": "^2.0",
         "jquery/jquery": "^1.11",
+        "jquery/jquery-ui": "^1.11",
         "knplabs/knp-menu-bundle": "^2.2",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",
@@ -48,6 +60,7 @@
         "symfony/swiftmailer-bundle": "^2.6.4",
         "symfony/symfony": "3.4.*",
         "twbs/bootstrap": "^3.3",
+        "twig/extensions": "^1.5",
         "twig/twig": "^1.0||^2.0",
         "wenzhixin/bootstrap-table": "^1.11"
     },

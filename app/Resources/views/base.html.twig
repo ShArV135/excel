@@ -2,8 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{{ page_title|default(page_header|default) }}</title>
         <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>

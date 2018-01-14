@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Timetable;
+
 /**
  * TimetableRepository
  *
@@ -10,4 +12,36 @@ namespace AppBundle\Repository;
  */
 class TimetableRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getLastOrCreateTable()
+    {
+        $timetable = $this->findOneBy([], ['id' => 'DESC']);
+
+        if (!$timetable) {
+            $em = $this->getEntityManager();
+
+            $timetable = new Timetable();
+            $timetable->setName(sprintf('Табель %s', date('m.Y')));
+
+            $em->persist($timetable);
+            $em->flush();
+        }
+
+        return $timetable;
+    }
+
+    /**
+     * @param Timetable $timetable
+     * @return array
+     */
+    public function getAllPrevious(Timetable $timetable)
+    {
+        $qb = $this->createQueryBuilder('timetable');
+
+        $qb
+            ->where($qb->expr()->lt('timetable.id', ':id'))
+            ->setParameter('id', $timetable)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

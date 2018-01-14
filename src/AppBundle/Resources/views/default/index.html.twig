@@ -1,46 +1,118 @@
 {% extends 'base.html.twig' %}
 
-{% set page_header = 'Табель' %}
+{% set page_header = timetable.name %}
 
 {% block body %}
-    <div class="row" style="position: relative">
-    <table
-            class="timetable"
-           data-toggle="table"
-           data-height="500"
-           data-fixed-columns="true"
-           data-fixed-number="9"
-    >
+    <div class="clearfix">
+        <div class="btn-group pull-right" role="group">
+            <a class="btn btn-primary" href="{{ path('timetable_row_create', {'timetable': timetable.id}) }}">
+                Добавить запись
+            </a>
+        </div>
+    </div>
+    <div class="row" style="margin: 10px 0 0;">
+    <table class="timetable">
         <thead>
         <tr>
-            <th class="timetable-fixed-cell">Менеджер</th>
-            <th class="timetable-fixed-cell">Заказчик</th>
-            <th class="timetable-fixed-cell">Поставщик</th>
-            <th class="timetable-fixed-cell">Объект</th>
-            <th class="timetable-fixed-cell">Механизм</th>
-            <th class="timetable-fixed-cell">Комментарий</th>
-            <th class="timetable-fixed-cell">Цена<br>заказчику</th>
-            <th class="timetable-fixed-cell">Цена<br>поставщика</th>
-            <th class="timetable-fixed-cell">Сумма<br>часов</th>
-            {% for i in 1..31 %}
-                <th>{{ i }}</th>
+            <th class="timetable-fixed-cell controls">&nbsp;</th>
+            {% for column in columns %}
+                {% set class = column %}
+                {% if column in fixed_columns %}
+                    {% set class = class ~ ' timetable-fixed-cell' %}
+                {% endif %}
+                {% if column == 'manager' %}
+                    <th class="{{ class }}">Менеджер</th>
+                {% elseif column == 'customer' %}
+                    <th class="{{ class }}">Заказчик</th>
+                {% elseif column == 'provider' %}
+                    <th class="{{ class }}">Поставщик</th>
+                {% elseif column == 'object' %}
+                    <th class="{{ class }}">Объект</th>
+                {% elseif column == 'mechanism' %}
+                    <th class="{{ class }}">Механизм</th>
+                {% elseif column == 'comment' %}
+                    <th class="{{ class }}">Комментарий</th>
+                {% elseif column == 'price_for_customer' %}
+                    <th class="{{ class }}">Цена<br>заказчику<br>маш/ч</th>
+                {% elseif column == 'price_for_provider' %}
+                    <th class="{{ class }}">Цена<br>поставщика<br>маш/ч</th>
+                {% elseif column == 'sum_times' %}
+                    <th class="{{ class }}">Сумма<br>часов</th>
+                {% elseif column == 'times' %}
+                    {% for i in 1..31 %}
+                        <th class="{{ class }}">{{ i }}</th>
+                    {% endfor %}
+                {% elseif column == 'customer_salary' %}
+                    <th class="{{ class }}">Наработка<br>заказчика</th>
+                {% elseif column == 'provider_salary' %}
+                    <th class="{{ class }}">Наработка<br>поставщика</th>
+                {% elseif column == 'customer_paid' %}
+                    <th class="{{ class }}">Оплачено<br>заказчиком</th>
+                {% elseif column == 'customer_balance' %}
+                    <th class="{{ class }}">Баланс<br>заказчика</th>
+                {% elseif column == 'provider_paid' %}
+                    <th class="{{ class }}">Оплачено<br>поставщику</th>
+                {% elseif column == 'provider_balance' %}
+                    <th class="{{ class }}">Баланс<br>поставщика</th>
+                {% elseif column == 'margin_sum' %}
+                    <th class="{{ class }}">Маржа,<br>сумма</th>
+                {% elseif column == 'margin_percent' %}
+                    <th class="{{ class }}">Маржа,<br>%</th>
+                {% endif %}
             {% endfor %}
         </tr>
         </thead>
         <tbody>
-        {% for j in 1..50 %}
+        {% for row in rows %}
             <tr>
-                <td class="timetable-fixed-cell">Менеджер {{ j }}</td>
-                <td class="timetable-fixed-cell">ЗАКАЗЧИК</td>
-                <td class="timetable-fixed-cell">ПОСТАВЩИК</td>
-                <td class="timetable-fixed-cell">ОБЪЕКТ</td>
-                <td class="timetable-fixed-cell">МЕХАНИЗМ</td>
-                <td class="timetable-fixed-cell">Комментарий</td>
-                <td class="timetable-fixed-cell">ЦЕНА ЗАКАЗЧИКУ, маш/ч</td>
-                <td class="timetable-fixed-cell">ЦЕНА ПОСТАВЩИКА, маш/ч</td>
-                <td class="timetable-fixed-cell">Сумма часов</td>
-                {% for i in 1..31 %}
-                    <td>{{ i }}</td>
+                <td>
+                    <a href="{{ path('timetable_row_update', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    <a href="{{ path('timetable_row_delete', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+                </td>
+                {% for column in columns %}
+                    {% if column == 'manager' %}
+                        <td><span class="tt-tooltip" title="{{ row.manager }}">{{ row.manager|truncate(12) }}</span> </td>
+                    {% elseif column == 'customer' %}
+                        <td><span class="tt-tooltip" title="{{ row.customer }}">{{ row.customer|truncate(12) }}</span> </td>
+                    {% elseif column == 'provider' %}
+                        <td><span class="tt-tooltip" title="{{ row.provider }}">{{ row.provider|truncate(12) }}</span> </td>
+                    {% elseif column == 'object' %}
+                        <td><span class="tt-tooltip" title="{{ row.object }}">{{ row.object|truncate(12) }}</span> </td>
+                    {% elseif column == 'mechanism' %}
+                        <td><span class="tt-tooltip" title="{{ row.mechanism }}">{{ row.mechanism|truncate(12) }}</span> </td>
+                    {% elseif column == 'comment' %}
+                        <td><span class="tt-tooltip" title="{{ row.comment }}">{{ row.comment|truncate(12) }}</span> </td>
+                    {% elseif column == 'price_for_customer' %}
+                        <td>{{ row.price_for_customer }}</td>
+                    {% elseif column == 'price_for_provider' %}
+                        <td>{{ row.price_for_provider }}</td>
+                    {% elseif column == 'sum_times' %}
+                        <td>{{ row.sum_times }}</td>
+                    {% elseif column == 'times' %}
+                        {% for i in 1..31 %}
+                            <td>{{ 0 }}</td>
+                        {% endfor %}
+                    {% elseif column == 'customer_salary' %}
+                        <td>{{ row.customer_salary }}</td>
+                    {% elseif column == 'provider_salary' %}
+                        <td>{{ row.provider_salary }}</td>
+                    {% elseif column == 'customer_paid' %}
+                        <td>{{ row.customer_paid }}</td>
+                    {% elseif column == 'customer_balance' %}
+                        <td>{{ row.customer_balance }}</td>
+                    {% elseif column == 'provider_paid' %}
+                        <td>{{ row.provider_paid }}</td>
+                    {% elseif column == 'provider_balance' %}
+                        <td>{{ row.provider_balance }}</td>
+                    {% elseif column == 'margin_sum' %}
+                        <td>{{ row.margin_sum }}</td>
+                    {% elseif column == 'margin_percent' %}
+                        <td>{{ row.margin_percent }}</td>
+                    {% endif %}
                 {% endfor %}
             </tr>
         {% endfor %}
@@ -51,5 +123,25 @@
 
 {% block stylesheets %} {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/timetable.css') }}">
+{% endblock %}
+
+{% block javascripts %} {{ parent() }}
+    <script>
+        $(function() {
+            $('.timetable').bootstrapTable({
+                fixedColumns: true,
+                fixedNumber: {{ num_of_fixed }},
+                height: 300,
+                onPostBody: function() {
+                    setTimeout(function() {
+                        $('.tt-tooltip').tooltip({
+                            trigger: 'click',
+                            container: 'body'
+                        });
+                    }, 1000);
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
