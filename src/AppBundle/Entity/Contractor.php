@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -54,12 +55,31 @@ class Contractor
     private $type;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="contacts", type="text", nullable=true)
+     */
+    private $contacts;
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="manager_id", referencedColumnName="id")
      */
     private $manager;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="contractor")
+     */
+    private $payments;
+
+    public function __construct()
+    {
+        $this->payments = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -152,6 +172,44 @@ class Contractor
     public function setManager($manager)
     {
         $this->manager = $manager;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
+
+    /**
+     * @param string $contacts
+     * @return Contractor
+     */
+    public function setContacts($contacts)
+    {
+        $this->contacts = $contacts;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    /**
+     * @param ArrayCollection $payments
+     * @return Contractor
+     */
+    public function setPayments($payments)
+    {
+        $this->payments = $payments;
+
+        return $this;
     }
 
     /**

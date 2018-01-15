@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Payment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Intl\Exception\NotImplementedException;
@@ -55,6 +56,9 @@ class DefaultController extends Controller
                 throw new NotImplementedException('Not implemented.');
                 break;
         }
+
+        /* TODO test test test */
+        $show = 'all';
 
         switch ($show) {
             case 'customer_manager':
@@ -158,12 +162,22 @@ class DefaultController extends Controller
             $customer = $timetableRow->getCustomer();
             $provider = $timetableRow->getProvider();
 
+            $customerPaid = 0;
+            /** @var Payment $payment */
+            foreach ($customer->getPayments() as $payment) {
+                $customerPaid += $payment->getAmount();
+            }
+
+            $providerPaid = 0;
+            /** @var Payment $payment */
+            foreach ($provider->getPayments() as $payment) {
+                $providerPaid += $payment->getAmount();
+            }
+
             $times = $timetableRowTimesRepository->getTimesOrCreate($timetable, $timetableRow);
             $sumTimes = $timetableRowTimesRepository->sumTimes($times);
             $customerSalary = $timetableRow->getPriceForCustomer() * $sumTimes;
             $providerSalary = $timetableRow->getPriceForProvider() * $sumTimes;
-            $customerPaid = 0;
-            $providerPaid = 0;
             $customerBalance = $customerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $customer);
             $providerBalance = $providerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $provider);
             $marginSum = $providerSalary - $customerSalary;

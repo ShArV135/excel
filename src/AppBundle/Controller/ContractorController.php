@@ -6,11 +6,11 @@ use AppBundle\Entity\Contractor;
 use AppBundle\Form\ContractorType;
 use AppBundle\Security\ContractorVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 /**
@@ -19,10 +19,9 @@ use Symfony\Component\Intl\Exception\NotImplementedException;
 class ContractorController extends Controller
 {
     /**
-     * @Template
      * @Route("/contractors/{page}", name="contractor_list")
      * @param int $page
-     * @return array
+     * @return Response
      */
     public function listAction($page = 1)
     {
@@ -38,17 +37,19 @@ class ContractorController extends Controller
 
         $contractors = $em->getRepository('AppBundle:Contractor')->findBy($criteria, ['id' => 'ASC'], $limit, $offset);
 
-        return [
-            'contractors' => $contractors,
-        ];
+        return $this->render(
+            '@App/contractor/list.html.twig',
+            [
+                'contractors' => $contractors,
+            ]
+        );
     }
 
     /**
-     * @Template(template="@App/contractor/save.html.twig")
      * @Route("/contractors/create/{type}", name="contractor_create", requirements={"type"="\w+"})
      * @param Request $request
      * @param         $type
-     * @return array|RedirectResponse|NotImplementedException
+     * @return RedirectResponse|Response
      */
     public function createAction(Request $request, $type)
     {
@@ -103,18 +104,20 @@ class ContractorController extends Controller
             }
         }
 
-        return [
-            'page_header' => $pageHeader,
-            'form' => $form->createView(),
-        ];
+        return $this->render(
+            '@App/contractor/save.html.twig',
+            [
+                'page_header' => $pageHeader,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
-     * @Template(template="@App/contractor/save.html.twig")
-     * @Route("/contractors/update/{contractor}", name="contractor_update", requirements={"contractor"="\d+"})
+     * @Route("/contractors/{contractor}/update", name="contractor_update", requirements={"contractor"="\d+"})
      * @param Request    $request
      * @param Contractor $contractor
-     * @return array|RedirectResponse|NotImplementedException
+     * @return RedirectResponse|Response
      */
     public function updateAction(Request $request, Contractor $contractor)
     {
@@ -163,10 +166,30 @@ class ContractorController extends Controller
             }
         }
 
-        return [
-            'page_header' => $pageHeader,
-            'form' => $form->createView(),
-        ];
+        return $this->render(
+            '@App/contractor/save.html.twig',
+            [
+                'page_header' => $pageHeader,
+                'form' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
+     * @Route("/contractors/{contractor}/view", name="contractor_view", requirements={"contractor"="\d+"})
+     * @param Contractor $contractor
+     * @return Response
+     */
+    public function viewAction(Contractor $contractor)
+    {
+        $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
+
+        return $this->render(
+            '@App/contractor/view.html.twig',
+            [
+                'contractor' => $contractor,
+            ]
+        );
     }
 
     /**

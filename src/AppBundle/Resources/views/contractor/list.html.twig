@@ -28,14 +28,14 @@
                 <th>ИНН</th>
                 <th>Тип контрагента</th>
                 <th>Менеджер по продажам</th>
-                <th class="col-md-1">&nbsp;</th>
+                <th class="col-md-3">&nbsp;</th>
             </tr>
             </thead>
             <tbody>
             {% for contractor in contractors %}
                 <tr>
                     <td>{{ contractor.id }}</td>
-                    <td><a href="{{ path('contractor_update', {'contractor': contractor.id}) }}">{{ contractor.name }}</a></td>
+                    <td><a href="{{ path('contractor_view', {'contractor': contractor.id}) }}">{{ contractor.name }}</a></td>
                     <td>{{ contractor.inn }}</td>
                     <td>{{ contractor.type == 'provider' ? 'Поставщик' : contractor.type == 'customer' ? 'Заказчик' : '' }}</td>
                     <td>
@@ -44,6 +44,7 @@
                         {% endif %}
                     </td>
                     <td>
+                        <a href="{{ path('contractor_update', {'contractor': contractor.id}) }}" class="btn-sm btn btn-default">Редактировать</a>
                         <a href="{{ path('contractor_delete', {'contractor': contractor.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
                     </td>
                 </tr>
