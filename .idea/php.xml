@@ -51,6 +51,8 @@
       <path value="$PROJECT_DIR$/vendor/wenzhixin/bootstrap-table" />
       <path value="$PROJECT_DIR$/vendor/jquery/jquery-ui" />
       <path value="$PROJECT_DIR$/vendor/twig/extensions" />
+      <path value="$PROJECT_DIR$/vendor/willdurand/jsonp-callback-validator" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/jsrouting-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="5.5.0" />

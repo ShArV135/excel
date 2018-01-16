@@ -25,7 +25,7 @@ class DefaultController extends Controller
             $criteria['manager'] = $this->getUser();
         }
 
-        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria);
+        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC']);
 
         $fixedColumns = [
             'manager',
@@ -148,45 +148,32 @@ class DefaultController extends Controller
                 break;
         }
 
-        $numOfFixed = count(array_intersect($columns, $fixedColumns));
-
-        $timetableRowTimesRepository = $em->getRepository('AppBundle:TimetableRowTimes');
+        $numOfFixed = count(array_intersect($columns, $fixedColumns)) + 1;
 
         $rows = [];
         foreach ($timetableRows as $timetableRow) {
-            $row = [
-                'id' => $timetableRow->getId(),
-            ];
-
             $manager = $timetableRow->getManager();
             $customer = $timetableRow->getCustomer();
             $provider = $timetableRow->getProvider();
 
-            $customerPaid = 0;
-            /** @var Payment $payment */
-            foreach ($customer->getPayments() as $payment) {
-                $customerPaid += $payment->getAmount();
-            }
+            $row = [
+                'id' => $timetableRow->getId(),
+                'customer_id' => $customer->getId(),
+                'provider_id' => $provider->getId(),
+            ];
 
-            $providerPaid = 0;
-            /** @var Payment $payment */
-            foreach ($provider->getPayments() as $payment) {
-                $providerPaid += $payment->getAmount();
-            }
-
-            $times = $timetableRowTimesRepository->getTimesOrCreate($timetable, $timetableRow);
-            $sumTimes = $timetableRowTimesRepository->sumTimes($times);
-            $customerSalary = $timetableRow->getPriceForCustomer() * $sumTimes;
-            $providerSalary = $timetableRow->getPriceForProvider() * $sumTimes;
-            $customerBalance = $customerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $customer);
-            $providerBalance = $providerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $provider);
-            $marginSum = $providerSalary - $customerSalary;
-
-            if ($providerSalary) {
-                $marginPercent = 100-($customerSalary/$providerSalary*100);
-            } else {
-                $marginPercent = 0;
-            }
+            list(
+                $timetableRowTimes,
+                $sumTimes,
+                $customerSalary,
+                $providerSalary,
+                $customerBalance,
+                $providerBalance,
+                $marginSum,
+                $marginPercent,
+                $customerPaid,
+                $providerPaid,
+            ) = array_values($this->get('timetable.helper')->calculateRowData($timetable, $timetableRow));
 
             foreach ($columns as $column) {
                 switch ($column) {
@@ -218,7 +205,7 @@ class DefaultController extends Controller
                         $value = $sumTimes;
                         break;
                     case 'times':
-                        $value = $times;
+                        $value = $timetableRowTimes;
                         break;
                     case 'customer_salary':
                         $value = $customerSalary;

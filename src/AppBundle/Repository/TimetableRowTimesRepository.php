@@ -19,7 +19,7 @@ class TimetableRowTimesRepository extends EntityRepository
     /**
      * @param Timetable    $timetable
      * @param TimetableRow $timetableRow
-     * @return array
+     * @return TimetableRowTimes
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function getTimesOrCreate(Timetable $timetable, TimetableRow $timetableRow)
@@ -36,11 +36,11 @@ class TimetableRowTimesRepository extends EntityRepository
             $times->setTimetable($timetable);
             $times->setTimetableRow($timetableRow);
 
-            $em->persist($timetable);
+            $em->persist($times);
             $em->flush();
         }
 
-        return $times->getTimes();
+        return $times;
     }
 
     public function calculateContractorBalance(Timetable $timetable, Contractor $contractor)
@@ -67,7 +67,11 @@ class TimetableRowTimesRepository extends EntityRepository
             $timetableRow = $timetableRowTime->getTimetableRow();
             $sumTimes = $this->sumTimes($timetableRowTime->getTimes());
 
-            $total += ($timetableRow * $sumTimes);
+            if ($contractor->getType() == Contractor::PROVIDER) {
+                $total += ($timetableRow->getPriceForProvider() * $sumTimes);
+            } else {
+                $total += ($timetableRow->getPriceForProvider() * $sumTimes);
+            }
         }
 
         return $total;
@@ -81,9 +85,7 @@ class TimetableRowTimesRepository extends EntityRepository
     {
         $sumTimes = 0;
         foreach ($times as $time) {
-            if (is_int($time)) {
-                $sumTimes += $time;
-            }
+            $sumTimes += (int) $time;
         }
 
         return $sumTimes;

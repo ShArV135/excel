@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Form\TimetableRowType;
 use AppBundle\Security\TimetableRowVoter;
@@ -15,15 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 class TimetableRowController extends Controller
 {
     /**
-     * @Route("/timetable/{timetable}/row/create", name="timetable_row_create")
-     * @param Timetable $timetable
-     * @param Request   $request
+     * @Route("/timetable-row/create", name="timetable_row_create")
+     * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function createAction(Timetable $timetable, Request $request)
+    public function createAction(Request $request)
     {
         $timetableRow = new TimetableRow();
-        $timetableRow->setTimetable($timetable);
 
         $form = $this->getForm($timetableRow);
         $form->handleRequest($request);
@@ -53,7 +50,7 @@ class TimetableRowController extends Controller
     }
 
     /**
-     * @Route("/timetable/{timetable}/row/{timetableRow}/update", name="timetable_row_update")
+     * @Route("/timetable-row/{timetableRow}/update", name="timetable_row_update")
      * @param TimetableRow $timetableRow
      * @param Request      $request
      * @return RedirectResponse|Response
@@ -89,7 +86,7 @@ class TimetableRowController extends Controller
     }
 
     /**
-     * @Route("/timetable/{timetable}/row/{timetableRow}/delete", name="timetable_row_delete")
+     * @Route("/timetable-row/{timetableRow}/delete", name="timetable_row_delete")
      * @param TimetableRow $timetableRow
      * @return RedirectResponse
      */

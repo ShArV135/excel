@@ -5,7 +5,7 @@
 {% block body %}
     <div class="clearfix">
         <div class="btn-group pull-right" role="group">
-            <a class="btn btn-primary" href="{{ path('timetable_row_create', {'timetable': timetable.id}) }}">
+            <a class="btn btn-primary" href="{{ path('timetable_row_create') }}">
                 Добавить запись
             </a>
         </div>
@@ -40,7 +40,7 @@
                     <th class="{{ class }}">Сумма<br>часов</th>
                 {% elseif column == 'times' %}
                     {% for i in 1..31 %}
-                        <th class="{{ class }}">{{ i }}</th>
+                        <th class="{{ class ~ (i == 16 ? ' bold-border' : '') }}">{{ i }}</th>
                     {% endfor %}
                 {% elseif column == 'customer_salary' %}
                     <th class="{{ class }}">Наработка<br>заказчика</th>
@@ -63,8 +63,13 @@
         </tr>
         </thead>
         <tbody>
+        {% set tmpCustomer = '' %}
         {% for row in rows %}
-            <tr>
+            <tr data-row="{{ row.id }}"
+                data-customer-id="{{ row.customer_id }}"
+                data-provider-id="{{ row.provider_id }}"
+                class="{{ (tmpCustomer and tmpCustomer != row.customer) ? 'bold-border' : '' }}"
+            >
                 <td>
                     <a href="{{ path('timetable_row_update', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
                         <span class="glyphicon glyphicon-edit"></span>
@@ -91,30 +96,39 @@
                     {% elseif column == 'price_for_provider' %}
                         <td>{{ row.price_for_provider }}</td>
                     {% elseif column == 'sum_times' %}
-                        <td>{{ row.sum_times }}</td>
+                        <td data-sum_times>{{ row.sum_times }}</td>
                     {% elseif column == 'times' %}
-                        {% for i in 1..31 %}
-                            <td>{{ 0 }}</td>
+                        {% for day, time in row.times.times %}
+                            <td>
+                                <input class="times-input"
+                                       data-id="{{ row.times.id }}"
+                                       data-day="{{ day }}"
+                                       type="text"
+                                       data-value="{{ time }}"
+                                       value="{{ time }}"
+                                />
+                            </td>
                         {% endfor %}
                     {% elseif column == 'customer_salary' %}
-                        <td>{{ row.customer_salary }}</td>
+                        <td data-customer_salary>{{ row.customer_salary }}</td>
                     {% elseif column == 'provider_salary' %}
-                        <td>{{ row.provider_salary }}</td>
+                        <td data-provider_salary>{{ row.provider_salary }}</td>
                     {% elseif column == 'customer_paid' %}
-                        <td>{{ row.customer_paid }}</td>
+                        <td data-customer_paid>{{ row.customer_paid }}</td>
                     {% elseif column == 'customer_balance' %}
-                        <td>{{ row.customer_balance }}</td>
+                        <td data-customer_balance>{{ row.customer_balance }}</td>
                     {% elseif column == 'provider_paid' %}
-                        <td>{{ row.provider_paid }}</td>
+                        <td data-provider_paid>{{ row.provider_paid }}</td>
                     {% elseif column == 'provider_balance' %}
-                        <td>{{ row.provider_balance }}</td>
+                        <td data-provider_balance>{{ row.provider_balance }}</td>
                     {% elseif column == 'margin_sum' %}
-                        <td>{{ row.margin_sum }}</td>
+                        <td data-margin_sum>{{ row.margin_sum }}</td>
                     {% elseif column == 'margin_percent' %}
-                        <td>{{ row.margin_percent }}</td>
+                        <td data-margin_percent>{{ row.margin_percent }}</td>
                     {% endif %}
                 {% endfor %}
             </tr>
+            {% set tmpCustomer = row.customer %}
         {% endfor %}
         </tbody>
     </table>
@@ -141,6 +155,69 @@
                     }, 1000);
                 }
             });
+
+            $('.timetable .times-input').blur(function() {
+                var $input = $(this);
+                var id = $input.data('id');
+                var day = $input.data('day');
+                var oldValue = $input.data('value');
+                var value = $input.val();
+
+                if (value == '') {
+                    $input.val(oldValue);
+                    return;
+                }
+
+                if (value == oldValue) {
+                    return;
+                }
+
+                var $tr = $input.closest('tr');
+                var rowId = $tr.data('row');
+                var customerId = $tr.data('customer-id');
+                var providerId = $tr.data('provider-id');
+                var $trById = $('[data-row="' + rowId + '"]');
+                var $trByCustomer = $('[data-customer-id="' + customerId + '"]');
+                var $trByProvider = $('[data-provider-id="' + providerId + '"]');
+
+                $.ajax({
+                    type: 'POST',
+                    url: Routing.generate('timetable_row_times_update', {'timetableRowTimes': id}),
+                    data: {
+                        day: day,
+                        value: value
+                    },
+                    beforeSend: function() {
+                        $('.timetable .times-input').attr('disabled', 'disabled');
+                    },
+                    success: function(response) {
+                        if (response.status === 'OK') {
+                            $input.data('value', value);
+
+                            var data = response.data;
+
+                            $('[data-sum_times]', $trById).text(data.sum_times);
+                            $('[data-customer_salary]', $trById).text(data.customer_salary);
+                            $('[data-provider_salary]', $trById).text(data.provider_salary);
+                            $('[data-margin_sum]', $trById).text(data.margin_sum);
+                            $('[data-margin_percent]', $trById).text(data.margin_percent);
+                            $('[data-customer_balance]', $trByCustomer).text(data.customer_balance);
+                            $('[data-provider_balance]', $trByProvider).text(data.provider_balance);
+                            $('[data-customer_paid]', $trByCustomer).text(data.customer_paid);
+                            $('[data-provider_paid]', $trByProvider).text(data.provider_paid);
+                        } else {
+                            $input.val(oldValue);
+                        }
+                    },
+                    error: function () {
+                        $input.val(oldValue);
+                    },
+                    complete: function() {
+                        $('.timetable .times-input').removeAttr('disabled');
+                    }
+                });
+            });
+
         });
     </script>
 {% endblock %}

@@ -47,6 +47,7 @@
         "php": ">=5.5.9",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
+        "friendsofsymfony/jsrouting-bundle": "^2.1",
         "incenteev/composer-parameter-handler": "^2.0",
         "jquery/jquery": "^1.11",
         "jquery/jquery-ui": "^1.11",

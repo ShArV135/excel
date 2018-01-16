@@ -38,7 +38,7 @@ class TimetableRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('timetable');
 
         $qb
-            ->where($qb->expr()->lt('timetable.id', ':id'))
+            ->where($qb->expr()->lte('timetable.id', ':id'))
             ->setParameter('id', $timetable)
         ;
 
