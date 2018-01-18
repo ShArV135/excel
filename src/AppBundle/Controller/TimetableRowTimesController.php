@@ -57,4 +57,41 @@ class TimetableRowTimesController extends Controller
             'data' => $this->get('timetable.helper')->calculateRowData($timetable, $timetableRow),
         ]);
     }
+
+    /**
+     * @Route("/timetable-row-times/{timetableRowTimes}/update-comment", name="timetable_row_times_update_comment")
+     * @param TimetableRowTimes $timetableRowTimes
+     * @param Request           $request
+     * @return JsonResponse
+     */
+    public function updateCommentAction(TimetableRowTimes $timetableRowTimes, Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->denyAccessUnlessGranted(TimetableRowVoter::EDIT, $timetableRowTimes->getTimetableRow());
+
+        if (!$day = $request->get('name')) {
+            throw new BadRequestHttpException();
+        }
+
+        $value = $request->get('value');
+
+        $comments = $timetableRowTimes->getComments();
+
+        if (!isset($comments[$day])) {
+            throw new BadRequestHttpException();
+        }
+
+        $comments[$day] = $value;
+
+        $timetableRowTimes->setComments($comments);
+        $this->getDoctrine()->getManager()->flush();
+
+        return new JsonResponse([
+            'status' => 'OK',
+        ]);
+
+    }
 }

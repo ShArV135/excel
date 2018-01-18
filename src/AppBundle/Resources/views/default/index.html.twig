@@ -107,6 +107,15 @@
                                        data-value="{{ time }}"
                                        value="{{ time }}"
                                 />
+                                <a class="times-comment"
+                                   data-type="textarea"
+                                   data-pk="{{ row.times.id }}"
+                                   data-name="{{ day }}"
+                                   data-url="{{ path('timetable_row_times_update_comment', {'timetableRowTimes': row.times.id}) }}"
+                                   data-value="{{ row.times.comments[day] }}"
+                                >
+                                    <span class="glyphicon glyphicon-certificate"></span>
+                                </a>
                             </td>
                         {% endfor %}
                     {% elseif column == 'customer_salary' %}
@@ -218,6 +227,12 @@
                 });
             });
 
+            $('.timetable .times-comment').editable({
+                container: 'body',
+                display: function() {
+                    return '';
+                }
+            });
         });
     </script>
 {% endblock %}

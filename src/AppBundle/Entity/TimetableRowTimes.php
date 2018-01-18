@@ -44,9 +44,17 @@ class TimetableRowTimes
      */
     private $times;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="comments", type="array")
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->times = array_fill(1, 31, 0);
+        $this->comments = array_fill(1, 31, '');
     }
 
     /**
@@ -110,6 +118,25 @@ class TimetableRowTimes
     public function setTimes($times)
     {
         $this->times = $times;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param array $comments
+     * @return TimetableRowTimes
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
 
         return $this;
     }

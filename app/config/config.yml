@@ -86,6 +86,7 @@ assetic:
                 - '%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js'
                 - '%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
                 - '%kernel.root_dir%/../web/plugins/bootstrap-table-fixed-columns-master/bootstrap-table-fixed-columns.js'
+                - '%kernel.root_dir%/../web/plugins/bootstrap3-editable/js/bootstrap-editable.min.js'
             output: 'assets/js/bootstrap.js'
         bootstrap_css:
             inputs:
@@ -93,6 +94,7 @@ assetic:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap-theme.min.css'
                 - '%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css'
                 - '%kernel.root_dir%/../web/plugins/bootstrap-table-fixed-columns-master/bootstrap-table-fixed-columns.css'
+                - '%kernel.root_dir%/../web/plugins/bootstrap3-editable/css/bootstrap-editable.css'
             output: 'assets/css/bootstrap.css'
         bootstrap_glyphicons_ttf:
             inputs:
@@ -114,4 +116,8 @@ assetic:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2'
             output: "assets/fonts/glyphicons-halflings-regular.woff2"
+        bootstrap_editable_loader:
+            inputs:
+                - '%kernel.root_dir%/../web/plugins/bootstrap3-editable/img/loading.gif'
+            output: "assets/img/loading.gif"
 
