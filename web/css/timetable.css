@@ -30,10 +30,10 @@
 .timetable td {
     border: 1px solid #D0D7E5;
     padding: 2px 4px !important;
-
 }
 
-.fixed-table-header-columns {
+.fixed-table-header-columns,
+.fixed-table-body-columns {
     z-index: 999;
 }
 
@@ -44,6 +44,8 @@
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .timetable-fixed-cell.controls {
@@ -56,14 +58,21 @@
     position: relative;
 }
 
-.timetable .times-input {
+.timetable .times-item {
     border: 0;
     width: 100%;
     height: 23px;
-    padding: 2px;
+    padding: 2px 4px;
+    cursor: default;
 }
 
-.timetable tr:hover .times-input {
+.timetable .times-item.ui-selected,
+.timetable .times-item.ui-selecting {
+    background: #FFC0CB;
+}
+
+.timetable tr:hover .times-input,
+.timetable tr.hover .times-input {
     background-color: #f5f5f5 !important;
 }
 
@@ -92,4 +101,18 @@
     white-space: normal;
     text-decoration: none;
     border: 0;
+}
+
+.bg-right {
+    background: #ff0000 !important;
+}
+.bg-pink {
+    background: #FFC0CB !important;
+}
+.text-white {
+    color: #fff;
+}
+
+.ui-selectee {
+
 }

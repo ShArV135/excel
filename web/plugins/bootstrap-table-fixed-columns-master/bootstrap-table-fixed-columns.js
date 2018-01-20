@@ -51,7 +51,7 @@
 
         this.initFixedColumns();
 
-        var that = this, $trs = this.$header.find('tr').clone();
+        var that = this, $trs = this.$header.clone(true, true);
         $trs.each(function () {
             $(this).find('th:gt(' + that.options.fixedNumber + ')').remove();
         });
@@ -70,7 +70,7 @@
 
         this.$fixedBodyColumns.html('');
         this.$body.find('> tr[data-index]').each(function () {
-            var $tr = $(this).clone(),
+            var $tr = $(this).clone(true, true),
                 $tds = $tr.find('td');
 
             $tr.html('');
@@ -80,7 +80,7 @@
                 --rowspan;
             }
             for (var i = 0; i < end; i++) {
-                $tr.append($tds.eq(i).clone());
+                $tr.append($tds.eq(i).clone(true, true));
             }
             that.$fixedBodyColumns.append($tr);
             

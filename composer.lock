@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0524f1efd9d02cf572aee5cadf4b292",
+    "content-hash": "a2da6bbd4c0c6ce3a389b1ef1e9b7727",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -2717,16 +2717,16 @@
         },
         {
             "name": "wenzhixin/bootstrap-table",
-            "version": "1.11.1",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wenzhixin/bootstrap-table.git",
-                "reference": "d5ccd48950a03a3f7d684358bebf1899bec4d3b0"
+                "reference": "0d147670ec7025dc6617178c051ac400f0426b48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wenzhixin/bootstrap-table/zipball/d5ccd48950a03a3f7d684358bebf1899bec4d3b0",
-                "reference": "d5ccd48950a03a3f7d684358bebf1899bec4d3b0",
+                "url": "https://api.github.com/repos/wenzhixin/bootstrap-table/zipball/0d147670ec7025dc6617178c051ac400f0426b48",
+                "reference": "0d147670ec7025dc6617178c051ac400f0426b48",
                 "shasum": ""
             },
             "require": {
@@ -2751,7 +2751,7 @@
                 "table",
                 "tablesort"
             ],
-            "time": "2017-02-22T01:51:11+00:00"
+            "time": "2018-01-09T15:53:05+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -3038,7 +3038,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "wenzhixin/bootstrap-table": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

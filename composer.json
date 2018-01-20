@@ -63,7 +63,7 @@
         "twbs/bootstrap": "^3.3",
         "twig/extensions": "^1.5",
         "twig/twig": "^1.0||^2.0",
-        "wenzhixin/bootstrap-table": "^1.11"
+        "wenzhixin/bootstrap-table": "dev-develop"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",

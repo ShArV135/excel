@@ -2,18 +2,21 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Payment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
+     * @param Request $request
+     * @return Response
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -50,15 +53,12 @@ class DefaultController extends Controller
                 $show = 'provider_manager';
                 break;
             case $this->isGranted('ROLE_GENERAL_MANAGER'):
-                $show = 'general_manager';
+                $show = $request->get('show', 'general_manager');
                 break;
             default:
                 throw new NotImplementedException('Not implemented.');
                 break;
         }
-
-        /* TODO test test test */
-        $show = 'all';
 
         switch ($show) {
             case 'customer_manager':

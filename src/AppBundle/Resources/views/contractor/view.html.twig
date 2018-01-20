@@ -13,13 +13,16 @@
                             <p><b>Инн:</b> {{ contractor.inn }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><b>Менеджер:</b> {{ contractor.manager.username }}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
                             <p><b>Тип контрагента:</b> {{ contractor.type == 'customer' ? 'Заказчик' : 'Поставщик' }}</p>
                         </div>
+
+                    </div>
+                    <div class="row">
+                        {% if contractor.manager %}
+                            <div class="col-md-6">
+                                <p><b>Менеджер:</b> {{ contractor.manager.username }}</p>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
