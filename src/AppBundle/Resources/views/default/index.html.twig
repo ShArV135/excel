@@ -24,140 +24,154 @@
         </div>
     </div>
     <div class="row" style="margin: 10px 0 0;">
-    <table class="timetable">
-        <thead>
-        <tr>
-            <th class="timetable-fixed-cell controls">&nbsp;</th>
-            {% for column in columns %}
-                {% set class = column %}
-                {% if column in fixed_columns %}
-                    {% set class = class ~ ' timetable-fixed-cell' %}
-                {% endif %}
-                {% if column == 'manager' %}
-                    <th data-field="manager" data-filter-control="input" class="{{ class }}">Менеджер</th>
-                {% elseif column == 'customer' %}
-                    <th data-field="customer" data-filter-control="input" class="{{ class }}">Заказчик</th>
-                {% elseif column == 'provider' %}
-                    <th data-field="provider" data-filter-control="input" class="{{ class }}">Поставщик</th>
-                {% elseif column == 'object' %}
-                    <th data-field="object" data-filter-control="input" class="{{ class }}">Объект</th>
-                {% elseif column == 'mechanism' %}
-                    <th data-field="mechanism" data-filter-control="input" class="{{ class }}">Механизм</th>
-                {% elseif column == 'comment' %}
-                    <th data-field="comment" data-filter-control="input" class="{{ class }}">Комментарий</th>
-                {% elseif column == 'price_for_customer' %}
-                    <th class="{{ class }}">Цена<br>заказчику<br>маш/ч</th>
-                {% elseif column == 'price_for_provider' %}
-                    <th class="{{ class }}">Цена<br>поставщика<br>маш/ч</th>
-                {% elseif column == 'sum_times' %}
-                    <th class="{{ class }}">Сумма<br>часов</th>
-                {% elseif column == 'times' %}
-                    {% for i in 1..31 %}
-                        <th class="{{ class ~ (i == 16 ? ' bold-border' : '') }}">{{ i }}</th>
-                    {% endfor %}
-                {% elseif column == 'customer_salary' %}
-                    <th class="{{ class }}">Наработка<br>заказчика</th>
-                {% elseif column == 'provider_salary' %}
-                    <th class="{{ class }}">Наработка<br>поставщика</th>
-                {% elseif column == 'customer_paid' %}
-                    <th class="{{ class }}">Оплачено<br>заказчиком</th>
-                {% elseif column == 'customer_balance' %}
-                    <th class="{{ class }}">Баланс<br>заказчика</th>
-                {% elseif column == 'provider_paid' %}
-                    <th class="{{ class }}">Оплачено<br>поставщику</th>
-                {% elseif column == 'provider_balance' %}
-                    <th class="{{ class }}">Баланс<br>поставщика</th>
-                {% elseif column == 'margin_sum' %}
-                    <th class="{{ class }}">Маржа,<br>сумма</th>
-                {% elseif column == 'margin_percent' %}
-                    <th class="{{ class }}">Маржа,<br>%</th>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% set tmpCustomer = '' %}
-        {% for row in rows %}
-            <tr data-row="{{ row.id }}"
-                data-customer-id="{{ row.customer_id }}"
-                data-provider-id="{{ row.provider_id }}"
-                class="{{ (tmpCustomer and tmpCustomer != row.customer) ? 'bold-border' : '' }}"
-            >
-                <td>
-                    <a href="{{ path('timetable_row_update', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>
-                    <a href="{{ path('timetable_row_delete', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>
-                </td>
+        <div class="timetable-toolbar btn-toolbar">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success selectable-start">Выделить путевые</button>
+                <button type="button" class="btn hidden selectable-color red" data-color="red">&nbsp;</button>
+                <button type="button" class="btn hidden selectable-color green" data-color="green">&nbsp;</button>
+                <button type="button" class="btn hidden selectable-color blue" data-color="blue">&nbsp;</button>
+                <button type="button" class="btn hidden selectable-color" data-color="no-color">&nbsp;</button>
+                <button type="button" class="btn btn-default selectable-close hidden">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+            </div>
+        </div>
+        <table class="timetable">
+            <thead>
+            <tr>
+                <th class="timetable-fixed-cell controls">&nbsp;</th>
                 {% for column in columns %}
+                    {% set class = column %}
+                    {% if column in fixed_columns %}
+                        {% set class = class ~ ' timetable-fixed-cell' %}
+                    {% endif %}
                     {% if column == 'manager' %}
-                        <td><div class="tt-tooltip" title="{{ row.manager }}">{{ row.manager }}</div> </td>
+                        <th data-field="manager" data-filter-control="input" class="{{ class }}">Менеджер</th>
                     {% elseif column == 'customer' %}
-                        <td><div class="tt-tooltip" title="{{ row.customer }}">{{ row.customer }}</div> </td>
+                        <th data-field="customer" data-filter-control="input" class="{{ class }}">Заказчик</th>
                     {% elseif column == 'provider' %}
-                        <td><div class="tt-tooltip" title="{{ row.provider }}">{{ row.provider }}</div> </td>
+                        <th data-field="provider" data-filter-control="input" class="{{ class }}">Поставщик</th>
                     {% elseif column == 'object' %}
-                        <td><div class="tt-tooltip" title="{{ row.object }}">{{ row.object }}</div> </td>
+                        <th data-field="object" data-filter-control="input" class="{{ class }}">Объект</th>
                     {% elseif column == 'mechanism' %}
-                        <td><div class="tt-tooltip" title="{{ row.mechanism }}">{{ row.mechanism }}</div> </td>
+                        <th data-field="mechanism" data-filter-control="input" class="{{ class }}">Механизм</th>
                     {% elseif column == 'comment' %}
-                        <td><div class="tt-tooltip" title="{{ row.comment }}">{{ row.comment }}</div> </td>
+                        <th data-field="comment" data-filter-control="input" class="{{ class }}">Комментарий</th>
                     {% elseif column == 'price_for_customer' %}
-                        <td>{{ row.price_for_customer }}</td>
+                        <th class="{{ class }}">Цена<br>заказчику<br>маш/ч</th>
                     {% elseif column == 'price_for_provider' %}
-                        <td>{{ row.price_for_provider }}</td>
+                        <th class="{{ class }}">Цена<br>поставщика<br>маш/ч</th>
                     {% elseif column == 'sum_times' %}
-                        <td data-sum_times>{{ row.sum_times }}</td>
+                        <th class="{{ class }}">Сумма<br>часов</th>
                     {% elseif column == 'times' %}
-                        {% for day, time in row.times.times %}
-                            <td>
-                                <div class="times-item">
-                                    {{ time }}
-                                </div>
-                                <input class="times-input hidden"
-                                       data-id="{{ row.times.id }}"
-                                       data-day="{{ day }}"
-                                       type="text"
-                                       data-value="{{ time }}"
-                                >
-                                <a class="times-comment {{ row.times.comments[day]|length ? 'text-danger' : '' }}"
-                                   data-type="textarea"
-                                   data-pk="{{ row.times.id }}"
-                                   data-name="{{ day }}"
-                                   data-url="{{ path('timetable_row_times_update_comment', {'timetableRowTimes': row.times.id}) }}"
-                                   data-value="{{ row.times.comments[day] }}"
-                                >
-                                    <span class="glyphicon glyphicon-certificate"></span>
-                                </a>
-                            </td>
+                        {% for i in 1..31 %}
+                            <th class="{{ class ~ (i == 16 ? ' bold-border' : '') }}">{{ i }}</th>
                         {% endfor %}
                     {% elseif column == 'customer_salary' %}
-                        <td data-customer_salary>{{ row.customer_salary }}</td>
+                        <th class="{{ class }}">Наработка<br>заказчика</th>
                     {% elseif column == 'provider_salary' %}
-                        <td data-provider_salary>{{ row.provider_salary }}</td>
+                        <th class="{{ class }}">Наработка<br>поставщика</th>
                     {% elseif column == 'customer_paid' %}
-                        <td data-customer_paid>{{ row.customer_paid }}</td>
+                        <th class="{{ class }}">Оплачено<br>заказчиком</th>
                     {% elseif column == 'customer_balance' %}
-                        {% set class = row.customer_balance < 0 ? 'bg-right text-white' : '' %}
-                        <td data-customer_balance class="{{ class }}">{{ row.customer_balance }}</td>
+                        <th class="{{ class }}">Баланс<br>заказчика</th>
                     {% elseif column == 'provider_paid' %}
-                        <td data-provider_paid>{{ row.provider_paid }}</td>
+                        <th class="{{ class }}">Оплачено<br>поставщику</th>
                     {% elseif column == 'provider_balance' %}
-                        {% set class = row.provider_balance < 0 ? 'bg-pink' : '' %}
-                        <td data-provider_balance class="{{ class }}">{{ row.provider_balance }}</td>
+                        <th class="{{ class }}">Баланс<br>поставщика</th>
                     {% elseif column == 'margin_sum' %}
-                        <td data-margin_sum>{{ row.margin_sum }}</td>
+                        <th class="{{ class }}">Маржа,<br>сумма</th>
                     {% elseif column == 'margin_percent' %}
-                        <td data-margin_percent>{{ row.margin_percent }}</td>
+                        <th class="{{ class }}">Маржа,<br>%</th>
                     {% endif %}
                 {% endfor %}
             </tr>
-            {% set tmpCustomer = row.customer %}
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% set tmpCustomer = '' %}
+            {% for row in rows %}
+                <tr data-row="{{ row.id }}"
+                    data-customer-id="{{ row.customer_id }}"
+                    data-provider-id="{{ row.provider_id }}"
+                    class="{{ (tmpCustomer and tmpCustomer != row.customer) ? 'bold-border' : '' }}"
+                >
+                    <td>
+                        <a href="{{ path('timetable_row_update', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a href="{{ path('timetable_row_delete', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </td>
+                    {% for column in columns %}
+                        {% if column == 'manager' %}
+                            <td><div class="tt-tooltip" title="{{ row.manager }}">{{ row.manager }}</div> </td>
+                        {% elseif column == 'customer' %}
+                            <td><div class="tt-tooltip" title="{{ row.customer }}">{{ row.customer }}</div> </td>
+                        {% elseif column == 'provider' %}
+                            <td><div class="tt-tooltip" title="{{ row.provider }}">{{ row.provider }}</div> </td>
+                        {% elseif column == 'object' %}
+                            <td><div class="tt-tooltip" title="{{ row.object }}">{{ row.object }}</div> </td>
+                        {% elseif column == 'mechanism' %}
+                            <td><div class="tt-tooltip" title="{{ row.mechanism }}">{{ row.mechanism }}</div> </td>
+                        {% elseif column == 'comment' %}
+                            <td><div class="tt-tooltip" title="{{ row.comment }}">{{ row.comment }}</div> </td>
+                        {% elseif column == 'price_for_customer' %}
+                            <td>{{ row.price_for_customer }}</td>
+                        {% elseif column == 'price_for_provider' %}
+                            <td>{{ row.price_for_provider }}</td>
+                        {% elseif column == 'sum_times' %}
+                            <td data-sum_times>{{ row.sum_times }}</td>
+                        {% elseif column == 'times' %}
+                            {% for day, time in row.times.times %}
+                                <td class="times {{ row.times.colors[day]|default }}"
+                                    data-id="{{ row.times.id }}"
+                                    data-day="{{ day }}"
+                                >
+                                    <div class="times-item hidden">
+                                        {{ time }}
+                                    </div>
+                                    <input class="times-input"
+                                           type="text"
+                                           data-value="{{ time }}"
+                                           value="{{ time }}"
+                                    />
+                                    <a class="times-comment {{ row.times.comments[day]|length ? 'text-danger' : '' }}"
+                                       data-type="textarea"
+                                       data-pk="{{ row.times.id }}"
+                                       data-name="{{ day }}"
+                                       data-url="{{ path('timetable_row_times_update_comment', {'timetableRowTimes': row.times.id}) }}"
+                                       data-value="{{ row.times.comments[day] }}"
+                                    >
+                                        <span class="glyphicon glyphicon-certificate"></span>
+                                    </a>
+                                </td>
+                            {% endfor %}
+                        {% elseif column == 'customer_salary' %}
+                            <td data-customer_salary>{{ row.customer_salary }}</td>
+                        {% elseif column == 'provider_salary' %}
+                            <td data-provider_salary>{{ row.provider_salary }}</td>
+                        {% elseif column == 'customer_paid' %}
+                            <td data-customer_paid>{{ row.customer_paid }}</td>
+                        {% elseif column == 'customer_balance' %}
+                            {% set class = row.customer_balance < 0 ? 'bg-right text-white' : '' %}
+                            <td data-customer_balance class="{{ class }}">{{ row.customer_balance }}</td>
+                        {% elseif column == 'provider_paid' %}
+                            <td data-provider_paid>{{ row.provider_paid }}</td>
+                        {% elseif column == 'provider_balance' %}
+                            {% set class = row.provider_balance < 0 ? 'bg-pink' : '' %}
+                            <td data-provider_balance class="{{ class }}">{{ row.provider_balance }}</td>
+                        {% elseif column == 'margin_sum' %}
+                            <td data-margin_sum>{{ row.margin_sum }}</td>
+                        {% elseif column == 'margin_percent' %}
+                            <td data-margin_percent>{{ row.margin_percent }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% set tmpCustomer = row.customer %}
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
 
@@ -179,7 +193,7 @@
                 fixedColumns: true,
                 fixedNumber: {{ num_of_fixed }},
                 filterControl: true,
-                height: height
+                toolbar: '.timetable-toolbar'
             });
 
             $('.tt-tooltip').tooltip({
@@ -189,8 +203,11 @@
 
             $('.timetable .times-input').blur(function() {
                 var $input = $(this);
-                var id = $input.data('id');
-                var day = $input.data('day');
+                var $td = $input.parent('td');
+                var $tr = $input.closest('tr');
+
+                var id = $td.data('id');
+                var day = $td.data('day');
                 var oldValue = $input.data('value');
                 var value = $input.val();
 
@@ -203,7 +220,6 @@
                     return;
                 }
 
-                var $tr = $input.closest('tr');
                 var rowId = $tr.data('row');
                 var customerId = $tr.data('customer-id');
                 var providerId = $tr.data('provider-id');
@@ -236,6 +252,9 @@
                             $('[data-provider_balance]', $trByProvider).text(data.provider_balance);
                             $('[data-customer_paid]', $trByCustomer).text(data.customer_paid);
                             $('[data-provider_paid]', $trByProvider).text(data.provider_paid);
+
+                            $item = $input.prev('div.times-item');
+                            $item.text(value);
                         } else {
                             $input.val(oldValue);
                         }
@@ -253,6 +272,13 @@
                 container: 'body',
                 display: function() {
                     return '';
+                },
+                success : function (response, newValue) {
+                    if (newValue == '') {
+                        $(this).removeClass('text-danger');
+                    } else {
+                        $(this).addClass('text-danger');
+                    }
                 }
             });
 
@@ -260,13 +286,59 @@
                 filter: 'div.times-item'
             });
 
-            $('.timetable div.times-item').click(function() {
-                alert('qwe');
-                var $item = $(this);
-                var $input = $item.next('input');
+            $('.selectable-start').click(function() {
+                $(this).addClass('hidden');
+                $(this).nextAll('.btn').removeClass('hidden');
 
-                $item.addClass('hidden');
-                $input.removeClass('hidden').focus();
+                $('.timetable .times-input').addClass('hidden');
+                $('.timetable .times-item').removeClass('hidden');
+            });
+
+            $('.selectable-close').click(function() {
+                $(this).addClass('hidden');
+                $(this).prevAll('.btn').addClass('hidden');
+                $('.selectable-start').removeClass('hidden');
+
+                $('.timetable .times-input').removeClass('hidden');
+                $('.timetable .times-item').addClass('hidden');
+            });
+
+            $('.selectable-color').click(function() {
+                var $selected = $('.times-item.ui-selected'),
+                    color = $(this).data('color'),
+                    data = []
+                ;
+                $selected.each(function(i) {
+                    var $td = $(this).parent('td');
+
+                    data[i] = {
+                        id: $td.data('id'),
+                        day: $td.data('day'),
+                    };
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    url: Routing.generate('timetable_row_times_update_colors', {color: color}),
+                    data: {
+                        data: data
+                    },
+                    beforeSend: function() {
+                        $('.timetable').selectable('disable');
+                        $('.selectable-color').attr('disabled', 'disabled');
+                    },
+                    success: function(response) {
+                        $selected.removeClass('ui-selected');
+                        $selected.parent('td').removeClass('red green blue');
+                        if (color !== 'no-color') {
+                            $selected.parent('td').addClass(color);
+                        }
+                    },
+                    complete: function() {
+                        $('.timetable').selectable('enable');
+                        $('.selectable-color').removeAttr('disabled');
+                    }
+                });
             });
         });
     </script>

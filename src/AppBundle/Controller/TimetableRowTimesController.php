@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\TimetableRowTimes;
 use AppBundle\Security\TimetableRowVoter;
+use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -92,6 +93,67 @@ class TimetableRowTimesController extends Controller
         return new JsonResponse([
             'status' => 'OK',
         ]);
+    }
 
+    /**
+     * @Route("/timetable-row-times/update-colors/{color}", name="timetable_row_times_update_colors", options={"expose"=true})
+     * @param         $color
+     * @param Request $request
+     * @return JsonResponse
+     * @throws EntityNotFoundException
+     */
+    public function updateColorsAction($color, Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $availableColors = ['red', 'green', 'blue', 'no-color'];
+
+        if (!in_array($color, $availableColors)) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($color === 'no-color') {
+            $color = '';
+        }
+
+        $data = $request->get('data');
+        if (!is_array($data)) {
+            throw new BadRequestHttpException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($data as $datum) {
+            $id = $datum['id'] ?: null;
+            $day = $datum['day'] ?: null;
+
+            if (!$id || !$day) {
+                throw new BadRequestHttpException();
+            }
+
+            $timetableRowTimes = $em->find('AppBundle:TimetableRowTimes', $id);
+            if (!$timetableRowTimes) {
+                throw new EntityNotFoundException('Times not found.');
+            }
+            $this->denyAccessUnlessGranted(TimetableRowVoter::EDIT, $timetableRowTimes->getTimetableRow());
+
+            $colors = $timetableRowTimes->getColors();
+
+            if (!isset($colors[$day])) {
+                throw new BadRequestHttpException();
+            }
+
+            $colors[$day] = $color;
+
+            $timetableRowTimes->setColors($colors);
+        }
+
+        $em->flush();
+
+        return new JsonResponse([
+            'status' => 'OK',
+        ]);
     }
 }

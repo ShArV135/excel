@@ -2916,6 +2916,17 @@
             "time": "2017-12-04T20:26:38+00:00"
         },
         {
+            "name": "fezvrasta/popper",
+            "version": "1.12.9",
+            "dist": {
+                "type": "file",
+                "url": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
+        },
+        {
             "name": "sensio/generator-bundle",
             "version": "v3.1.7",
             "source": {

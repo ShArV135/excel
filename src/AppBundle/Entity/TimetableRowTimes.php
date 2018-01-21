@@ -51,10 +51,18 @@ class TimetableRowTimes
      */
     private $comments;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="colors", type="array")
+     */
+    private $colors;
+
     public function __construct()
     {
         $this->times = array_fill(1, 31, 0);
         $this->comments = array_fill(1, 31, '');
+        $this->colors = array_fill(1, 31, '');
     }
 
     /**
@@ -137,6 +145,25 @@ class TimetableRowTimes
     public function setComments($comments)
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColors()
+    {
+        return $this->colors;
+    }
+
+    /**
+     * @param array $colors
+     * @return TimetableRowTimes
+     */
+    public function setColors($colors)
+    {
+        $this->colors = $colors;
 
         return $this;
     }
