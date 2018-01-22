@@ -69,6 +69,10 @@ swiftmailer:
     password: '%mailer_password%'
     spool: { type: memory }
 
+knp_menu:
+    twig:
+        template: menu.html.twig
+
 assetic:
     debug:          '%kernel.debug%'
     use_controller: '%kernel.debug%'
@@ -85,6 +89,7 @@ assetic:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js'
                 - '%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/src/bootstrap-table.js'
                 - '%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/src/extensions/filter-control/bootstrap-table-filter-control.js'
+                - '%kernel.root_dir%/../vendor/makeusabrew/bootbox/bootbox.min.js'
                 - '%kernel.root_dir%/../web/plugins/bootstrap-table-fixed-columns-master/bootstrap-table-fixed-columns.js'
                 - '%kernel.root_dir%/../web/plugins/bootstrap3-editable/js/bootstrap-editable.min.js'
             output: 'assets/js/bootstrap.js'

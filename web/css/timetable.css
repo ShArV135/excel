@@ -12,7 +12,7 @@
 .timetable th {
     background: #eee;
     width: 100px;
-    vertical-align: middle !important;
+    vertical-align: bottom !important;
     text-align: center;
     overflow: hidden;
 }

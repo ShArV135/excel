@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2da6bbd4c0c6ce3a389b1ef1e9b7727",
+    "content-hash": "15c76c86ed95ffd8a4b7eaa6c455a11b",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1270,6 +1270,17 @@
                 "minification"
             ],
             "time": "2016-11-11T18:43:20+00:00"
+        },
+        {
+            "name": "makeusabrew/bootbox",
+            "version": "4.4.0",
+            "dist": {
+                "type": "file",
+                "url": "https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
         },
         {
             "name": "monolog/monolog",

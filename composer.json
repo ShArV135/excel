@@ -41,6 +41,17 @@
                     "type": "file"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "makeusabrew/bootbox",
+                "version": "4.4.0",
+                "dist": {
+                    "url": "https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js",
+                    "type": "file"
+                }
+            }
         }
     ],
     "require": {
@@ -52,6 +63,7 @@
         "jquery/jquery": "^1.11",
         "jquery/jquery-ui": "^1.11",
         "knplabs/knp-menu-bundle": "^2.2",
+        "makeusabrew/bootbox": "^4.4",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",
         "symfony/assetic-bundle": "^2.8",

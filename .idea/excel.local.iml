@@ -30,6 +30,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-menu" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-menu-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kriswallsmith/assetic" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/makeusabrew/bootbox" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />

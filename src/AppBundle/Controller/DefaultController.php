@@ -20,7 +20,11 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $timetable = $em->getRepository('AppBundle:Timetable')->getLastOrCreateTable();
+        if ($id = $request->get('id')) {
+            $timetable = $em->find('AppBundle:Timetable', $id);
+        } else {
+            $timetable = $em->getRepository('AppBundle:Timetable')->getLastOrCreateTable();
+        }
 
         $criteria = [];
 

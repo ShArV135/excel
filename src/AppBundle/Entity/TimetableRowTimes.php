@@ -25,7 +25,7 @@ class TimetableRowTimes
      * @var Timetable
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Timetable")
-     * @ORM\JoinColumn(name="timetable_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="timetable_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $timetable;
 
@@ -33,7 +33,7 @@ class TimetableRowTimes
      * @var TimetableRow
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TimetableRow")
-     * @ORM\JoinColumn(name="timetable_row_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="timetable_row_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $timetableRow;
 

@@ -20,10 +20,16 @@
                     <li><a href="{{ path('homepage', {'show': 'dispatcher'}) }}">Диспетчер</a></li>
                     <li><a href="{{ path('homepage', {'show': 'all'}) }}">Показать всё</a></li>
                 </ul>
+                <a class="btn btn-danger"
+                   onclick="deleteConfirm('{{ path('timetable_delete', {'timetable': timetable.id}) }}')"
+                   href="javascript: void(0)"
+                >
+                    Удалить табель
+                </a>
             {% endif %}
         </div>
     </div>
-    <div class="row" style="margin: 10px 0 0;">
+    <div id="timetable_container" class="row" style="margin: 10px 0 0;">
         <div class="timetable-toolbar btn-toolbar">
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-success selectable-start">Выделить путевые</button>
@@ -99,7 +105,10 @@
                         <a href="{{ path('timetable_row_update', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
-                        <a href="{{ path('timetable_row_delete', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
+                        <a class="delete-confirm"
+                           onclick="deleteConfirm('{{ path('timetable_row_delete', {'timetable': timetable.id, 'timetableRow': row.id}) }}')"
+                           href="javascript: void(0)"
+                        >
                             <span class="glyphicon glyphicon-remove"></span>
                         </a>
                     </td>
@@ -124,7 +133,7 @@
                             <td data-sum_times>{{ row.sum_times }}</td>
                         {% elseif column == 'times' %}
                             {% for day, time in row.times.times %}
-                                <td class="times {{ row.times.colors[day]|default }}"
+                                <td class="times {{ row.times.colors[day]|default }} {{ (day == 16 ? 'bold-border' : '') }}"
                                     data-id="{{ row.times.id }}"
                                     data-day="{{ day }}"
                                 >
@@ -182,8 +191,8 @@
 {% block javascripts %} {{ parent() }}
     <script>
         $(function() {
-            var height = $('.timetable').height()+50;
-            var offset = $('.timetable').offset();
+            var height = $('#timetable_container').height()+100;
+            var offset = $('#timetable_container').offset();
             var maxHeight = $(window).height() - offset.top;
             if (height > maxHeight) {
                 height = maxHeight;
@@ -193,7 +202,8 @@
                 fixedColumns: true,
                 fixedNumber: {{ num_of_fixed }},
                 filterControl: true,
-                toolbar: '.timetable-toolbar'
+                toolbar: '.timetable-toolbar',
+                height: height
             });
 
             $('.tt-tooltip').tooltip({
