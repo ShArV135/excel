@@ -28,6 +28,11 @@ class UserFixtures extends Fixture
                 'roles' => ['ROLE_CUSTOMER_MANAGER'],
             ],
             [
+                'username' => 'customer_manager_2',
+                'password' => 'customer_manager_2',
+                'roles' => ['ROLE_CUSTOMER_MANAGER'],
+            ],
+            [
                 'username' => 'provider_manager',
                 'password' => 'provider_manager',
                 'roles' => ['ROLE_PROVIDER_MANAGER'],

@@ -42,7 +42,7 @@
                 </button>
             </div>
         </div>
-        <table class="timetable">
+        <table id="timetable" class="timetable">
             <thead>
             <tr>
                 <th class="timetable-fixed-cell controls">&nbsp;</th>
@@ -292,7 +292,7 @@
                 }
             });
 
-            $('.timetable').selectable({
+            $('#timetable').selectable({
                 filter: 'div.times-item'
             });
 
@@ -334,7 +334,7 @@
                         data: data
                     },
                     beforeSend: function() {
-                        $('.timetable').selectable('disable');
+                        $('#timetable').selectable('disable');
                         $('.selectable-color').attr('disabled', 'disabled');
                     },
                     success: function(response) {
@@ -345,7 +345,7 @@
                         }
                     },
                     complete: function() {
-                        $('.timetable').selectable('enable');
+                        $('#timetable').selectable('enable');
                         $('.selectable-color').removeAttr('disabled');
                     }
                 });
