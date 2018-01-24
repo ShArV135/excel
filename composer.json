@@ -63,6 +63,7 @@
         "jquery/jquery": "^1.11",
         "jquery/jquery-ui": "^1.11",
         "knplabs/knp-menu-bundle": "^2.2",
+        "knplabs/knp-paginator-bundle": "^2.7",
         "makeusabrew/bootbox": "^4.4",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",

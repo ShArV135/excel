@@ -25,22 +25,22 @@ class ContractorController extends Controller
      */
     public function listAction($page = 1)
     {
-        $limit = 10;
-        $offset = $limit * ($page -1);
         $em = $this->getDoctrine()->getManager();
-
-        $criteria = [];
+        $qb = $em->getRepository('AppBundle:Contractor')->createQueryBuilder('contractor');
 
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $criteria['manager'] = $this->getUser();
+            $qb
+                ->andWhere($qb->expr()->eq('contractor.manager', $this->getUser()))
+            ;
         }
 
-        $contractors = $em->getRepository('AppBundle:Contractor')->findBy($criteria, ['id' => 'ASC'], $limit, $offset);
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($qb, $page,20);
 
         return $this->render(
             '@App/contractor/list.html.twig',
             [
-                'contractors' => $contractors,
+                'pagination' => $pagination,
             ]
         );
     }
