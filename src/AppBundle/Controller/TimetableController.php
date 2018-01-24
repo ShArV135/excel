@@ -23,25 +23,4 @@ class TimetableController extends Controller
 
         return $this->redirectToRoute('homepage');
     }
-
-    /**
-     * @Route("/timetable-delete/{timetable}", name="timetable_delete")
-     * @param Timetable $timetable
-     * @return RedirectResponse
-     */
-    public function deleteAction(Timetable $timetable)
-    {
-        $this->denyAccessUnlessGranted(TimetableVoter::DELETE, $timetable);
-
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($timetable);
-            $em->flush();
-            $this->addFlash('success', 'Табель удален.');
-        } catch (\Exception $e) {
-            $this->addFlash('warning', 'При удалении возникла ошибка.');
-        }
-
-        return $this->redirectToRoute('homepage');
-    }
 }

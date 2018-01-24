@@ -60,7 +60,7 @@ class TimetableRowTimes
 
     public function __construct()
     {
-        $this->times = array_fill(1, 31, 0);
+        $this->times = array_fill(1, 31, '');
         $this->comments = array_fill(1, 31, '');
         $this->colors = array_fill(1, 31, '');
     }

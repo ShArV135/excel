@@ -33,12 +33,6 @@
                     <li><a href="{{ path('homepage', {'show': 'dispatcher'}) }}">Диспетчер</a></li>
                     <li><a href="{{ path('homepage', {'show': 'all'}) }}">Показать всё</a></li>
                 </ul>
-                <a class="btn btn-danger"
-                   onclick="deleteConfirm('{{ path('timetable_delete', {'timetable': timetable.id}) }}')"
-                   href="javascript: void(0)"
-                >
-                    Удалить табель
-                </a>
             {% endif %}
         </div>
     </div>
