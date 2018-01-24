@@ -23,7 +23,7 @@ class DefaultController extends Controller
         if ($id = $request->get('id')) {
             $timetable = $em->find('AppBundle:Timetable', $id);
         } else {
-            $timetable = $em->getRepository('AppBundle:Timetable')->getLastOrCreateTable();
+            $timetable = $em->getRepository('AppBundle:Timetable')->getCurrent();
         }
 
         $criteria = [];

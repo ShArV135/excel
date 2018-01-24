@@ -1,9 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% set page_header = timetable.name %}
+{% set page_header = null %}
+{% set page_title = timetable.name %}
 
 {% block body %}
-    <div class="clearfix">
+    <div class="clearfix" style="margin: 10px 0;">
+        <div class="timetable-toolbar btn-toolbar pull-left">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success selectable-start">Выделить путевые</button>
+                <button type="button" class="btn hidden selectable-color red" data-color="red">&nbsp;</button>
+                <button type="button" class="btn hidden selectable-color green" data-color="green">&nbsp;</button>
+                <button type="button" class="btn hidden selectable-color blue" data-color="blue">&nbsp;</button>
+                <button type="button" class="btn hidden selectable-color" data-color="no-color">&nbsp;</button>
+                <button type="button" class="btn btn-default selectable-close hidden">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+            </div>
+        </div>
         <div class="btn-group pull-right" role="group">
             <a class="btn btn-primary" href="{{ path('timetable_row_create') }}">
                 Добавить запись
@@ -30,18 +43,6 @@
         </div>
     </div>
     <div id="timetable_container" class="row" style="margin: 10px 0 0;">
-        <div class="timetable-toolbar btn-toolbar">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-success selectable-start">Выделить путевые</button>
-                <button type="button" class="btn hidden selectable-color red" data-color="red">&nbsp;</button>
-                <button type="button" class="btn hidden selectable-color green" data-color="green">&nbsp;</button>
-                <button type="button" class="btn hidden selectable-color blue" data-color="blue">&nbsp;</button>
-                <button type="button" class="btn hidden selectable-color" data-color="no-color">&nbsp;</button>
-                <button type="button" class="btn btn-default selectable-close hidden">
-                    <span class="glyphicon glyphicon-ok"></span>
-                </button>
-            </div>
-        </div>
         <table id="timetable" class="timetable">
             <thead>
             <tr>
@@ -202,7 +203,6 @@
                 fixedColumns: true,
                 fixedNumber: {{ num_of_fixed }},
                 filterControl: true,
-                toolbar: '.timetable-toolbar',
                 height: height
             });
 

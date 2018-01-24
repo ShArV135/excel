@@ -29,6 +29,13 @@ class Timetable
     private $name;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="date", length=255, unique=true)
+     */
+    private $created;
+
+    /**
      * Get id
      *
      * @return int
@@ -60,5 +67,24 @@ class Timetable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param \DateTime $created
+     * @return Timetable
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
     }
 }

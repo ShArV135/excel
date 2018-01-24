@@ -10,7 +10,31 @@
     <body>
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
-                {{ knp_menu_render('AppBundle:Builder:mainMenu') }}
+                <div class="navbar-header" style="position:relative;">
+                    {% set nav_timetables = get_timetables() %}
+                    <a href="#"
+                       class="dropdown-toggle navbar-brand"
+                       data-toggle="dropdown"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                    >
+                        {{ nav_timetables.current.name }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for nav_timetable in nav_timetables.list %}
+                            <li><a href="{{ path('homepage', {'id': nav_timetable.id}) }}">{{ nav_timetable.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="nav navbar-nav">
+                    <a href="{{ path('timetable_create') }}" class="btn btn-success navbar-btn">Создать табель</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{{ path('contractor_list') }}">Контрагенты</a>
+                    </li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><p class="navbar-text">{{ app.user.username }}</p></li>
                     <li><a href="{{ path('logout') }}">Выход</a></li>
@@ -18,9 +42,11 @@
             </div>
         </nav>
         <div class="container-fluid" style="margin-top: 50px;">
-            <div class="page-header">
-                <h2>{{ page_header|default }}</h2>
-            </div>
+            {% if page_header|default %}
+                <div class="page-header">
+                    <h2>{{ page_header|default }}</h2>
+                </div>
+            {% endif %}
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ label }}">

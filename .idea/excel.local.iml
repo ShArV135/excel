@@ -28,8 +28,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/jquery/jquery" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jquery/jquery-ui" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-components" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-menu" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-menu-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-paginator-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kriswallsmith/assetic" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/makeusabrew/bootbox" />

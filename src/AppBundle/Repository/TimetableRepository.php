@@ -15,11 +15,25 @@ class TimetableRepository extends EntityRepository
 {
     /**
      * @return Timetable|null|object
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function getLastOrCreateTable()
+    public function getCurrent()
     {
-        $timetable = $this->findOneBy([], ['id' => 'DESC']);
+        $qb = $this->createQueryBuilder('timetable');
+
+        $date = new \DateTime();
+
+        $timetable = $qb
+            ->andWhere($qb->expr()->gte('timetable.created', ':from'))
+            ->andWhere($qb->expr()->lte('timetable.created', ':to'))
+            ->setParameters([
+                'from' => clone $date->modify('first day of'),
+                'to' => clone $date->modify('last day of'),
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
 
         if (!$timetable) {
             $timetable = $this->create();
@@ -58,16 +72,25 @@ class TimetableRepository extends EntityRepository
 
         $timetable = new Timetable();
 
-        $i = 0;
+        $months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
-        do {
-            $name = sprintf('Табель %s', date('m.Y'));
-            if ($i > 0) {
-                $name .= sprintf(' [%s]', $i);
-            }
-            $i++;
-            $timetable->setName($name);
-        } while ($em->getRepository('AppBundle:Timetable')->findOneBy(['name' => $name]));
+        /** @var Timetable $lastTimetable */
+        $lastTimetable = $this->findOneBy([], ['created' => 'DESC']);
+        if ($lastTimetable) {
+            $created = clone $lastTimetable->getCreated();
+            $created->modify('+1 month');
+        } else {
+            $created  = new \DateTime();
+        }
+
+        $month = $months[ $created->format('m')-1 ];
+        $year = $created->format('Y');
+
+        $name = sprintf('%s %s', $month, $year);
+        $timetable
+            ->setName($name)
+            ->setCreated($created)
+        ;
 
         $em->persist($timetable);
         $em->flush();

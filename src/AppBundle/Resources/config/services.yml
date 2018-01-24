@@ -6,3 +6,9 @@ services:
     timetable.helper:
         class: AppBundle\Service\TimetableHelper
         arguments: ['@doctrine.orm.entity_manager']
+    acme.twig.acme_extension:
+        class: AppBundle\Twig\TimetableExtension
+        public: false
+        arguments: ['@service_container']
+        tags:
+            - { name: twig.extension }
