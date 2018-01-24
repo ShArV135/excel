@@ -31,7 +31,7 @@ class Timetable
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created", type="date", length=255, unique=true)
+     * @ORM\Column(name="created", type="date", length=255, nullable=true)
      */
     private $created;
 
