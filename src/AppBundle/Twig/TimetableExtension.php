@@ -25,6 +25,7 @@ class TimetableExtension extends \Twig_Extension
 
     /**
      * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function getTimetables()

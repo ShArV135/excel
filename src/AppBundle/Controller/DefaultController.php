@@ -152,7 +152,7 @@ class DefaultController extends Controller
                 break;
         }
 
-        $numOfFixed = count(array_intersect($columns, $fixedColumns)) + 1;
+        $numOfFixed = count(array_intersect($columns, $fixedColumns));
 
         $rows = [];
         foreach ($timetableRows as $timetableRow) {

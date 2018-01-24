@@ -79,7 +79,7 @@
                 --end;
                 --rowspan;
             }
-            for (var i = 0; i < end; i++) {
+            for (var i = 0; i <= end; i++) {
                 $tr.append($tds.eq(i).clone(true, true));
             }
             that.$fixedBodyColumns.append($tr);
@@ -113,7 +113,7 @@
             var $this = $(this),
                 index = i;
 
-            if (i >= that.options.fixedNumber) {
+            if (i > that.options.fixedNumber) {
                 return false;
             }
 
