@@ -28,10 +28,10 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="{{ path('homepage') }}">Обычный</a></li>
-                    <li><a href="{{ path('homepage', {'show': 'customer_manager'}) }}">Менеджер по продажам</a></li>
-                    <li><a href="{{ path('homepage', {'show': 'provider_manager'}) }}">Менеджер по снабжению</a></li>
-                    <li><a href="{{ path('homepage', {'show': 'dispatcher'}) }}">Диспетчер</a></li>
-                    <li><a href="{{ path('homepage', {'show': 'all'}) }}">Показать всё</a></li>
+                    <li><a href="{{ path('homepage', {'show': 'customer_manager', 'id': timetable.id}) }}">Менеджер по продажам</a></li>
+                    <li><a href="{{ path('homepage', {'show': 'provider_manager', 'id': timetable.id}) }}">Менеджер по снабжению</a></li>
+                    <li><a href="{{ path('homepage', {'show': 'dispatcher', 'id': timetable.id}) }}">Диспетчер</a></li>
+                    <li><a href="{{ path('homepage', {'show': 'all', 'id': timetable.id}) }}">Показать всё</a></li>
                 </ul>
             {% endif %}
         </div>
@@ -51,7 +51,7 @@
                     {% elseif column == 'customer' %}
                         <th data-field="customer" data-filter-control="input" class="{{ class }}">Заказчик</th>
                     {% elseif column == 'provider' %}
-                        <th data-field="provider" data-filter-control="input" class="{{ class }}">Поставщик</th>
+                        <th data-field="provider" data-filter-control="input" class="{{ class }} provider-cell">Поставщик</th>
                     {% elseif column == 'object' %}
                         <th data-field="object" data-filter-control="input" class="{{ class }}">Объект</th>
                     {% elseif column == 'mechanism' %}
@@ -59,11 +59,11 @@
                     {% elseif column == 'comment' %}
                         <th data-field="comment" data-filter-control="input" class="{{ class }}">Комментарий</th>
                     {% elseif column == 'price_for_customer' %}
-                        <th class="{{ class }}">Цена<br>заказчику<br>маш/ч</th>
+                        <th class="{{ class }}">Цена заказчику</th>
                     {% elseif column == 'price_for_provider' %}
-                        <th class="{{ class }}">Цена<br>поставщика<br>маш/ч</th>
+                        <th class="{{ class }} provider-cell">Цена поставщика</th>
                     {% elseif column == 'sum_times' %}
-                        <th class="{{ class }}">Сумма<br>часов</th>
+                        <th class="{{ class }}">Сумма часов</th>
                     {% elseif column == 'times' %}
                         {% for i in 1..31 %}
                             <th class="{{ class ~ (i == 16 ? ' bold-border' : '') }}">{{ i }}</th>
@@ -71,15 +71,15 @@
                     {% elseif column == 'customer_salary' %}
                         <th class="{{ class }}">Наработка<br>заказчика</th>
                     {% elseif column == 'provider_salary' %}
-                        <th class="{{ class }}">Наработка<br>поставщика</th>
+                        <th class="{{ class }} provider-cell">Наработка<br>поставщика</th>
                     {% elseif column == 'customer_paid' %}
                         <th class="{{ class }}">Оплачено<br>заказчиком</th>
                     {% elseif column == 'customer_balance' %}
                         <th class="{{ class }}">Баланс<br>заказчика</th>
                     {% elseif column == 'provider_paid' %}
-                        <th class="{{ class }}">Оплачено<br>поставщику</th>
+                        <th class="{{ class }} provider-cell">Оплачено<br>поставщику</th>
                     {% elseif column == 'provider_balance' %}
-                        <th class="{{ class }}">Баланс<br>поставщика</th>
+                        <th class="{{ class }} provider-cell">Баланс<br>поставщика</th>
                     {% elseif column == 'margin_sum' %}
                         <th class="{{ class }}">Маржа,<br>сумма</th>
                     {% elseif column == 'margin_percent' %}
@@ -140,7 +140,7 @@
                                            data-value="{{ time }}"
                                            value="{{ time }}"
                                     />
-                                    <a class="times-comment {{ row.times.comments[day]|length ? 'text-danger' : '' }}"
+                                    <a class="times-comment {{ row.times.comments[day]|length ? '' : 'text-muted' }}"
                                        data-type="textarea"
                                        data-pk="{{ row.times.id }}"
                                        data-name="{{ day }}"
@@ -279,9 +279,9 @@
                 },
                 success : function (response, newValue) {
                     if (newValue == '') {
-                        $(this).removeClass('text-danger');
+                        $(this).addClass('text-muted');
                     } else {
-                        $(this).addClass('text-danger');
+                        $(this).removeClass('text-muted');
                     }
                 }
             });

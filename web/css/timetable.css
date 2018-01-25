@@ -21,10 +21,43 @@
     width: 30px !important;
 }
 
+.timetable .mechanism {
+    width: 130px !important;
+}
+.timetable .comment {
+    width: 71px !important;
+}
+
+.timetable .price_for_customer,
+.timetable .price_for_provider,
+.timetable .sum_times {
+    width: 51px !important;
+}
+
+.timetable .comment .th-inner {
+    width: 70px !important;
+}
+
+.timetable .price_for_customer .th-inner,
+.timetable .price_for_provider .th-inner,
+.timetable .sum_times .th-inner {
+    width: 50px !important;
+}
+
 .timetable th .th-inner {
     font-size: 13px !important;
     line-height: 15px !important;
     padding: 0 !important;
+    white-space: normal !important;
+    word-wrap: break-word;
+}
+
+.timetable td.sum_times,
+.timetable td.customer_salary,
+.timetable td.customer_balance,
+.timetable td.provider_salary,
+.timetable td.provider_balance {
+    font-weight: bold;
 }
 
 .timetable td {
@@ -89,11 +122,11 @@
     border-top: 2px solid #aaa !important;
 }
 
-.timetable  .times-comment {
+.timetable .times-comment {
     position: absolute;
     right: 0;
     top: 0;
-    font-size: 10px;
+    font-size: 7px;
     cursor: pointer;
     white-space: normal;
     text-decoration: none;
@@ -121,4 +154,8 @@
 .selectable-color.blue,
 .times.blue {
     background: lightblue !important;;
+}
+
+.provider-cell {
+    background-color: #eee;
 }

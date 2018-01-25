@@ -35,7 +35,7 @@ class TimetableExtension extends \Twig_Extension
         $current = $repository->getCurrent();
 
         return [
-            'list' => $repository->findAll(),
+            'list' => $repository->findBy([], ['created' => 'DESC']),
             'current' => $current,
         ];
 

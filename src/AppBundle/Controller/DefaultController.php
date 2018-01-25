@@ -14,6 +14,7 @@ class DefaultController extends Controller
      * @Route("/", name="homepage")
      * @param Request $request
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function indexAction(Request $request)
