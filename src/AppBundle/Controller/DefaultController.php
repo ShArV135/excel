@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -155,6 +156,29 @@ class DefaultController extends Controller
 
         $numOfFixed = count(array_intersect($columns, $fixedColumns));
 
+        $qb = $em->getRepository('AppBundle:User')->createQueryBuilder('user');
+        $managers = $qb
+            ->where($qb->expr()->like('user.roles', ':roles'))
+            ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $managersById = [];
+        $managersByFio = [];
+        /** @var User $manager */
+        foreach ($managers as $manager) {
+            $firstname = $manager->getFirstName() ?: '';
+            $lastname = $manager->getLastname() ?: '';
+            $surname = $manager->getSurname() ?: '';
+
+            $key = mb_substr($lastname, 0, 1).mb_substr($firstname, 0, 1).mb_substr($surname, 0, 1);
+            $value = implode([$lastname, $firstname, $surname], ' ');
+
+            $managersById[$manager->getId()] = $key;
+            $managersByFio[$key] = $value;
+        }
+
         $rows = [];
         foreach ($timetableRows as $timetableRow) {
             $manager = $timetableRow->getManager();
@@ -183,7 +207,7 @@ class DefaultController extends Controller
             foreach ($columns as $column) {
                 switch ($column) {
                     case 'manager':
-                        $value = $manager->getUsername();
+                        $value = $managersById[$manager->getId()];
                         break;
                     case 'customer':
                         $value = $customer->getName();
@@ -254,6 +278,8 @@ class DefaultController extends Controller
                 'columns' => $columns,
                 'num_of_fixed' => $numOfFixed,
                 'fixed_columns' => $fixedColumns,
+                'managers_by_id' => $managersById,
+                'managers_by_fio' => $managersByFio,
             ]
         );
     }

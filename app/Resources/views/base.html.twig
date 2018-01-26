@@ -34,6 +34,11 @@
                     <li>
                         <a href="{{ path('contractor_list') }}">Контрагенты</a>
                     </li>
+                    {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                        <li>
+                            <a href="{{ path('user_list') }}">Пользователи</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><p class="navbar-text">{{ app.user.username }}</p></li>

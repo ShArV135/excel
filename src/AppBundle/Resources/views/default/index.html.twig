@@ -47,7 +47,7 @@
                         {% set class = class ~ ' timetable-fixed-cell' %}
                     {% endif %}
                     {% if column == 'manager' %}
-                        <th data-field="manager" data-filter-control="input" class="{{ class }}">Менеджер</th>
+                        <th data-field="manager" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">Менеджер</th>
                     {% elseif column == 'customer' %}
                         <th data-field="customer" data-filter-control="input" class="{{ class }}">Заказчик</th>
                     {% elseif column == 'provider' %}
