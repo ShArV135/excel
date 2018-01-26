@@ -6,7 +6,14 @@
     <div class="container">
         <div class="panel-group">
             <div class="panel panel-default">
-                <div class="panel-heading"><h4>{{ contractor.name }}</h4></div>
+                <div class="panel-heading">
+                    <h4>
+                        {{ contractor.name }}
+                        <div class="btn-group pull-right" role="group">
+                            <a href="{{ path('contractor_delete', {'contractor': contractor.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
+                        </div>
+                    </h4>
+                </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-6">

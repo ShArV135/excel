@@ -78,7 +78,7 @@ class TimetableRowType extends AbstractType
                     [
                         'label' => 'Менеджер по продажам',
                         'class' => User::class,
-                        'choice_label' => 'username',
+                        'choice_label' => 'fullname',
                         'query_builder' => function(EntityRepository $repository) {
                             $qb = $repository->createQueryBuilder('e');
                             return $qb

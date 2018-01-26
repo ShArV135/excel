@@ -21,6 +21,9 @@
             <a class="btn btn-primary" href="{{ path('timetable_row_create') }}">
                 Добавить запись
             </a>
+            <a class="btn btn-success" href="{{ path('timetable_payment_create', {'timetable': timetable.id}) }}">
+                Добавить оплату
+            </a>
             {% if is_granted('ROLE_GENERAL_MANAGER') %}
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Изменить вид
@@ -197,7 +200,8 @@
                 fixedColumns: true,
                 fixedNumber: {{ num_of_fixed }},
                 filterControl: true,
-                height: height
+                height: height,
+                disableControlWhenSearch: true,
             });
 
             $('.tt-tooltip').tooltip({

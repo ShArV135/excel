@@ -7,6 +7,13 @@
             <div class="panel-heading">Информация о записи</div>
             <div class="panel-body">
                 {{ form_errors(form) }}
+                {% if form.contractor is defined %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.contractor) }}
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="row">
                     <div class="col-md-6">
                         {{ form_row(form.amount) }}

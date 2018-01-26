@@ -196,6 +196,25 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        $fullname = [];
+        if ($this->lastname) {
+            $fullname[] = $this->lastname;
+        }
+        if ($this->firstname) {
+            $fullname[] = $this->firstname;
+        }
+        if ($this->surname) {
+            $fullname[] = $this->surname;
+        }
+
+        return implode(' ', $fullname);
+    }
+
+    /**
      * Returns the salt that was originally used to encode the password.
      *
      * This can return null if the password was not encoded using a salt.

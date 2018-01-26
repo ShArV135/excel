@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" line="323" mnemonic="2" />
+    <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" line="327" mnemonic="2" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/UserController.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Form/UserType.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/users/list.html.twig" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/users/save.html.twig" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Form/TimetablePaymentType.php" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/Resources/views/base.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
-      <change beforePath="$PROJECT_DIR$/app/config/security.yml" afterPath="$PROJECT_DIR$/app/config/security.yml" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/PaymentController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/PaymentController.php" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/User.php" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/User.php" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" afterPath="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/list.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/list.html.twig" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/view.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/view.html.twig" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/payment/save.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/payment/save.html.twig" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -62,52 +59,8 @@
       <file leaf-file-name="index.html.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="111" column="96" lean-forward="false" selection-start-line="111" selection-start-column="89" selection-end-line="111" selection-end-column="96" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bootstrap-table.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-729">
-              <caret line="594" column="58" lean-forward="true" selection-start-line="594" selection-start-column="58" selection-end-line="594" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="174" column="30" lean-forward="true" selection-start-line="174" selection-start-column="30" selection-end-line="174" selection-end-column="30" />
-              <folding>
-                <element signature="e#40#66#0#PHP" expanded="true" />
-                <element signature="e#5025#5041#1#PHP" expanded="true" />
-                <element signature="e#9313#9343#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserType.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/UserType.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="633">
-              <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserRepository.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="45" lean-forward="false" selection-start-line="12" selection-start-column="45" selection-end-line="12" selection-end-column="45" />
+            <state relative-caret-position="246">
+              <caret line="23" column="66" lean-forward="true" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
               <folding />
             </state>
           </provider>
@@ -116,32 +69,77 @@
       <file leaf-file-name="PaymentController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/PaymentController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="20" column="115" lean-forward="true" selection-start-line="20" selection-start-column="80" selection-end-line="20" selection-end-column="115" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TimetableRowType.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="85" column="82" lean-forward="true" selection-start-line="84" selection-start-column="32" selection-end-line="85" selection-end-column="82" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bootstrap-table-filter-control.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/wenzhixin/bootstrap-table/src/extensions/filter-control/bootstrap-table-filter-control.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="266" column="47" lean-forward="true" selection-start-line="266" selection-start-column="16" selection-end-line="266" selection-end-column="47" />
+            <state relative-caret-position="156">
+              <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
               <folding>
-                <marker date="1516390238880" expanded="true" signature="16916:16943" ph="..." />
-                <marker date="1516390238880" expanded="true" signature="17170:17197" ph="..." />
-                <marker date="1516390238880" expanded="true" signature="17540:17567" ph="..." />
+                <element signature="e#2380#2402#1#PHP" expanded="true" />
+                <element signature="e#3416#3445#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="save.html.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/payment/save.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="12" column="55" lean-forward="false" selection-start-line="12" selection-start-column="55" selection-end-line="12" selection-end-column="55" />
+              <folding>
+                <element signature="e#12#26#0#Twig" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TimetablePaymentType.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/TimetablePaymentType.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="264">
+              <caret line="15" column="56" lean-forward="true" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
+              <folding>
+                <element signature="e#34#66#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EntityType.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Bridge/Doctrine/Form/Type/EntityType.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-108">
+              <caret line="29" column="27" lean-forward="false" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContractorVoter.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Security/ContractorVoter.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list.html.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/list.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="246">
+              <caret line="30" column="35" lean-forward="false" selection-start-line="30" selection-start-column="35" selection-end-line="30" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="view.html.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/view.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="13" column="30" lean-forward="false" selection-start-line="13" selection-start-column="30" selection-end-line="13" selection-end-column="30" />
+              <folding>
+                <element signature="e#12#26#0#Twig" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -151,7 +149,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>selectable</find>
       <find>selectable(</find>
       <find>translator</find>
       <find>contractors</find>
@@ -174,13 +171,14 @@
       <find>user_update</find>
       <find>ROLE_CUSTOMER_MANAGER</find>
       <find>initFilterSelectControls</find>
-      <find>defaults</find>
       <find>columndefa</find>
       <find>columns</find>
       <find>filterData</find>
       <find>index.html.twig</find>
       <find>ROLE_</find>
       <find>$manager</find>
+      <find>defaults</find>
+      <find>EntityType</find>
     </findStrings>
     <replaceStrings>
       <replace>ROLE_PROVIDER_MANAGER</replace>
@@ -188,6 +186,7 @@
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/</dir>
+      <dir>$PROJECT_DIR$/src/AppBundle/Form</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -196,12 +195,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/AppBundle/AppBundle.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/DependencyInjection/Configuration.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/DependencyInjection/AppExtension.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/payment/save.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Controller/PaymentController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Form/PaymentType.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/Payment.php" />
@@ -211,7 +206,6 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRowTimesRepository.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/security/login.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/view.html.twig" />
         <option value="$PROJECT_DIR$/web/plugins/bootstrap-table-filter-control/bootstrap-table-filter-control.css" />
         <option value="$PROJECT_DIR$/web/plugins/bootstrap-table-filter-control/bootstrap-table-filter-control.js" />
         <option value="$PROJECT_DIR$/web/plugins/filter-control/bootstrap-table-filter-control.js" />
@@ -221,7 +215,6 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Security/TimetableVoter.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/DataFixtures/UserFixtures.php" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/list.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/config/services.yml" />
         <option value="$PROJECT_DIR$/src/AppBundle/Menu/Builder.php" />
@@ -238,15 +231,21 @@
         <option value="$PROJECT_DIR$/web/css/timetable.css" />
         <option value="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Entity/User.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php" />
         <option value="$PROJECT_DIR$/app/config/security.yml" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/users/list.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/users/save.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/UserController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Form/UserType.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Entity/User.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/list.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/view.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/payment/save.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/PaymentController.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Form/TimetablePaymentType.php" />
       </list>
     </option>
   </component>
@@ -617,7 +616,7 @@
       <workItem from="1516526857671" duration="5476000" />
       <workItem from="1516543918618" duration="11575000" />
       <workItem from="1516728419990" duration="14859000" />
-      <workItem from="1516912278434" duration="10880000" />
+      <workItem from="1516912278434" duration="13180000" />
     </task>
     <task id="LOCAL-00001" summary="timetable layout">
       <created>1515787910692</created>
@@ -731,11 +730,18 @@
       <option name="project" value="LOCAL" />
       <updated>1516915993861</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="features">
+      <created>1516998897574</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1516998897574</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="154750000" />
+    <option name="totallyTimeSpent" value="157050000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1857" height="1092" extended-state="6" />
@@ -866,61 +872,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vendor/kriswallsmith/assetic/src/Assetic/Extension/Twig/AsseticExtension.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="46" column="20" lean-forward="false" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/twig/twig/lib/Twig/Extension.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="35" column="30" lean-forward="false" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/twig/twig/src/TwigFunction.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="10" lean-forward="false" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/twig/twig/src/Extension/AbstractExtension.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="36" lean-forward="true" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/twig/twig/lib/Twig/SimpleFunction.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="25" column="42" lean-forward="false" selection-start-line="25" selection-start-column="42" selection-end-line="25" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Menu/Builder.php" />
-    <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/ContainerInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="24" column="28" lean-forward="false" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/config/services.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -1086,28 +1037,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/list.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="23" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding>
-            <element signature="e#12#26#0#Twig" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="774">
-          <caret line="109" column="37" lean-forward="false" selection-start-line="109" selection-start-column="37" selection-end-line="109" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -1129,14 +1062,6 @@
           <folding>
             <element signature="e#12#26#0#Twig" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1548">
-          <caret line="93" column="5" lean-forward="true" selection-start-line="93" selection-start-column="5" selection-end-line="93" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1182,54 +1107,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="13" column="67" lean-forward="false" selection-start-line="13" selection-start-column="67" selection-end-line="13" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-729">
           <caret line="594" column="58" lean-forward="true" selection-start-line="594" selection-start-column="58" selection-end-line="594" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/wenzhixin/bootstrap-table/src/extensions/filter-control/bootstrap-table-filter-control.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="266" column="47" lean-forward="true" selection-start-line="266" selection-start-column="16" selection-end-line="266" selection-end-column="47" />
-          <folding>
-            <marker date="1516390238880" expanded="true" signature="16916:16943" ph="..." />
-            <marker date="1516390238880" expanded="true" signature="17170:17197" ph="..." />
-            <marker date="1516390238880" expanded="true" signature="17540:17567" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="85" column="82" lean-forward="true" selection-start-line="84" selection-start-column="32" selection-end-line="85" selection-end-column="82" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="111" column="96" lean-forward="false" selection-start-line="111" selection-start-column="89" selection-end-line="111" selection-end-column="96" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/PaymentController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="20" column="115" lean-forward="true" selection-start-line="20" selection-start-column="80" selection-end-line="20" selection-end-column="115" />
           <folding />
         </state>
       </provider>
@@ -1270,9 +1151,150 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/UserType.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="633">
-          <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+        <state relative-caret-position="381">
+          <caret line="49" column="17" lean-forward="true" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="196" column="0" lean-forward="true" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Security/TimetableRowVoter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="125" column="22" lean-forward="false" selection-start-line="125" selection-start-column="22" selection-end-line="125" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="80" column="51" lean-forward="false" selection-start-line="80" selection-start-column="51" selection-end-line="80" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/wenzhixin/bootstrap-table/src/extensions/filter-control/bootstrap-table-filter-control.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="454" column="32" lean-forward="false" selection-start-line="454" selection-start-column="8" selection-end-line="454" selection-end-column="32" />
+          <folding>
+            <marker date="1516390238880" expanded="true" signature="16916:16943" ph="..." />
+            <marker date="1516390238880" expanded="true" signature="17170:17197" ph="..." />
+            <marker date="1516390238880" expanded="true" signature="17540:17567" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/list.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="30" column="35" lean-forward="false" selection-start-line="30" selection-start-column="35" selection-end-line="30" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/view.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="30" lean-forward="false" selection-start-line="13" selection-start-column="30" selection-end-line="13" selection-end-column="30" />
+          <folding>
+            <element signature="e#12#26#0#Twig" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="847">
+          <caret line="109" column="37" lean-forward="false" selection-start-line="109" selection-start-column="37" selection-end-line="109" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Security/ContractorVoter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/PaymentType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="14" column="4" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="15" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="23" column="41" lean-forward="true" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="23" column="66" lean-forward="true" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Bridge/Doctrine/Form/Type/EntityType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-108">
+          <caret line="29" column="27" lean-forward="false" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/PaymentController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+          <folding>
+            <element signature="e#2380#2402#1#PHP" expanded="true" />
+            <element signature="e#3416#3445#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/payment/save.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="55" lean-forward="false" selection-start-line="12" selection-start-column="55" selection-end-line="12" selection-end-column="55" />
+          <folding>
+            <element signature="e#12#26#0#Twig" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/TimetablePaymentType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="15" column="56" lean-forward="true" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
+          <folding>
+            <element signature="e#34#66#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
