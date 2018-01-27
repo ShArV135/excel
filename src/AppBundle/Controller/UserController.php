@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class ContractorController
@@ -42,21 +43,30 @@ class UserController extends Controller
 
     /**
      * @Route("/users/create", name="user_create")
-     * @param Request $request
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return RedirectResponse|Response
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = new User();
 
         $form = $this->createForm(
             UserType::class,
-            $user
+            $user,
+            [
+                'validation_groups' => ['create'],
+            ]
         );
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            if ($plainPassowrd = $user->getPlainPassword()) {
+                $password = $passwordEncoder->encodePassword($user, $plainPassowrd);
+                $user->setPassword($password);
+            }
 
             try {
                 $em->persist($user);
@@ -81,11 +91,12 @@ class UserController extends Controller
 
     /**
      * @Route("/users/{user}/update", name="user_update")
-     * @param Request $request
-     * @param User    $user
+     * @param Request                      $request
+     * @param User                         $user
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return RedirectResponse|Response
      */
-    public function updateAction(Request $request, User $user)
+    public function updateAction(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder)
     {
         $form = $this->createForm(
             UserType::class,
@@ -95,6 +106,11 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            if ($plainPassowrd = $user->getPlainPassword()) {
+                $password = $passwordEncoder->encodePassword($user, $plainPassowrd);
+                $user->setPassword($password);
+            }
 
             try {
                 $em->flush();

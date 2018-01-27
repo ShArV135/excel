@@ -143,9 +143,9 @@
     color: #fff;
 }
 
-.selectable-color.red,
-.times.red {
-    background: red !important;
+.selectable-color.yellow,
+.times.yellow {
+    background: yellow !important;
 }
 .selectable-color.green,
 .times.green {
@@ -154,6 +154,10 @@
 .selectable-color.blue,
 .times.blue {
     background: lightblue !important;;
+}
+.selectable-color.purple,
+.times.purple {
+    background: #cb00cb !important;;
 }
 
 .provider-cell {

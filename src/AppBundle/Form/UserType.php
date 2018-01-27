@@ -23,11 +23,12 @@ class UserType extends AbstractType
         $builder
             ->add('username', TextType::class)
             ->add(
-                'password',
+                'plainPassword',
                 RepeatedType::class,
                 [
                     'label' => 'Пароль',
                     'type' => PasswordType::class,
+                    'required' => false,
                     'options' => [
                         'constraints' => [
                             new Length(['min' => 6]),

@@ -58,7 +58,7 @@ class TimetableRowType extends AbstractType
 
                         if (!empty($options['customer_choice_criteria']['manager'])) {
                             $qb
-                                ->where($qb->expr()->eq('e.manager', ':manager'))
+                                ->andWhere($qb->expr()->eq('e.manager', ':manager'))
                                 ->setParameter('manager', $options['customer_choice_criteria']['manager'])
                             ;
                         }

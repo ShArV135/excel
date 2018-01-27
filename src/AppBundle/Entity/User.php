@@ -42,6 +42,11 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @Assert\NotBlank(groups={"create"})
+     */
+    private $plainPassword;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="roles", type="array")
@@ -115,6 +120,25 @@ class User implements UserInterface
     public function setPassword($password)
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param $password
+     * @return $this
+     */
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
 
         return $this;
     }

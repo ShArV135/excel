@@ -30,7 +30,8 @@ class ContractorController extends Controller
 
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
             $qb
-                ->andWhere($qb->expr()->eq('contractor.manager', $this->getUser()))
+                ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
+                ->setParameter('manager', $this->getUser())
             ;
         }
 

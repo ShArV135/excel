@@ -188,8 +188,11 @@ class DefaultController extends Controller
             $row = [
                 'id' => $timetableRow->getId(),
                 'customer_id' => $customer->getId(),
-                'provider_id' => $provider->getId(),
             ];
+
+            if ($provider) {
+                $row['provider_id'] = $provider->getId();
+            }
 
             list(
                 $timetableRowTimes,

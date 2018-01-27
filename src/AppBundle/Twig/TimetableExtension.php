@@ -31,8 +31,14 @@ class TimetableExtension extends \Twig_Extension
     public function getTimetables()
     {
         $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Timetable');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
 
-        $current = $repository->getCurrent();
+        if ($request->get('_route') === 'homepage' && ($id = $request->get('id'))) {
+            $current = $repository->find($id);
+        } else {
+            $current = $repository->getCurrent();
+        }
+
 
         return [
             'list' => $repository->findBy([], ['created' => 'DESC']),

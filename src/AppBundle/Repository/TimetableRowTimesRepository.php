@@ -70,7 +70,7 @@ class TimetableRowTimesRepository extends EntityRepository
             if ($contractor->getType() == Contractor::PROVIDER) {
                 $total += ($timetableRow->getPriceForProvider() * $sumTimes);
             } else {
-                $total += ($timetableRow->getPriceForProvider() * $sumTimes);
+                $total += ($timetableRow->getPriceForCustomer() * $sumTimes);
             }
         }
 

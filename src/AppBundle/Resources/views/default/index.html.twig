@@ -8,9 +8,10 @@
         <div class="timetable-toolbar btn-toolbar pull-left">
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-success selectable-start">Выделить путевые</button>
-                <button type="button" class="btn hidden selectable-color red" data-color="red">&nbsp;</button>
+                <button type="button" class="btn hidden selectable-color yellow" data-color="yellow">&nbsp;</button>
                 <button type="button" class="btn hidden selectable-color green" data-color="green">&nbsp;</button>
                 <button type="button" class="btn hidden selectable-color blue" data-color="blue">&nbsp;</button>
+                <button type="button" class="btn hidden selectable-color purple" data-color="purple">&nbsp;</button>
                 <button type="button" class="btn hidden selectable-color" data-color="no-color">&nbsp;</button>
                 <button type="button" class="btn btn-default selectable-close hidden">
                     <span class="glyphicon glyphicon-ok"></span>
@@ -96,7 +97,7 @@
             {% for row in rows %}
                 <tr data-row="{{ row.id }}"
                     data-customer-id="{{ row.customer_id }}"
-                    data-provider-id="{{ row.provider_id }}"
+                    data-provider-id="{{ row.provider_id|default }}"
                     class="{{ (tmpCustomer and tmpCustomer != row.customer) ? 'bold-border' : '' }}"
                 >
                     <td>
@@ -230,10 +231,15 @@
 
                 var rowId = $tr.data('row');
                 var customerId = $tr.data('customer-id');
-                var providerId = $tr.data('provider-id');
                 var $trById = $('[data-row="' + rowId + '"]');
                 var $trByCustomer = $('[data-customer-id="' + customerId + '"]');
-                var $trByProvider = $('[data-provider-id="' + providerId + '"]');
+
+                var providerId = $tr.data('provider-id');
+                if (providerId) {
+                    var $trByProvider = $('[data-provider-id="' + providerId + '"]');
+                } else {
+                    var $trByProvider = null;
+                }
 
                 $.ajax({
                     type: 'POST',
@@ -257,9 +263,12 @@
                             $('[data-margin_sum]', $trById).text(data.margin_sum);
                             $('[data-margin_percent]', $trById).text(data.margin_percent);
                             $('[data-customer_balance]', $trByCustomer).text(data.customer_balance);
-                            $('[data-provider_balance]', $trByProvider).text(data.provider_balance);
                             $('[data-customer_paid]', $trByCustomer).text(data.customer_paid);
-                            $('[data-provider_paid]', $trByProvider).text(data.provider_paid);
+
+                            if ($trByProvider) {
+                                $('[data-provider_balance]', $trByProvider).text(data.provider_balance);
+                                $('[data-provider_paid]', $trByProvider).text(data.provider_paid);
+                            }
 
                             $item = $input.prev('div.times-item');
                             $item.text(value);

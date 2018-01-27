@@ -108,7 +108,7 @@ class TimetableRowTimesController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $availableColors = ['red', 'green', 'blue', 'no-color'];
+        $availableColors = ['yellow', 'green', 'blue', 'purple', 'no-color'];
 
         if (!in_array($color, $availableColors)) {
             throw new BadRequestHttpException();

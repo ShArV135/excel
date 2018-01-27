@@ -29,15 +29,46 @@ class TimetableHelper
         $customer = $timetableRow->getCustomer();
         $provider = $timetableRow->getProvider();
 
+        $qb = $this
+            ->entityManager
+            ->getRepository('AppBundle:Payment')
+            ->createQueryBuilder('payment')
+        ;
+        $customerPayments = $qb
+            ->andWhere($qb->expr()->lte('payment.date', ':date'))
+            ->andWhere($qb->expr()->eq('payment.contractor', ':contractor'))
+            ->setParameters([
+                'date' => clone $timetable->getCreated()->modify('last day of'),
+                'contractor' => $customer
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
         $customerPaid = 0;
         /** @var Payment $payment */
-        foreach ($customer->getPayments() as $payment) {
+        foreach ($customerPayments as $payment) {
             $customerPaid += $payment->getAmount();
         }
 
+        $qb = $this
+            ->entityManager
+            ->getRepository('AppBundle:Payment')
+            ->createQueryBuilder('payment')
+        ;
+        $providerPayments = $qb
+            ->andWhere($qb->expr()->lte('payment.date', ':date'))
+            ->andWhere($qb->expr()->eq('payment.contractor', ':contractor'))
+            ->setParameters([
+                'date' => clone $timetable->getCreated()->modify('last day of'),
+                'contractor' => $provider
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+
         $providerPaid = 0;
         /** @var Payment $payment */
-        foreach ($provider->getPayments() as $payment) {
+        foreach ($providerPayments as $payment) {
             $providerPaid += $payment->getAmount();
         }
 
@@ -46,12 +77,17 @@ class TimetableHelper
         $sumTimes = $timetableRowTimesRepository->sumTimes($times);
         $customerSalary = $timetableRow->getPriceForCustomer() * $sumTimes;
         $providerSalary = $timetableRow->getPriceForProvider() * $sumTimes;
-        $marginSum = $providerSalary - $customerSalary;
+        $marginSum = $customerSalary - $providerSalary;
         $customerBalance = $customerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $customer);
-        $providerBalance = $providerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $provider);
+
+        if ($provider) {
+            $providerBalance = $providerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $provider);
+        } else {
+            $providerBalance = 0;
+        }
 
         if ($providerSalary) {
-            $marginPercent = round(100-($customerSalary/$providerSalary*100), 2);
+            $marginPercent = round(100-($providerSalary/$customerSalary*100), 2);
         } else {
             $marginPercent = 0;
         }
@@ -68,7 +104,7 @@ class TimetableHelper
             'customer_paid' => $customerPaid,
             'provider_paid' => $providerPaid,
             'customer_id' => $customer->getId(),
-            'provider_id' => $provider->getId(),
+            'provider_id' => $provider ? $provider->getId() : null,
         ];
     }
 }
