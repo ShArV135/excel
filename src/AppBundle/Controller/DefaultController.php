@@ -216,7 +216,7 @@ class DefaultController extends Controller
                         $value = $customer->getName();
                         break;
                     case 'provider':
-                        $value = $provider->getName();
+                        $value = $provider ? $provider->getName() : null;
                         break;
                     case 'object':
                         $value = $timetableRow->getObject();

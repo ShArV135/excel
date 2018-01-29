@@ -115,9 +115,23 @@
                         {% if column == 'manager' %}
                             <td><div class="tt-tooltip" title="{{ row.manager }}">{{ row.manager }}</div> </td>
                         {% elseif column == 'customer' %}
-                            <td><div class="tt-tooltip" title="{{ row.customer }}">{{ row.customer }}</div> </td>
+                            <td>
+                                <div class="tt-tooltip" title="{{ row.customer }}">
+                                    <a href="{{ path('contractor_view', {'contractor': row.customer_id}) }}">
+                                        {{ row.customer }}
+                                    </a>
+                                </div>
+                            </td>
                         {% elseif column == 'provider' %}
-                            <td><div class="tt-tooltip" title="{{ row.provider }}">{{ row.provider }}</div> </td>
+                            <td>
+                                {% if row.provider %}
+                                    <div class="tt-tooltip" title="{{ row.provider }}">
+                                        <a href="{{ path('contractor_view', {'contractor': row.provider_id}) }}">
+                                            {{ row.provider }}
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </td>
                         {% elseif column == 'object' %}
                             <td><div class="tt-tooltip" title="{{ row.object }}">{{ row.object }}</div> </td>
                         {% elseif column == 'mechanism' %}
