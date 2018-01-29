@@ -7,3 +7,8 @@ textarea.noresize {
     right: 0;
     bottom: 0;
 }
+
+.form-inline .form-control-label { padding: 0 5px; }
+.form-inline .form-group {
+    margin-right: 10px;
+}

@@ -3,10 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Contractor;
+use AppBundle\Entity\User;
 use AppBundle\Form\ContractorType;
 use AppBundle\Security\ContractorVoter;
+use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +24,11 @@ class ContractorController extends Controller
 {
     /**
      * @Route("/contractors/{page}", name="contractor_list")
-     * @param int $page
+     * @param Request $request
+     * @param int     $page
      * @return Response
      */
-    public function listAction($page = 1)
+    public function listAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
         $qb = $em->getRepository('AppBundle:Contractor')->createQueryBuilder('contractor');
@@ -35,6 +40,63 @@ class ContractorController extends Controller
             ;
         }
 
+        $filterForm = $this->createFormBuilder(null, ['method' => 'GET', 'csrf_protection' => false]);
+
+        if (!$this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+            $filterForm
+                ->add(
+                    'type',
+                    ChoiceType::class,
+                    [
+                        'label' => 'Тип',
+                        'required' => false,
+                        'choices' => [
+                            'Поставщик' => Contractor::PROVIDER,
+                            'Заказчик' => Contractor::CUSTOMER,
+                        ]
+                    ]
+                )
+                ->add(
+                    'manager',
+                    EntityType::class,
+                    [
+                        'required' => false,
+                        'label' => 'Менеджер по продажам',
+                        'class' => User::class,
+                        'choice_label' => 'fullname',
+                        'query_builder' => function(EntityRepository $repository) {
+                            $qb = $repository->createQueryBuilder('e');
+                            return $qb
+                                ->where($qb->expr()->like('e.roles', ':roles'))
+                                ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
+                                ;
+                        },
+                    ]
+                )
+            ;
+        }
+
+        $filterForm = $filterForm
+            ->getForm()
+            ->handleRequest($request)
+        ;
+
+        if ($filterForm->isValid()) {
+            $data = $filterForm->getData();
+            if (!empty($data['type'])) {
+                $qb
+                    ->andWhere($qb->expr()->eq('contractor.type', ':type'))
+                    ->setParameter('type', $data['type'])
+                ;
+            }
+            if (!empty($data['manager'])) {
+                $qb
+                    ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
+                    ->setParameter('manager', $data['manager'])
+                ;
+            }
+        }
+
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page,20);
 
@@ -42,6 +104,7 @@ class ContractorController extends Controller
             '@App/contractor/list.html.twig',
             [
                 'pagination' => $pagination,
+                'form' => $filterForm->createView(),
             ]
         );
     }

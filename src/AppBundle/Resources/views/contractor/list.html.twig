@@ -4,6 +4,13 @@
 
 {% block body %}
     <div class="container">
+        {% if form.children|length > 0 %}
+            {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+                {{ form_rest(form) }}
+                <button class="btn btn-primary form-control" type="submit">Фильтр</button>
+                <a href="{{ path('contractor_list') }}">Сбросить</a>
+            {{ form_end(form) }}
+        {% endif %}
         <div class="row">
             <div class="btn-group pull-right" role="group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,7 +47,7 @@
                     <td>{{ contractor.type == 'provider' ? 'Поставщик' : contractor.type == 'customer' ? 'Заказчик' : '' }}</td>
                     <td>
                         {% if contractor.manager %}
-                            {{ contractor.manager.username }}
+                            {{ contractor.manager.fullname }}
                         {% endif %}
                     </td>
                     <td>
