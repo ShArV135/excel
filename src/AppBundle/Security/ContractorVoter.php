@@ -52,6 +52,10 @@ class ContractorVoter extends Voter
             return $user === $subject->getManager();
         }
 
+        if (in_array('ROLE_PROVIDER_MANAGER', $user->getRoles())) {
+            return $subject->getType() === Contractor::PROVIDER;
+        }
+
         return true;
     }
 }

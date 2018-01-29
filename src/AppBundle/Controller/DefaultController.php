@@ -157,9 +157,18 @@ class DefaultController extends Controller
         $numOfFixed = count(array_intersect($columns, $fixedColumns));
 
         $qb = $em->getRepository('AppBundle:User')->createQueryBuilder('user');
-        $managers = $qb
+        $qb = $qb
             ->where($qb->expr()->like('user.roles', ':roles'))
             ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
+        ;
+
+        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+            $qb
+            ->andWhere($qb->expr()->eq('user.id', ':id'))
+            ->setParameter('id', $this->getUser())
+        ;
+        }
+        $managers = $qb
             ->getQuery()
             ->getResult()
         ;

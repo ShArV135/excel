@@ -28,9 +28,11 @@
                     </ul>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="{{ path('contractor_list') }}">Контрагенты</a>
-                    </li>
+                    {% if not is_granted('ROLE_DISPATCHER') %}
+                        <li>
+                            <a href="{{ path('contractor_list') }}">Контрагенты</a>
+                        </li>
+                    {% endif %}
                     {% if is_granted('ROLE_GENERAL_MANAGER') %}
                         <li>
                             <a href="{{ path('user_list') }}">Пользователи</a>

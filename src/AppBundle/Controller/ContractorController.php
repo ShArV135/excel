@@ -33,16 +33,27 @@ class ContractorController extends Controller
         $em = $this->getDoctrine()->getManager();
         $qb = $em->getRepository('AppBundle:Contractor')->createQueryBuilder('contractor');
 
-        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $qb
-                ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
-                ->setParameter('manager', $this->getUser())
-            ;
+        switch (true) {
+            case $this->isGranted('ROLE_CUSTOMER_MANAGER'):
+                $qb
+                    ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
+                    ->setParameter('manager', $this->getUser())
+                ;
+                break;
+            case $this->isGranted('ROLE_PROVIDER_MANAGER'):
+                $qb
+                    ->andWhere($qb->expr()->eq('contractor.type', ':type'))
+                    ->setParameter('type', Contractor::PROVIDER)
+                ;
+                break;
         }
 
         $filterForm = $this->createFormBuilder(null, ['method' => 'GET', 'csrf_protection' => false]);
 
-        if (!$this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+        if (
+            !$this->isGranted('ROLE_CUSTOMER_MANAGER')
+            && !$this->isGranted('ROLE_PROVIDER_MANAGER')
+        ) {
             $filterForm
                 ->add(
                     'type',

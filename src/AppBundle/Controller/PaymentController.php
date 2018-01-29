@@ -73,11 +73,19 @@ class PaymentController extends Controller
 
         $qb = $this->getDoctrine()->getManager()->getRepository('AppBundle:Contractor')->createQueryBuilder('contractor');
 
-        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $qb
-                ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
-                ->setParameter('manager', $this->getUser())
-            ;
+        switch (true) {
+            case $this->isGranted('ROLE_CUSTOMER_MANAGER'):
+                $qb
+                    ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
+                    ->setParameter('manager', $this->getUser())
+                ;
+                break;
+            case $this->isGranted('ROLE_PROVIDER_MANAGER'):
+                $qb
+                    ->andWhere($qb->expr()->eq('contractor.type', ':type'))
+                    ->setParameter('type', Contractor::PROVIDER)
+                ;
+                break;
         }
 
         $form = $this->createForm(
