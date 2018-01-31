@@ -25,12 +25,11 @@ class TimetableRepository extends EntityRepository
         $date = new \DateTime();
 
         $timetable = $qb
-            ->andWhere($qb->expr()->gte('timetable.created', ':from'))
             ->andWhere($qb->expr()->lte('timetable.created', ':to'))
             ->setParameters([
-                'from' => clone $date->modify('first day of'),
                 'to' => clone $date->modify('last day of'),
             ])
+            ->orderBy('timetable.id', 'DESC')
             ->getQuery()
             ->getOneOrNullResult()
         ;

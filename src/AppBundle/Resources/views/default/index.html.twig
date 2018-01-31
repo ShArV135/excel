@@ -41,158 +41,57 @@
         </div>
     </div>
     <div id="timetable_container" class="row" style="margin: 10px 0 0;">
-        <table id="timetable" class="timetable">
+        <table id="timetable" class="timetable" data-url="{{ path('timetable_data', {'timetable': timetable.id, 'show': view_mode}) }}">
             <thead>
             <tr>
-                <th class="timetable-fixed-cell controls">&nbsp;</th>
+                <th data-field="controls" data-formatter="cellFormatter" class="timetable-fixed-cell controls">&nbsp;</th>
                 {% for column in columns %}
                     {% set class = column %}
                     {% if column in fixed_columns %}
                         {% set class = class ~ ' timetable-fixed-cell' %}
                     {% endif %}
                     {% if column == 'manager' %}
-                        <th data-field="manager" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">Менеджер</th>
+                        <th data-field="manager" data-formatter="cellFormatter" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">Менеджер</th>
                     {% elseif column == 'customer' %}
-                        <th data-field="customer" data-filter-control="input" class="{{ class }}">Заказчик</th>
+                        <th data-field="customer" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }}">Заказчик</th>
                     {% elseif column == 'provider' %}
-                        <th data-field="provider" data-filter-control="input" class="{{ class }} provider-cell">Поставщик</th>
+                        <th data-field="provider" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }} provider-cell">Поставщик</th>
                     {% elseif column == 'object' %}
-                        <th data-field="object" data-filter-control="input" class="{{ class }}">Объект</th>
+                        <th data-field="object" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }}">Объект</th>
                     {% elseif column == 'mechanism' %}
-                        <th data-field="mechanism" data-filter-control="input" class="{{ class }}">Механизм</th>
+                        <th data-field="mechanism" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }}">Механизм</th>
                     {% elseif column == 'comment' %}
-                        <th data-field="comment" data-filter-control="input" class="{{ class }}">Комментарий</th>
+                        <th data-field="comment" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }}">Комментарий</th>
                     {% elseif column == 'price_for_customer' %}
-                        <th class="{{ class }}">Цена заказчику</th>
+                        <th data-field="price_for_customer" data-formatter="cellFormatter" class="{{ class }}">Цена заказчику</th>
                     {% elseif column == 'price_for_provider' %}
-                        <th class="{{ class }} provider-cell">Цена поставщика</th>
+                        <th data-field="price_for_provider" data-formatter="cellFormatter" class="{{ class }} provider-cell">Цена поставщика</th>
                     {% elseif column == 'sum_times' %}
-                        <th class="{{ class }}">Сумма часов</th>
+                        <th data-field="sum_times" data-formatter="cellFormatter" class="{{ class }}">Сумма часов</th>
                     {% elseif column == 'times' %}
                         {% for i in 1..31 %}
-                            <th class="{{ class ~ (i == 16 ? ' bold-border' : '') }}">{{ i }}</th>
+                            <th data-field="times_{{ i }}" data-formatter="cellFormatter" class="{{ class ~ (i == 16 ? ' bold-border' : '') }}">{{ i }}</th>
                         {% endfor %}
                     {% elseif column == 'customer_salary' %}
-                        <th class="{{ class }}">Наработка<br>заказчика</th>
+                        <th data-field="customer_salary" data-formatter="cellFormatter" class="{{ class }}">Наработка<br>заказчика</th>
                     {% elseif column == 'provider_salary' %}
-                        <th class="{{ class }} provider-cell">Наработка<br>поставщика</th>
+                        <th data-field="provider_salary" data-formatter="cellFormatter" class="{{ class }} provider-cell">Наработка<br>поставщика</th>
                     {% elseif column == 'customer_paid' %}
-                        <th class="{{ class }}">Оплачено<br>заказчиком</th>
+                        <th data-field="customer_paid" data-formatter="cellFormatter" class="{{ class }}">Оплачено<br>заказчиком</th>
                     {% elseif column == 'customer_balance' %}
-                        <th class="{{ class }}">Баланс<br>заказчика</th>
+                        <th data-field="customer_balance" data-formatter="cellFormatter" class="{{ class }}">Баланс<br>заказчика</th>
                     {% elseif column == 'provider_paid' %}
-                        <th class="{{ class }} provider-cell">Оплачено<br>поставщику</th>
+                        <th data-field="provider_paid" data-formatter="cellFormatter" class="{{ class }} provider-cell">Оплачено<br>поставщику</th>
                     {% elseif column == 'provider_balance' %}
-                        <th class="{{ class }} provider-cell">Баланс<br>поставщика</th>
+                        <th data-field="provider_balance" data-formatter="cellFormatter" class="{{ class }} provider-cell">Баланс<br>поставщика</th>
                     {% elseif column == 'margin_sum' %}
-                        <th class="{{ class }}">Маржа,<br>сумма</th>
+                        <th data-field="margin_sum" data-formatter="cellFormatter" class="{{ class }}">Маржа,<br>сумма</th>
                     {% elseif column == 'margin_percent' %}
-                        <th class="{{ class }}">Маржа,<br>%</th>
+                        <th data-field="margin_percent" data-formatter="cellFormatter" class="{{ class }}">Маржа,<br>%</th>
                     {% endif %}
                 {% endfor %}
             </tr>
             </thead>
-            <tbody>
-            {% set tmpCustomer = '' %}
-            {% for row in rows %}
-                <tr data-row="{{ row.id }}"
-                    data-customer-id="{{ row.customer_id }}"
-                    data-provider-id="{{ row.provider_id|default }}"
-                    class="{{ (tmpCustomer and tmpCustomer != row.customer) ? 'bold-border' : '' }}"
-                >
-                    <td>
-                        <a href="{{ path('timetable_row_update', {'timetable': timetable.id, 'timetableRow': row.id}) }}">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </a>
-                        <a class="delete-confirm"
-                           onclick="deleteConfirm('{{ path('timetable_row_delete', {'timetable': timetable.id, 'timetableRow': row.id}) }}')"
-                           href="javascript: void(0)"
-                        >
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </a>
-                    </td>
-                    {% for column in columns %}
-                        {% if column == 'manager' %}
-                            <td><div class="tt-tooltip" title="{{ row.manager }}">{{ row.manager }}</div> </td>
-                        {% elseif column == 'customer' %}
-                            <td>
-                                <div class="tt-tooltip" title="{{ row.customer }}">
-                                    <a href="{{ path('contractor_view', {'contractor': row.customer_id}) }}">
-                                        {{ row.customer }}
-                                    </a>
-                                </div>
-                            </td>
-                        {% elseif column == 'provider' %}
-                            <td>
-                                {% if row.provider %}
-                                    <div class="tt-tooltip" title="{{ row.provider }}">
-                                        <a href="{{ path('contractor_view', {'contractor': row.provider_id}) }}">
-                                            {{ row.provider }}
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            </td>
-                        {% elseif column == 'object' %}
-                            <td><div class="tt-tooltip" title="{{ row.object }}">{{ row.object }}</div> </td>
-                        {% elseif column == 'mechanism' %}
-                            <td><div class="tt-tooltip" title="{{ row.mechanism }}">{{ row.mechanism }}</div> </td>
-                        {% elseif column == 'comment' %}
-                            <td><div class="tt-tooltip" title="{{ row.comment }}">{{ row.comment }}</div> </td>
-                        {% elseif column == 'price_for_customer' %}
-                            <td>{{ row.price_for_customer }}</td>
-                        {% elseif column == 'price_for_provider' %}
-                            <td>{{ row.price_for_provider }}</td>
-                        {% elseif column == 'sum_times' %}
-                            <td data-sum_times>{{ row.sum_times }}</td>
-                        {% elseif column == 'times' %}
-                            {% for day, time in row.times.times %}
-                                <td class="times {{ row.times.colors[day]|default }} {{ (day == 16 ? 'bold-border' : '') }}"
-                                    data-id="{{ row.times.id }}"
-                                    data-day="{{ day }}"
-                                >
-                                    <div class="times-item hidden">
-                                        {{ time }}
-                                    </div>
-                                    <input class="times-input"
-                                           type="text"
-                                           data-value="{{ time }}"
-                                           value="{{ time }}"
-                                    />
-                                    <a class="times-comment {{ row.times.comments[day]|length ? '' : 'text-muted' }}"
-                                       data-type="textarea"
-                                       data-pk="{{ row.times.id }}"
-                                       data-name="{{ day }}"
-                                       data-url="{{ path('timetable_row_times_update_comment', {'timetableRowTimes': row.times.id}) }}"
-                                       data-value="{{ row.times.comments[day] }}"
-                                    >
-                                        <span class="glyphicon glyphicon-certificate"></span>
-                                    </a>
-                                </td>
-                            {% endfor %}
-                        {% elseif column == 'customer_salary' %}
-                            <td data-customer_salary>{{ row.customer_salary }}</td>
-                        {% elseif column == 'provider_salary' %}
-                            <td data-provider_salary>{{ row.provider_salary }}</td>
-                        {% elseif column == 'customer_paid' %}
-                            <td data-customer_paid>{{ row.customer_paid }}</td>
-                        {% elseif column == 'customer_balance' %}
-                            {% set class = row.customer_balance < 0 ? 'bg-right text-white' : '' %}
-                            <td data-customer_balance class="{{ class }}">{{ row.customer_balance }}</td>
-                        {% elseif column == 'provider_paid' %}
-                            <td data-provider_paid>{{ row.provider_paid }}</td>
-                        {% elseif column == 'provider_balance' %}
-                            {% set class = row.provider_balance < 0 ? 'bg-pink' : '' %}
-                            <td data-provider_balance class="{{ class }}">{{ row.provider_balance }}</td>
-                        {% elseif column == 'margin_sum' %}
-                            <td data-margin_sum>{{ row.margin_sum }}</td>
-                        {% elseif column == 'margin_percent' %}
-                            <td data-margin_percent>{{ row.margin_percent }}</td>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-                {% set tmpCustomer = row.customer %}
-            {% endfor %}
-            </tbody>
         </table>
     </div>
 {% endblock %}
@@ -204,27 +103,107 @@
 {% block javascripts %} {{ parent() }}
     <script>
         $(function() {
-            var height = $('#timetable_container').height()+100;
             var offset = $('#timetable_container').offset();
-            var maxHeight = $(window).height() - offset.top;
-            if (height > maxHeight) {
-                height = maxHeight;
-            }
+            var height = $(window).height() - offset.top;
+            var tmpCustomer = '';
 
-            $('.timetable').bootstrapTable({
+            cellFormatter = function(value, row, index, field) {
+                if (!field) {
+                    if (typeof value === 'object') {
+                        return JSON.stringify(value);
+                    } else {
+                        return value;
+                    }
+                }
+                if (field.match(/times_/)) {
+                    var html = '<div class="times-item hidden">' + value.time + '</div>';
+                    html += '<input class="times-input" type="text" data-value="' + value.time + '" value="' + value.time + '"/>';
+                    html += ('<a class="times-comment ' + (value.comment ? '' : 'text-muted') + '"' +
+                                'data-type="textarea"' +
+                                'data-pk="' + value.id + '"' +
+                                'data-name="' + value.day + '"' +
+                                'data-url="' + value.comment_url + '"' +
+                                'data-value="' + value.comment + '">' +
+                                '<span class="glyphicon glyphicon-certificate"></span>' +
+                            '</a>');
+                    return html;
+                }
+                switch (field) {
+                    case 'controls':
+                        return html = '<a href="' + value.update + '"><span class="glyphicon glyphicon-edit"></span></a>' +
+                            '<a class="delete-confirm" onclick="deleteConfirm(\'+ value.delete +\')" href="javascript: void(0)">' +
+                                '<span class="glyphicon glyphicon-remove"></span>' +
+                            '</a>';
+                    case 'manager':
+                    case 'object':
+                    case 'mechanism':
+                    case 'comment':
+                        value = value || '';
+                        return '<div class="tt-tooltip" title="' + value + '">' + value + '</div>';
+                    case 'provider':
+                    case 'customer':
+                        if (value) {
+                            return '<div class="tt-tooltip" title="' + value.name + '">' +
+                                '<a href="' + value.url + '">' + value.name + '</a>' +
+                                '</div>';
+                        }
+                        return '';
+                    default:
+                        return value;
+                }
+            };
+
+            $('#timetable').bootstrapTable({
                 fixedColumns: true,
                 fixedNumber: {{ num_of_fixed }},
                 filterControl: true,
-                height: height,
                 disableControlWhenSearch: true,
+                height: height,
+                rowAttributes: function (row, index) {
+                    return {
+                        'data-row': row.id,
+                        'data-customer-id': row.customer_id,
+                        'data-provider-id': row.provider_id,
+                    };
+                },
+                rowStyle: function (row, index) {
+                    var output = {
+                        classes: (row.customer_id !== tmpCustomer) ? 'bold-border' : ''
+                    };
+
+                    tmpCustomer = row.customer_id;
+
+                    return output;
+                },
+                onPostBody: function () {
+                    setTimeout(function() {
+                        $('.tt-tooltip').tooltip({
+                            trigger: 'click',
+                            container: 'body'
+                        });
+
+                        $('.timetable .times-comment').editable({
+                            container: 'body',
+                            display: function() {
+                                return '';
+                            },
+                            success : function (response, newValue) {
+                                if (newValue == '') {
+                                    $(this).addClass('text-muted');
+                                } else {
+                                    $(this).removeClass('text-muted');
+                                }
+                            }
+                        });
+
+                        $('#timetable').selectable({
+                            filter: 'div.times-item'
+                        });
+                    }, 1000);
+                }
             });
 
-            $('.tt-tooltip').tooltip({
-                trigger: 'click',
-                container: 'body'
-            });
-
-            $('.timetable .times-input').blur(function() {
+            $(document).on('blur', '.timetable .times-input', function() {
                 var $input = $(this);
                 var $td = $input.parent('td');
                 var $tr = $input.closest('tr');
@@ -249,10 +228,9 @@
                 var $trByCustomer = $('[data-customer-id="' + customerId + '"]');
 
                 var providerId = $tr.data('provider-id');
+                var $trByProvider = null;
                 if (providerId) {
-                    var $trByProvider = $('[data-provider-id="' + providerId + '"]');
-                } else {
-                    var $trByProvider = null;
+                    $trByProvider = $('[data-provider-id="' + providerId + '"]');
                 }
 
                 $.ajax({
@@ -271,17 +249,17 @@
 
                             var data = response.data;
 
-                            $('[data-sum_times]', $trById).text(data.sum_times);
-                            $('[data-customer_salary]', $trById).text(data.customer_salary);
-                            $('[data-provider_salary]', $trById).text(data.provider_salary);
-                            $('[data-margin_sum]', $trById).text(data.margin_sum);
-                            $('[data-margin_percent]', $trById).text(data.margin_percent);
-                            $('[data-customer_balance]', $trByCustomer).text(data.customer_balance);
-                            $('[data-customer_paid]', $trByCustomer).text(data.customer_paid);
+                            $('td.sum_times', $trById).text(data.sum_times);
+                            $('td.customer_salary', $trById).text(data.customer_salary);
+                            $('td.provider_salary', $trById).text(data.provider_salary);
+                            $('td.margin_sum', $trById).text(data.margin_sum);
+                            $('td.margin_percent', $trById).text(data.margin_percent);
+                            $('td.customer_balance', $trByCustomer).text(data.customer_balance);
+                            $('td.customer_paid', $trByCustomer).text(data.customer_paid);
 
                             if ($trByProvider) {
-                                $('[data-provider_balance]', $trByProvider).text(data.provider_balance);
-                                $('[data-provider_paid]', $trByProvider).text(data.provider_paid);
+                                $('td.provider_balance', $trByProvider).text(data.provider_balance);
+                                $('td.provider_paid', $trByProvider).text(data.provider_paid);
                             }
 
                             $item = $input.prev('div.times-item');
@@ -297,24 +275,6 @@
                         $('.timetable .times-input').removeAttr('disabled');
                     }
                 });
-            });
-
-            $('.timetable .times-comment').editable({
-                container: 'body',
-                display: function() {
-                    return '';
-                },
-                success : function (response, newValue) {
-                    if (newValue == '') {
-                        $(this).addClass('text-muted');
-                    } else {
-                        $(this).removeClass('text-muted');
-                    }
-                }
-            });
-
-            $('#timetable').selectable({
-                filter: 'div.times-item'
             });
 
             $('.selectable-start').click(function() {

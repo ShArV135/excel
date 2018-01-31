@@ -28,14 +28,6 @@ class DefaultController extends Controller
             $timetable = $em->getRepository('AppBundle:Timetable')->getCurrent();
         }
 
-        $criteria = [];
-
-        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $criteria['manager'] = $this->getUser();
-        }
-
-        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC']);
-
         $fixedColumns = [
             'manager',
             'customer',
@@ -173,7 +165,6 @@ class DefaultController extends Controller
             ->getResult()
         ;
 
-        $managersById = [];
         $managersByFio = [];
         /** @var User $manager */
         foreach ($managers as $manager) {
@@ -182,116 +173,20 @@ class DefaultController extends Controller
             $surname = $manager->getSurname() ?: '';
 
             $key = mb_substr($lastname, 0, 1).mb_substr($firstname, 0, 1).mb_substr($surname, 0, 1);
-            $value = implode([$lastname, $firstname, $surname], ' ');
+            $value = $manager->getFullName();
 
-            $managersById[$manager->getId()] = $key;
             $managersByFio[$key] = $value;
-        }
-
-        $rows = [];
-        foreach ($timetableRows as $timetableRow) {
-            $manager = $timetableRow->getManager();
-            $customer = $timetableRow->getCustomer();
-            $provider = $timetableRow->getProvider();
-
-            $row = [
-                'id' => $timetableRow->getId(),
-                'customer_id' => $customer->getId(),
-            ];
-
-            if ($provider) {
-                $row['provider_id'] = $provider->getId();
-            }
-
-            list(
-                $timetableRowTimes,
-                $sumTimes,
-                $customerSalary,
-                $providerSalary,
-                $customerBalance,
-                $providerBalance,
-                $marginSum,
-                $marginPercent,
-                $customerPaid,
-                $providerPaid,
-            ) = array_values($this->get('timetable.helper')->calculateRowData($timetable, $timetableRow));
-
-            foreach ($columns as $column) {
-                switch ($column) {
-                    case 'manager':
-                        $value = $managersById[$manager->getId()];
-                        break;
-                    case 'customer':
-                        $value = $customer->getName();
-                        break;
-                    case 'provider':
-                        $value = $provider ? $provider->getName() : null;
-                        break;
-                    case 'object':
-                        $value = $timetableRow->getObject();
-                        break;
-                    case 'mechanism':
-                        $value = $timetableRow->getMechanism();
-                        break;
-                    case 'comment':
-                        $value = $timetableRow->getComment();
-                        break;
-                    case 'price_for_customer':
-                        $value = $timetableRow->getPriceForCustomer();
-                        break;
-                    case 'price_for_provider':
-                        $value = $timetableRow->getPriceForProvider();
-                        break;
-                    case 'sum_times':
-                        $value = $sumTimes;
-                        break;
-                    case 'times':
-                        $value = $timetableRowTimes;
-                        break;
-                    case 'customer_salary':
-                        $value = $customerSalary;
-                        break;
-                    case 'provider_salary':
-                        $value = $providerSalary;
-                        break;
-                    case 'customer_paid':
-                        $value = $customerPaid;
-                        break;
-                    case 'provider_paid':
-                        $value = $providerPaid;
-                        break;
-                    case 'customer_balance':
-                        $value = $customerBalance;
-                        break;
-                    case 'provider_balance':
-                        $value = $providerBalance;
-                        break;
-                    case 'margin_sum':
-                        $value = $marginSum;
-                        break;
-                    case 'margin_percent':
-                        $value = $marginPercent;
-                        break;
-                    default:
-                        $value = '';
-                }
-
-                $row[$column] = $value;
-            }
-
-            $rows[] = $row;
         }
 
         return $this->render(
             '@App/default/index.html.twig',
             [
                 'timetable' => $timetable,
-                'rows' => $rows,
                 'columns' => $columns,
                 'num_of_fixed' => $numOfFixed,
                 'fixed_columns' => $fixedColumns,
-                'managers_by_id' => $managersById,
                 'managers_by_fio' => $managersByFio,
+                'view_mode' => $show,
             ]
         );
     }
