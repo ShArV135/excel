@@ -26,6 +26,7 @@
 
         this.timeoutHeaderColumns_ = 0;
         this.$fixedHeader.find('table').attr('class', this.$el.attr('class'));
+        this.$fixedHeader.css('height', '78px');
         this.$fixedHeaderColumns = this.$fixedHeader.find('thead');
         this.$tableHeader.before(this.$fixedHeader);
 
@@ -130,7 +131,7 @@
 
     BootstrapTable.prototype.fitBodyColumns = function () {
         var that = this,
-            top = -(parseInt(this.$el.css('margin-top'))),
+            top = this.$fixedHeader.height(),
             // the fixed height should reduce the scorll-x height
             height = this.$tableBody.height() - 14;
 
@@ -140,7 +141,6 @@
         }
 
         if (!this.options.height) {
-            top = this.$fixedHeader.height();
             height = height - top;
         }
 

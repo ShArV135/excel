@@ -54,6 +54,7 @@ class UserType extends AbstractType
                         'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
                         'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
                         'Диспетчер' => 'ROLE_DISPATCHER',
+                        'Генеральный менеджер' => 'ROLE_GENERAL_MANAGER',
                     ],
                 ]
             )

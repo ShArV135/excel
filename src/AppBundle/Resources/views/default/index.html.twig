@@ -168,7 +168,7 @@
                 },
                 rowStyle: function (row, index) {
                     var output = {
-                        classes: (row.customer_id !== tmpCustomer) ? 'bold-border' : ''
+                        classes: (row.customer_id !== tmpCustomer && tmpCustomer !== '') ? 'bold-border' : ''
                     };
 
                     tmpCustomer = row.customer_id;
@@ -320,7 +320,7 @@
                     },
                     success: function(response) {
                         $selected.removeClass('ui-selected');
-                        $selected.parent('td').removeClass('red green blue');
+                        $selected.parent('td').removeClass('red green blue yellow purple');
                         if (color !== 'no-color') {
                             $selected.parent('td').addClass(color);
                         }

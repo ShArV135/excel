@@ -35,6 +35,8 @@
                                 <span class="label label-default">Менеджер по снажению</span>
                             {% elseif role == 'ROLE_DISPATCHER' %}
                                 <span class="label label-default">Диспетчер</span>
+                            {% elseif role == 'ROLE_GENERAL_MANAGER' %}
+                                <span class="label label-default">Генеральный менеджер</span>
                             {% else %}
                                 <span class="label label-default">{{ role }}</span>
                             {% endif %}
