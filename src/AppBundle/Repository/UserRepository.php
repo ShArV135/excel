@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,52 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    /**
+     * @return array
+     */
+    public function getManagersByFio()
+    {
+        $managers = $this->getManagers();
+
+        $managersByFio = [];
+        /** @var User $manager */
+        foreach ($managers as $manager) {
+            $managersByFio[$manager->getAbbrFullName()] = $manager->getFullName();
+        }
+
+        return $managersByFio;
+    }
+
+    /**
+     * @return array
+     */
+    public function getManagersById()
+    {
+        $managers = $this->getManagers();
+
+        $managersById = [];
+        /** @var User $manager */
+        foreach ($managers as $manager) {
+            $managersById[$manager->getId()] = $manager->getAbbrFullName();
+        }
+
+        return $managersById;
+    }
+
+    /**
+     * @return array
+     */
+    public function getManagers()
+    {
+        $qb = $this->createQueryBuilder('user');
+        $qb = $qb
+            ->where($qb->expr()->like('user.roles', ':roles'))
+            ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

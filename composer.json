@@ -64,6 +64,7 @@
         "jquery/jquery-ui": "^1.11",
         "knplabs/knp-paginator-bundle": "^2.7",
         "makeusabrew/bootbox": "^4.4",
+        "phpoffice/phpspreadsheet": "^1.1",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",
         "symfony/assetic-bundle": "^2.8",

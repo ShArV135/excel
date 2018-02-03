@@ -5,13 +5,13 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\TimetableRowTimes;
-use AppBundle\Entity\User;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class TimetableController extends Controller
 {
@@ -30,158 +30,28 @@ class TimetableController extends Controller
 
     /**
      * @param Timetable $timetable
-     * @param Request   $request
-     * @Route("/timetable-data/{timetable}", name="timetable_data")
+     * @Route("/timetable/{timetable}/data", name="timetable_data")
      * @return JsonResponse
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function getDataAction(Timetable $timetable, Request $request)
+    public function getDataAction(Timetable $timetable)
     {
         $em = $this->getDoctrine()->getManager();
-        $criteria = [];
+        $timetableHelper = $this->get('timetable.helper');
 
+        $criteria = [];
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
             $criteria['manager'] = $this->getUser();
         }
 
         $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC']);
 
-        switch (true) {
-            case $this->isGranted('ROLE_CUSTOMER_MANAGER'):
-                $show = 'customer_manager';
-                break;
-            case $this->isGranted('ROLE_DISPATCHER'):
-                $show = 'dispatcher';
-                break;
-            case $this->isGranted('ROLE_PROVIDER_MANAGER'):
-                $show = 'provider_manager';
-                break;
-            case $this->isGranted('ROLE_GENERAL_MANAGER'):
-                $show = $request->get('show', 'general_manager');
-                break;
-            default:
-                throw new NotImplementedException('Not implemented.');
-                break;
-        }
-
-        switch ($show) {
-            case 'customer_manager':
-                $columns = [
-                    'manager',
-                    'customer',
-                    'object',
-                    'mechanism',
-                    'comment',
-                    'price_for_customer',
-                    'sum_times',
-                    'times',
-                    'customer_salary',
-                    'customer_paid',
-                    'customer_balance',
-                ];
-                break;
-            case 'dispatcher':
-                $columns = [
-                    'manager',
-                    'customer',
-                    'provider',
-                    'object',
-                    'mechanism',
-                    'comment',
-                    'price_for_customer',
-                    'sum_times',
-                    'times',
-                    'customer_salary',
-                ];
-                break;
-            case 'provider_manager':
-                $columns = [
-                    'manager',
-                    'object',
-                    'provider',
-                    'mechanism',
-                    'customer',
-                    'comment',
-                    'price_for_provider',
-                    'sum_times',
-                    'times',
-                    'provider_salary',
-                    'provider_paid',
-                    'provider_balance',
-                    'customer_balance',
-                ];
-                break;
-            case 'general_manager':
-                $columns = [
-                    'manager',
-                    'customer',
-                    'object',
-                    'mechanism',
-                    'comment',
-                    'price_for_customer',
-                    'sum_times',
-                    'times',
-                    'customer_salary',
-                    'customer_paid',
-                    'customer_balance',
-                    'margin_sum',
-                    'margin_percent',
-                ];
-                break;
-            default:
-                $columns = [
-                    'manager',
-                    'customer',
-                    'provider',
-                    'object',
-                    'mechanism',
-                    'comment',
-                    'price_for_customer',
-                    'price_for_provider',
-                    'sum_times',
-                    'times',
-                    'customer_salary',
-                    'provider_salary',
-                    'customer_paid',
-                    'customer_balance',
-                    'provider_paid',
-                    'provider_balance',
-                    'margin_sum',
-                    'margin_percent',
-                ];
-                break;
-        }
-
-        $qb = $em->getRepository('AppBundle:User')->createQueryBuilder('user');
-        $qb = $qb
-            ->where($qb->expr()->like('user.roles', ':roles'))
-            ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
-        ;
-
-        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $qb
-                ->andWhere($qb->expr()->eq('user.id', ':id'))
-                ->setParameter('id', $this->getUser())
-            ;
-        }
-        $managers = $qb
-            ->getQuery()
-            ->getResult()
-        ;
-
-        $managersById = [];
-        $managersByFio = [];
-        /** @var User $manager */
-        foreach ($managers as $manager) {
-            $firstname = $manager->getFirstName() ?: '';
-            $lastname = $manager->getLastname() ?: '';
-            $surname = $manager->getSurname() ?: '';
-
-            $key = mb_substr($lastname, 0, 1).mb_substr($firstname, 0, 1).mb_substr($surname, 0, 1);
-            $value = implode([$lastname, $firstname, $surname], ' ');
-
-            $managersById[$manager->getId()] = $key;
-            $managersByFio[$key] = $value;
+        $show = $timetableHelper->getShowMode();
+        $columns = $timetableHelper->getColumnsByShow($show);
+        if (!$this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+            $managersById = $em->getRepository('AppBundle:User')->getManagersById();
+        } else {
+            $managersById = [];
         }
 
         $rows = [];
@@ -298,7 +168,7 @@ class TimetableController extends Controller
                         $value = $customerBalance;
 
                         if ($customerBalance < 0) {
-                            $row['_customer_balance_class'] = 'customer_balance bg-right text-white';
+                            $row['_customer_balance_class'] = 'customer_balance bg-red text-white';
                         }
                         break;
                     case 'provider_balance':
@@ -325,5 +195,288 @@ class TimetableController extends Controller
         }
 
         return new JsonResponse($rows);
+    }
+
+    /**
+     * @Route("/timetable/{timetable}/export", name="timetable_export")
+     * @param Timetable $timetable
+     * @return Response
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function exportAction(Timetable $timetable)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $timetableHelper = $this->get('timetable.helper');
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $tableData = [];
+
+        $show = $timetableHelper->getShowMode();
+        $columns = $timetableHelper->getColumnsByShow($show);
+
+        $row = [];
+        foreach ($columns as $index => $column) {
+            switch ($column) {
+                case 'manager':
+                    $row[] = 'Менеджер';
+                    break;
+                case 'customer':
+                    $row[] = 'Заказчик';
+                    break;
+                case 'provider':
+                    $row[] = 'Поставщик';
+                    break;
+                case 'object':
+                    $row[] = 'Объект';
+                    break;
+                case 'mechanism':
+                    $row[] = 'Механизм';
+                    break;
+                case 'comment':
+                    $row[] = 'Комментарий';
+                    break;
+                case 'price_for_customer':
+                    $row[] = 'Цена заказчику';
+                    break;
+                case 'price_for_provider':
+                    $row[] = 'Цена поставщика';
+                    break;
+                case 'sum_times':
+                    $row[] = 'Сумма часов';
+                    break;
+                case 'times':
+                    for ($i = 1; $i <= 31; $i++) {
+                        $sheet->getColumnDimensionByColumn($i + $index)->setWidth(3);
+                        $row[] = $i;
+                    }
+                    break;
+                case 'customer_salary':
+                    $row[] = 'Наработка заказчика';
+                    break;
+                case 'provider_salary':
+                    $row[] = 'Наработка поставщика';
+                    break;
+                case 'customer_paid':
+                    $row[] = 'Оплачено заказчиком';
+                    break;
+                case 'customer_balance':
+                    $row[] = 'Баланс заказчика';
+                    break;
+                case 'provider_paid':
+                    $row[] = 'Оплачено поставщику';
+                    break;
+                case 'provider_balance':
+                    $row[] = 'Баланс поставщика';
+                    break;
+                case 'margin_sum':
+                    $row[] = 'Маржа, сумма';
+                    break;
+                case 'margin_percent':
+                    $row[] = 'Маржа, %';
+                    break;
+            }
+        }
+        $tableData[] = $row;
+        unset($row);
+
+        $criteria = [];
+        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+            $criteria['manager'] = $this->getUser();
+        }
+        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC']);
+
+        if (!$this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+            $managersById = $em->getRepository('AppBundle:User')->getManagersById();
+        } else {
+            $managersById = [];
+        }
+
+        $rowIndex = 2;
+        foreach ($timetableRows as $timetableRow) {
+            $manager = $timetableRow->getManager();
+            $customer = $timetableRow->getCustomer();
+            $provider = $timetableRow->getProvider();
+
+            list(
+                $timetableRowTimes,
+                $sumTimes,
+                $customerSalary,
+                $providerSalary,
+                $customerBalance,
+                $providerBalance,
+                $marginSum,
+                $marginPercent,
+                $customerPaid,
+                $providerPaid,
+                ) = array_values($timetableHelper->calculateRowData($timetable, $timetableRow));
+
+            $row = [];
+            foreach ($columns as $index => $column) {
+                switch ($column) {
+                    case 'manager':
+                        $value = $managersById[$manager->getId()];
+                        break;
+                    case 'customer':
+                        $value = $customer->getName();
+                        break;
+                    case 'provider':
+                        if ($provider) {
+                            $value = $provider->getName();
+                        } else {
+                            $value = null;
+                        }
+
+                        $sheet
+                            ->getStyleByColumnAndRow($index, $rowIndex)
+                            ->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()->setRGB('EEEEEE')
+                        ;
+                        break;
+                    case 'object':
+                        $value = $timetableRow->getObject();
+                        break;
+                    case 'mechanism':
+                        $value = $timetableRow->getMechanism();
+                        break;
+                    case 'comment':
+                        $value = $timetableRow->getComment();
+                        break;
+                    case 'price_for_customer':
+                        $value = $timetableRow->getPriceForCustomer();
+                        break;
+                    case 'price_for_provider':
+                        $value = $timetableRow->getPriceForProvider();
+
+                        $sheet
+                            ->getStyleByColumnAndRow($index, $rowIndex)
+                            ->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()->setRGB('EEEEEE')
+                        ;
+                        break;
+                    case 'sum_times':
+                        $value = $sumTimes;
+                        break;
+                    case 'times':
+                        $value = '';
+                        /** @var TimetableRowTimes $timetableRowTimes */
+                        $colors = $timetableRowTimes->getColors();
+                        foreach ($timetableRowTimes->getTimes() as $i => $time) {
+                            $row[$column.'_'.$i] = $time;
+
+                            switch ($colors[$i]) {
+                                case 'yellow':
+                                    $color = 'FFFF00';
+                                    break;
+                                case 'green':
+                                    $color = '008000';
+                                    break;
+                                case 'blue':
+                                    $color = 'ADD8E6';
+                                    break;
+                                case 'purple':
+                                    $color = 'cb00cb';
+                                    break;
+                                default:
+                                    $color = null;
+                            }
+
+                            if ($color) {
+                                $sheet
+                                    ->getStyleByColumnAndRow($index + $i, $rowIndex)
+                                    ->getFill()
+                                    ->setFillType(Fill::FILL_SOLID)
+                                    ->getStartColor()->setRGB($color)
+                                ;
+                            }
+                        }
+                        break;
+                    case 'customer_salary':
+                        $value = $customerSalary;
+                        break;
+                    case 'provider_salary':
+                        $value = $providerSalary;
+
+                        $sheet
+                            ->getStyleByColumnAndRow($index + 31, $rowIndex)
+                            ->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()->setRGB('EEEEEE')
+                        ;
+                        break;
+                    case 'customer_paid':
+                        $value = $customerPaid;
+                        break;
+                    case 'provider_paid':
+                        $value = $providerPaid;
+
+                        $sheet
+                            ->getStyleByColumnAndRow($index + 31, $rowIndex)
+                            ->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()->setRGB('EEEEEE')
+                        ;
+                        break;
+                    case 'customer_balance':
+                        $value = $customerBalance;
+
+                        if ($customerBalance < 0) {
+                            $sheet
+                                ->getStyleByColumnAndRow($index + 31, $rowIndex)
+                                ->getFill()
+                                ->setFillType(Fill::FILL_SOLID)
+                                ->getStartColor()->setRGB('ff0000')
+                            ;
+                        }
+                        break;
+                    case 'provider_balance':
+                        $value = $providerBalance;
+
+                        if ($providerBalance < 0) {
+                            $sheet
+                                ->getStyleByColumnAndRow($index + 31, $rowIndex)
+                                ->getFill()
+                                ->setFillType(Fill::FILL_SOLID)
+                                ->getStartColor()->setRGB('FFC0CB')
+                            ;
+                        } else {
+                            $sheet
+                                ->getStyleByColumnAndRow($index + 31, $rowIndex)
+                                ->getFill()
+                                ->setFillType(Fill::FILL_SOLID)
+                                ->getStartColor()->setRGB('EEEEEE')
+                            ;
+                        }
+                        break;
+                    case 'margin_sum':
+                        $value = $marginSum;
+                        break;
+                    case 'margin_percent':
+                        $value = $marginPercent;
+                        break;
+                    default:
+                        $value = '';
+                }
+
+                if ($column !== 'times') {
+                    $row[$column] = $value;
+                }
+            }
+
+            $tableData[$rowIndex++] = $row;
+        }
+
+        $sheet->fromArray($tableData);
+
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="file.xls"');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+
+        return new Response();
     }
 }

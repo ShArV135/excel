@@ -239,6 +239,18 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getAbbrFullName()
+    {
+        $firstname = $this->getFirstName() ?: '';
+        $lastname = $this->getLastname() ?: '';
+        $surname = $this->getSurname() ?: '';
+
+        return mb_substr($lastname, 0, 1).mb_substr($firstname, 0, 1).mb_substr($surname, 0, 1);
+    }
+
+    /**
      * Returns the salt that was originally used to encode the password.
      *
      * This can return null if the password was not encoded using a salt.

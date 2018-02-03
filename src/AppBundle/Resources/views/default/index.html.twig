@@ -25,6 +25,9 @@
             <a class="btn btn-success" href="{{ path('timetable_payment_create', {'timetable': timetable.id}) }}">
                 Добавить оплату
             </a>
+            <a class="btn btn-default" href="{{ path('timetable_export', {'timetable': timetable.id, 'show': view_mode}) }}">
+                Экспорт
+            </a>
             {% if is_granted('ROLE_GENERAL_MANAGER') %}
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Изменить вид
