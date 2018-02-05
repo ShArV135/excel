@@ -295,6 +295,7 @@ class TimetableController extends Controller
         }
 
         $rowIndex = 2;
+        /** @var TimetableRow $timetableRow */
         foreach ($timetableRows as $timetableRow) {
             $manager = $timetableRow->getManager();
             $customer = $timetableRow->getCustomer();
@@ -422,7 +423,7 @@ class TimetableController extends Controller
                         ;
                         break;
                     case 'customer_balance':
-                        $value = $customerBalance;
+                        $value = (string) $customerBalance;
 
                         if ($customerBalance < 0) {
                             $sheet
@@ -434,7 +435,7 @@ class TimetableController extends Controller
                         }
                         break;
                     case 'provider_balance':
-                        $value = $providerBalance;
+                        $value = (string) $providerBalance;
 
                         if ($providerBalance < 0) {
                             $sheet
@@ -453,10 +454,10 @@ class TimetableController extends Controller
                         }
                         break;
                     case 'margin_sum':
-                        $value = $marginSum;
+                        $value = (string) $marginSum;
                         break;
                     case 'margin_percent':
-                        $value = $marginPercent;
+                        $value = (string) $marginPercent;
                         break;
                     default:
                         $value = '';

@@ -133,6 +133,10 @@
     border: 0;
 }
 
+.timetable .times-comment.text-muted {
+    color: #eee !important;
+}
+
 .bg-red {
     background: #ff0000 !important;
 }
