@@ -30,6 +30,7 @@ class TimetableRepository extends EntityRepository
                 'to' => clone $date->modify('last day of'),
             ])
             ->orderBy('timetable.id', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
