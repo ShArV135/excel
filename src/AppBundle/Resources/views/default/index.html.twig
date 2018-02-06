@@ -267,6 +267,8 @@
 
                             $item = $input.prev('div.times-item');
                             $item.text(value);
+
+                            $('#timetable').bootstrapTable('refresh', { silent: true });
                         } else {
                             $input.val(oldValue);
                         }
