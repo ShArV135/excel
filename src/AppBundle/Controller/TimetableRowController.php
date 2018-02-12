@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Form\TimetableRowType;
 use AppBundle\Security\TimetableRowVoter;
@@ -14,13 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
 class TimetableRowController extends Controller
 {
     /**
-     * @Route("/timetable-row/create", name="timetable_row_create")
-     * @param Request $request
+     * @Route("/timetable/{timetable}/timetable-row/create", name="timetable_row_create", requirements={"timetable"="\d+"})
+     * @param Request   $request
+     * @param Timetable $timetable
      * @return RedirectResponse|Response
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, Timetable $timetable)
     {
         $timetableRow = new TimetableRow();
+        $timetableRow->setTimetable($timetable);
 
         $form = $this->getForm($timetableRow);
         $form->handleRequest($request);

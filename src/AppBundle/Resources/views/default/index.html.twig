@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="btn-group pull-right" role="group">
-            <a class="btn btn-primary" href="{{ path('timetable_row_create') }}">
+            <a class="btn btn-primary" href="{{ path('timetable_row_create', {'timetable': timetable.id}) }}">
                 Добавить запись
             </a>
             <a class="btn btn-success" href="{{ path('timetable_payment_create', {'timetable': timetable.id}) }}">

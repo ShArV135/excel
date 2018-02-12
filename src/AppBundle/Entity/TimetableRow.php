@@ -23,6 +23,15 @@ class TimetableRow
     private $id;
 
     /**
+     * @var Timetable
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Timetable", inversedBy="rows")
+     * @ORM\JoinColumn(name="timetable_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\NotBlank()
+     */
+    private $timetable;
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
@@ -93,6 +102,25 @@ class TimetableRow
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return Timetable
+     */
+    public function getTimetable()
+    {
+        return $this->timetable;
+    }
+
+    /**
+     * @param Timetable $timetable
+     * @return TimetableRow
+     */
+    public function setTimetable($timetable)
+    {
+        $this->timetable = $timetable;
+
+        return $this;
     }
 
     /**

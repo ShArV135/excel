@@ -50,12 +50,9 @@ class TimetableRowTimesController extends Controller
         $timetableRowTimes->setTimes($times);
         $this->getDoctrine()->getManager()->flush();
 
-        $timetable = $timetableRowTimes->getTimetable();
-        $timetableRow = $timetableRowTimes->getTimetableRow();
-
         return new JsonResponse([
             'status' => 'OK',
-            'data' => $this->get('timetable.helper')->calculateRowData($timetable, $timetableRow),
+            'data' => $this->get('timetable.helper')->calculateRowData($timetableRowTimes->getTimetableRow()),
         ]);
     }
 

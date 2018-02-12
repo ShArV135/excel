@@ -17,15 +17,13 @@ use Doctrine\ORM\EntityRepository;
 class TimetableRowTimesRepository extends EntityRepository
 {
     /**
-     * @param Timetable    $timetable
      * @param TimetableRow $timetableRow
      * @return TimetableRowTimes
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function getTimesOrCreate(Timetable $timetable, TimetableRow $timetableRow)
+    public function getTimesOrCreate(TimetableRow $timetableRow)
     {
         $times = $this->findOneBy([
-            'timetable' => $timetable,
             'timetableRow' => $timetableRow,
         ]);
 
@@ -33,7 +31,6 @@ class TimetableRowTimesRepository extends EntityRepository
             $em = $this->getEntityManager();
 
             $times = new TimetableRowTimes();
-            $times->setTimetable($timetable);
             $times->setTimetableRow($timetableRow);
 
             $em->persist($times);
@@ -49,14 +46,14 @@ class TimetableRowTimesRepository extends EntityRepository
 
         $timetables = $em->getRepository('AppBundle:Timetable')->getAllPrevious($timetable);
 
-        if ($contractor->getType() == Contractor::PROVIDER) {
-            $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy(['provider' => $contractor]);
-        } else {
-            $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy(['customer' => $contractor]);
-        }
+        $criteria = [
+            'timetable' => $timetables,
+            $contractor->getType() => $contractor
+        ];
+
+        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria);
 
         $timetableRowTimes = $this->findBy([
-            'timetable' => $timetables,
             'timetableRow' => $timetableRows,
         ]);
 

@@ -16,19 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 class TimetableController extends Controller
 {
     /**
-     * @Route("/timetable-create", name="timetable_create")
-     * @return Response
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function createAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->getRepository('AppBundle:Timetable')->create();
-
-        return $this->redirectToRoute('homepage');
-    }
-
-    /**
      * @param Timetable $timetable
      * @Route("/timetable/{timetable}/data", name="timetable_data")
      * @return JsonResponse
@@ -39,7 +26,9 @@ class TimetableController extends Controller
         $em = $this->getDoctrine()->getManager();
         $timetableHelper = $this->get('timetable.helper');
 
-        $criteria = [];
+        $criteria = [
+            'timetable' => $timetable,
+        ];
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
             $criteria['manager'] = $this->getUser();
         }
@@ -86,7 +75,7 @@ class TimetableController extends Controller
                 $marginPercent,
                 $customerPaid,
                 $providerPaid,
-                ) = array_values($this->get('timetable.helper')->calculateRowData($timetable, $timetableRow));
+                ) = array_values($this->get('timetable.helper')->calculateRowData($timetableRow));
 
             foreach ($columns as $column) {
                 switch ($column) {
@@ -282,7 +271,9 @@ class TimetableController extends Controller
         $tableData[] = $row;
         unset($row);
 
-        $criteria = [];
+        $criteria = [
+            'timetable' => $timetable,
+        ];
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
             $criteria['manager'] = $this->getUser();
         }
@@ -312,7 +303,7 @@ class TimetableController extends Controller
                 $marginPercent,
                 $customerPaid,
                 $providerPaid,
-                ) = array_values($timetableHelper->calculateRowData($timetable, $timetableRow));
+                ) = array_values($timetableHelper->calculateRowData($timetableRow));
 
             $row = [];
             foreach ($columns as $index => $column) {

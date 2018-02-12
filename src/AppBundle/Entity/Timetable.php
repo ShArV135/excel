@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,11 +30,23 @@ class Timetable
     private $name;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TimetableRow", mappedBy="timetable")
+     */
+    private $rows;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created", type="date", length=255, nullable=true)
      */
     private $created;
+
+    public function __construct()
+    {
+        $this->rows = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -67,6 +80,25 @@ class Timetable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRows()
+    {
+        return $this->rows;
+    }
+
+    /**
+     * @param ArrayCollection $rows
+     * @return Timetable
+     */
+    public function setRows($rows)
+    {
+        $this->rows = $rows;
+
+        return $this;
     }
 
     /**

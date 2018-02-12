@@ -43,14 +43,6 @@
                     <li><p class="navbar-text">{{ app.user.username }}</p></li>
                     <li><a href="{{ path('logout') }}">Выход</a></li>
                 </ul>
-                <div class="nav navbar-nav navbar-right">
-                    <a href="javascript: void(0)"
-                       onclick="deleteConfirm('{{ path('timetable_create') }}')"
-                       class="btn btn-success navbar-btn"
-                    >
-                        Создать табель
-                    </a>
-                </div>
             </div>
         </nav>
         <div class="container-fluid" style="margin-top: 50px;">

@@ -16,9 +16,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-cache-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-migrations-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/inflector" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/lexer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/orm" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fezvrasta/popper" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fig/link-util" />
@@ -32,6 +34,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/kriswallsmith/assetic" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/makeusabrew/bootbox" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ocramius/package-versions" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ocramius/proxy-manager" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/phpspreadsheet" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />
@@ -60,6 +64,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/wenzhixin/bootstrap-table" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/jsonp-callback-validator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/zendframework/zend-code" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/zendframework/zend-eventmanager" />
       <excludeFolder url="file://$MODULE_DIR$/web/assets" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -3,7 +3,6 @@
 namespace AppBundle\Security;
 
 use AppBundle\Entity\Timetable;
-use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
