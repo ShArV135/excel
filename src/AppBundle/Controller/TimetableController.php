@@ -108,13 +108,13 @@ class TimetableController extends Controller
                         $value = $timetableRow->getComment();
                         break;
                     case 'price_for_customer':
-                        $value = $timetableRow->getPriceForCustomer();
+                        $value = number_format($timetableRow->getPriceForCustomer(), 0, '.', ' ');
                         break;
                     case 'price_for_provider':
-                        $value = $timetableRow->getPriceForProvider();
+                        $value = number_format($timetableRow->getPriceForProvider(), 0, '.', ' ');
                         break;
                     case 'sum_times':
-                        $value = $sumTimes;
+                        $value = number_format($sumTimes, 0, '.', ' ');
                         break;
                     case 'times':
                         /** @var TimetableRowTimes $timetableRowTimes */
@@ -142,36 +142,36 @@ class TimetableController extends Controller
                         $value = $timetableRowTimes;
                         break;
                     case 'customer_salary':
-                        $value = $customerSalary;
+                        $value = number_format($customerSalary, 0, '.', ' ');
                         break;
                     case 'provider_salary':
-                        $value = $providerSalary;
+                        $value = number_format($providerSalary, 0, '.', ' ');
                         break;
                     case 'customer_paid':
-                        $value = $customerPaid;
+                        $value = number_format($customerPaid, 0, '.', ' ');
                         break;
                     case 'provider_paid':
-                        $value = $providerPaid;
+                        $value = number_format($providerPaid, 0, '.', ' ');
                         break;
                     case 'customer_balance':
-                        $value = $customerBalance;
+                        $value = number_format($customerBalance, 0, '.', ' ');
 
                         if ($customerBalance < 0) {
                             $row['_customer_balance_class'] = 'customer_balance bg-red text-white';
                         }
                         break;
                     case 'provider_balance':
-                        $value = $providerBalance;
+                        $value = number_format($providerBalance, 0, '.', ' ');
 
                         if ($providerBalance < 0) {
                             $row['_provider_balance_class'] = 'provider_balance bg-pink';
                         }
                         break;
                     case 'margin_sum':
-                        $value = $marginSum;
+                        $value = number_format($marginSum, 0, '.', ' ');
                         break;
                     case 'margin_percent':
-                        $value = $marginPercent;
+                        $value = number_format($marginPercent, 2, '.', ' ');
                         break;
                     default:
                         $value = '';

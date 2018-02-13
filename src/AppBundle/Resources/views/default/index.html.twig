@@ -96,6 +96,9 @@
             </tr>
             </thead>
         </table>
+        <div class="loader-overflow">
+            <div class="loader"></div>
+        </div>
     </div>
 {% endblock %}
 
@@ -109,6 +112,14 @@
             var offset = $('#timetable_container').offset();
             var height = $(window).height() - offset.top;
             var tmpCustomer = '';
+
+            var showLoader = function() {
+                $('.loader-overflow').show();
+            };
+
+            var hideLoader = function() {
+                $('.loader-overflow').hide();
+            };
 
             cellFormatter = function(value, row, index, field) {
                 if (!field) {
@@ -180,12 +191,14 @@
                 },
                 onPostBody: function () {
                     setTimeout(function() {
+                        hideLoader();
+
                         $('.tt-tooltip').tooltip({
                             trigger: 'click',
                             container: 'body'
                         });
 
-                        $('.timetable .times-comment').editable({
+                        $('#timetable .times-comment').editable({
                             container: 'body',
                             display: function() {
                                 return '';
@@ -206,10 +219,9 @@
                 }
             });
 
-            $(document).on('blur', '.timetable .times-input', function() {
+            $(document).on('blur', '#timetable .times-input', function() {
                 var $input = $(this);
                 var $td = $input.parent('td');
-                var $tr = $input.closest('tr');
 
                 var id = $td.data('id');
                 var day = $td.data('day');
@@ -225,17 +237,6 @@
                     return;
                 }
 
-                var rowId = $tr.data('row');
-                var customerId = $tr.data('customer-id');
-                var $trById = $('[data-row="' + rowId + '"]');
-                var $trByCustomer = $('[data-customer-id="' + customerId + '"]');
-
-                var providerId = $tr.data('provider-id');
-                var $trByProvider = null;
-                if (providerId) {
-                    $trByProvider = $('[data-provider-id="' + providerId + '"]');
-                }
-
                 $.ajax({
                     type: 'POST',
                     url: Routing.generate('timetable_row_times_update', {'timetableRowTimes': id}),
@@ -244,40 +245,21 @@
                         value: value
                     },
                     beforeSend: function() {
-                        $('.timetable .times-input').attr('disabled', 'disabled');
+                        showLoader();
                     },
                     success: function(response) {
                         if (response.status === 'OK') {
                             $input.data('value', value);
 
-                            var data = response.data;
-
-                            $('td.sum_times', $trById).text(data.sum_times);
-                            $('td.customer_salary', $trById).text(data.customer_salary);
-                            $('td.provider_salary', $trById).text(data.provider_salary);
-                            $('td.margin_sum', $trById).text(data.margin_sum);
-                            $('td.margin_percent', $trById).text(data.margin_percent);
-                            $('td.customer_balance', $trByCustomer).text(data.customer_balance);
-                            $('td.customer_paid', $trByCustomer).text(data.customer_paid);
-
-                            if ($trByProvider) {
-                                $('td.provider_balance', $trByProvider).text(data.provider_balance);
-                                $('td.provider_paid', $trByProvider).text(data.provider_paid);
-                            }
-
-                            $item = $input.prev('div.times-item');
-                            $item.text(value);
-
                             $('#timetable').bootstrapTable('refresh', { silent: true });
                         } else {
                             $input.val(oldValue);
+                            hideLoader();
                         }
                     },
                     error: function () {
                         $input.val(oldValue);
-                    },
-                    complete: function() {
-                        $('.timetable .times-input').removeAttr('disabled');
+                        hideLoader();
                     }
                 });
             });
@@ -286,8 +268,8 @@
                 $(this).addClass('hidden');
                 $(this).nextAll('.btn').removeClass('hidden');
 
-                $('.timetable .times-input').addClass('hidden');
-                $('.timetable .times-item').removeClass('hidden');
+                $('#timetable .times-input').addClass('hidden');
+                $('#timetable .times-item').removeClass('hidden');
             });
 
             $('.selectable-close').click(function() {
@@ -295,8 +277,8 @@
                 $(this).prevAll('.btn').addClass('hidden');
                 $('.selectable-start').removeClass('hidden');
 
-                $('.timetable .times-input').removeClass('hidden');
-                $('.timetable .times-item').addClass('hidden');
+                $('#timetable .times-input').removeClass('hidden');
+                $('#timetable .times-item').addClass('hidden');
             });
 
             $('.selectable-color').click(function() {

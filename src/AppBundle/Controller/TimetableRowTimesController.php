@@ -52,7 +52,6 @@ class TimetableRowTimesController extends Controller
 
         return new JsonResponse([
             'status' => 'OK',
-            'data' => $this->get('timetable.helper')->calculateRowData($timetableRowTimes->getTimetableRow()),
         ]);
     }
 
