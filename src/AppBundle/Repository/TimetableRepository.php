@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Timetable;
+use AppBundle\Entity\TimetableRow;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -25,9 +26,11 @@ class TimetableRepository extends EntityRepository
         $date = new \DateTime();
 
         $timetable = $qb
+            ->andWhere($qb->expr()->gte('timetable.created', ':from'))
             ->andWhere($qb->expr()->lte('timetable.created', ':to'))
             ->setParameters([
                 'to' => clone $date->modify('last day of'),
+                'from' => clone $date->modify('first day of'),
             ])
             ->orderBy('timetable.id', 'DESC')
             ->setMaxResults(1)
@@ -78,7 +81,7 @@ class TimetableRepository extends EntityRepository
         $lastTimetable = $this->findOneBy([], ['created' => 'DESC']);
         if ($lastTimetable) {
             $created = clone $lastTimetable->getCreated();
-            $created->modify('+1 month');
+            $created->modify('first day of')->modify('+1 month');
         } else {
             $created  = new \DateTime();
         }
@@ -91,6 +94,15 @@ class TimetableRepository extends EntityRepository
             ->setName($name)
             ->setCreated($created)
         ;
+
+        /** @var TimetableRow $row */
+        foreach ($lastTimetable->getRows() as $row) {
+            $em->detach($row);
+
+            $row->setTimetable($timetable);
+            $em->persist($row);
+            $timetable->getRows()->add($row);
+        }
 
         $em->persist($timetable);
         $em->flush();
