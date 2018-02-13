@@ -29,8 +29,8 @@ class TimetableRepository extends EntityRepository
             ->andWhere($qb->expr()->gte('timetable.created', ':from'))
             ->andWhere($qb->expr()->lte('timetable.created', ':to'))
             ->setParameters([
-                'to' => clone $date->modify('last day of'),
-                'from' => clone $date->modify('first day of'),
+                'to' => clone $date->modify('last day of')->setTime(0, 0),
+                'from' => clone $date->modify('first day of')->setTime(0, 0),
             ])
             ->orderBy('timetable.id', 'DESC')
             ->setMaxResults(1)
