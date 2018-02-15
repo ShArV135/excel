@@ -46,7 +46,8 @@ class DefaultController extends Controller
         $show = $timetableHelper->getShowMode();
         $columns = $timetableHelper->getColumnsByShow($show);
         $numOfFixed = count(array_intersect($columns, $fixedColumns));
-        if (!$this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+
+        if (in_array('manager', $columns)) {
             $managersByFio = $em->getRepository('AppBundle:User')->getManagersByFio();
         } else {
             $managersByFio = [];

@@ -28,8 +28,9 @@ class ContractorType extends AbstractType
                     EntityType::class,
                     [
                         'label' => 'Менеджер по продажам',
+                        'attr' => ['class' => 'select2me'],
                         'class' => User::class,
-                        'choice_label' => 'username',
+                        'choice_label' => 'fullname',
                         'query_builder' => function(EntityRepository $repository) {
                             $qb = $repository->createQueryBuilder('e');
                             return $qb

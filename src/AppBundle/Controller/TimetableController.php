@@ -37,7 +37,8 @@ class TimetableController extends Controller
 
         $show = $timetableHelper->getShowMode();
         $columns = $timetableHelper->getColumnsByShow($show);
-        if (!$this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+
+        if (in_array('manager', $columns)) {
             $managersById = $em->getRepository('AppBundle:User')->getManagersById();
         } else {
             $managersById = [];

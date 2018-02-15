@@ -47,6 +47,7 @@ class TimetableRowType extends AbstractType
                 [
                     'label' => 'Заказчик',
                     'class' => Contractor::class,
+                    'attr' => ['class' => 'select2me'],
                     'choice_label' => 'name',
                     'query_builder' => function(EntityRepository $repository) use ($options) {
                         $qb = $repository->createQueryBuilder('e');
@@ -78,6 +79,7 @@ class TimetableRowType extends AbstractType
                     [
                         'label' => 'Менеджер по продажам',
                         'class' => User::class,
+                        'attr' => ['class' => 'select2me'],
                         'choice_label' => 'fullname',
                         'query_builder' => function(EntityRepository $repository) {
                             $qb = $repository->createQueryBuilder('e');
@@ -107,6 +109,7 @@ class TimetableRowType extends AbstractType
                     [
                         'label' => 'Поставщик',
                         'class' => Contractor::class,
+                        'attr' => ['class' => 'select2me'],
                         'choice_label' => 'name',
                         'query_builder' => function(EntityRepository $repository) use ($options) {
                             $qb = $repository->createQueryBuilder('e');

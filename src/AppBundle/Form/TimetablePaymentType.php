@@ -16,6 +16,8 @@ class TimetablePaymentType extends PaymentType
         $builder->add('contractor', EntityType::class, [
             'label' => 'Контрактор',
             'class' => Contractor::class,
+            'attr' => ['class' => 'select2me'],
+            'required' => false,
             'choice_label' => 'name',
             'query_builder' => $options['contractors_qb'],
         ]);

@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +49,26 @@ class ContractorController extends Controller
                 break;
         }
 
-        $filterForm = $this->createFormBuilder(null, ['method' => 'GET', 'csrf_protection' => false]);
+        $filterForm = $this->createFormBuilder(
+            null,
+            [
+                'action' => $this->generateUrl('contractor_list'),
+                'method' => 'GET',
+                'csrf_protection' => false
+            ]
+        );
+
+        $filterForm
+            ->add(
+                'keyword',
+                TextType::class,
+                [
+                    'attr' => [
+                        'placeholder' => 'Название или ИНН',
+                    ],
+                ]
+            )
+        ;
 
         if (
             !$this->isGranted('ROLE_CUSTOMER_MANAGER')
@@ -74,6 +94,7 @@ class ContractorController extends Controller
                         'required' => false,
                         'label' => 'Менеджер по продажам',
                         'class' => User::class,
+                        'attr' => ['class' => 'select2me'],
                         'choice_label' => 'fullname',
                         'query_builder' => function(EntityRepository $repository) {
                             $qb = $repository->createQueryBuilder('e');
@@ -94,6 +115,12 @@ class ContractorController extends Controller
 
         if ($filterForm->isValid()) {
             $data = $filterForm->getData();
+            if (!empty($data['keyword'])) {
+                $qb
+                    ->andWhere($qb->expr()->like('LOWER(CONCAT(contractor.name, contractor.inn))', ':keyword'))
+                    ->setParameter('keyword', '%'.strtolower($data['keyword']).'%')
+                ;
+            }
             if (!empty($data['type'])) {
                 $qb
                     ->andWhere($qb->expr()->eq('contractor.type', ':type'))
@@ -254,15 +281,19 @@ class ContractorController extends Controller
      * @Route("/contractors/{contractor}/view", name="contractor_view", requirements={"contractor"="\d+"})
      * @param Contractor $contractor
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function viewAction(Contractor $contractor)
     {
         $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
+        $timetable = $this->getDoctrine()->getManager()->getRepository('AppBundle:Timetable')->getCurrent();
 
         return $this->render(
             '@App/contractor/view.html.twig',
             [
                 'contractor' => $contractor,
+                'balance' => $this->get('timetable.helper')->contractorBalance($contractor, $timetable)
             ]
         );
     }

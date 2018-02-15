@@ -12,3 +12,7 @@ textarea.noresize {
 .form-inline .form-group {
     margin-right: 10px;
 }
+
+.invalid-feedback {
+    color: red;
+}

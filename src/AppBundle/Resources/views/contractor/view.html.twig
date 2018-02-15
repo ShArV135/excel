@@ -27,14 +27,21 @@
                     <div class="row">
                         {% if contractor.manager %}
                             <div class="col-md-6">
-                                <p><b>Менеджер:</b> {{ contractor.manager.username }}</p>
+                                <p><b>Менеджер:</b> {{ contractor.manager.fullName }}</p>
                             </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading"><h4>Оплата</h4></div>
+                <div class="panel-heading">
+                    <h4>
+                        Оплата
+                        <div class="pull-right">
+                            <span class="label {{ balance > 0 ? 'label-success' : 'label-danger' }}">Баланс: {{ balance|number_format(2, '.', ' ')  }}</span>
+                        </div>
+                    </h4>
+                </div>
                 <div class="panel-body">
                     <table class="table">
                         <thead>

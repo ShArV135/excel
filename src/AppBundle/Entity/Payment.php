@@ -27,6 +27,8 @@ class Payment
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Contractor", inversedBy="payments")
      * @ORM\JoinColumn(name="contractor_id", referencedColumnName="id")
+     *
+     * @Assert\NotBlank()
      */
     private $contractor;
 

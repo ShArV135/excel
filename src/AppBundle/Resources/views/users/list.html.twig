@@ -26,7 +26,7 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td><a href="{{ path('user_update', {'user': user.id}) }}">{{ user.username }}</a></td>
-                    <td>{{ [user.lastname, user.firstname, user.surname]|join(' ') }}</td>
+                    <td>{{ user.fullname }}</td>
                     <td>
                         {% for role in user.roles %}
                             {% if role == 'ROLE_CUSTOMER_MANAGER' %}

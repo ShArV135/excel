@@ -5,11 +5,14 @@
 {% block body %}
     <div class="container">
         {% if form.children|length > 0 %}
-            {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+            <div class="row" style="margin-bottom: 20px;">
+                {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+                {{ form_widget(form.keyword) }}
                 {{ form_rest(form) }}
                 <button class="btn btn-primary form-control" type="submit">Фильтр</button>
                 <a href="{{ path('contractor_list') }}">Сбросить</a>
-            {{ form_end(form) }}
+                {{ form_end(form) }}
+            </div>
         {% endif %}
         <div class="row">
             <div class="btn-group pull-right" role="group">

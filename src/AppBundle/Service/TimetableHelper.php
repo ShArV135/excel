@@ -2,7 +2,9 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Payment;
+use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -42,14 +44,14 @@ class TimetableHelper
         $customer = $timetableRow->getCustomer();
         $provider = $timetableRow->getProvider();
 
-        $customerPayments = $paymentRepository->getByContractorAndDate($customer, clone $timetable->getCreated()->modify('last day of'));
+        $customerPayments = $paymentRepository->getByContractorAndTimetable($customer, $timetable);
         $customerPaid = 0;
         /** @var Payment $payment */
         foreach ($customerPayments as $payment) {
             $customerPaid += $payment->getAmount();
         }
 
-        $providerPayments = $paymentRepository->getByContractorAndDate($customer, clone $timetable->getCreated()->modify('last day of'));
+        $providerPayments = $paymentRepository->getByContractorAndTimetable($customer, $timetable);
         $providerPaid = 0;
         /** @var Payment $payment */
         foreach ($providerPayments as $payment) {
@@ -62,10 +64,10 @@ class TimetableHelper
         $customerSalary = $timetableRow->getPriceForCustomer() * $sumTimes;
         $providerSalary = $timetableRow->getPriceForProvider() * $sumTimes;
         $marginSum = $customerSalary - $providerSalary;
-        $customerBalance = $customerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $customer);
+        $customerBalance = $this->contractorBalance($customer, $timetable);
 
         if ($provider) {
-            $providerBalance = $providerPaid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $provider);
+            $providerBalance = $this->contractorBalance($provider, $timetable);
         } else {
             $providerBalance = 0;
         }
@@ -90,6 +92,28 @@ class TimetableHelper
             'customer_id' => $customer->getId(),
             'provider_id' => $provider ? $provider->getId() : null,
         ];
+    }
+
+    /**
+     * @param Contractor $contractor
+     * @param Timetable  $timetable
+     * @return float|int
+     */
+    public function contractorBalance(Contractor $contractor, Timetable $timetable)
+    {
+        $timetableRowTimesRepository = $this->entityManager->getRepository('AppBundle:TimetableRowTimes');
+        $paymentRepository = $this->entityManager->getRepository('AppBundle:Payment');
+
+        $payments = $paymentRepository->getByContractorAndDate($contractor, clone $timetable->getCreated()->modify('last day of'));
+        $paid = 0;
+        /** @var Payment $payment */
+        foreach ($payments as $payment) {
+            $paid += $payment->getAmount();
+        }
+
+        $balance = $paid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $contractor);
+
+        return $balance;
     }
 
     /**
@@ -127,7 +151,6 @@ class TimetableHelper
         switch ($show) {
             case 'customer_manager':
                 $columns = [
-                    'manager',
                     'customer',
                     'object',
                     'mechanism',
