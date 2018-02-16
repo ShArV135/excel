@@ -46,7 +46,7 @@ class Timetable
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="updated", type="datetime")
      */
     private $updated;
 
