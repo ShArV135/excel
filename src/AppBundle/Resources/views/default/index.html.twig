@@ -251,7 +251,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('timetable_row_times_update', {'timetableRowTimes': id, 'show': '{{ 'view_mode'}}'}),
+                    url: Routing.generate('timetable_row_times_update', {'timetableRowTimes': id, 'show': '{{ view_mode}}'}),
                     data: {
                         day: day,
                         value: value
