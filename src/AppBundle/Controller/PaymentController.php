@@ -118,6 +118,29 @@ class PaymentController extends Controller
                 'form' => $form->createView(),
             ]
         );
+    }
 
+    /**
+     * @Route("/payments/{payment}/delete", name="payment_delete", requirements={"payment"="\d+"})
+     * @param Payment $payment
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function deleteAction(Payment $payment, Request $request)
+    {
+        $this->denyAccessUnlessGranted(ContractorVoter::DELETE, $payment->getContractor());
+
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($payment);
+            $em->flush();
+            $this->addFlash('success', 'Оплата удалена.');
+        } catch (\Exception $e) {
+            $this->addFlash('warning', 'При удалении возникла ошибка.');
+        }
+
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($request->get('redirect_url', $referer));
     }
 }

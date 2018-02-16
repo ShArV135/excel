@@ -68,7 +68,7 @@
                     {% elseif column == 'price_for_customer' %}
                         <th data-field="price_for_customer" data-formatter="cellFormatter" class="{{ class }}">Цена заказчику</th>
                     {% elseif column == 'price_for_provider' %}
-                        <th data-field="price_for_provider" data-formatter="cellFormatter" class="{{ class }} provider-cell">Цена поставщика</th>
+                        <th data-field="price_for_provider" data-formatter="cellFormatter" class="{{ class }} provider-cell">Цена постав-ка</th>
                     {% elseif column == 'sum_times' %}
                         <th data-field="sum_times" data-formatter="cellFormatter" class="{{ class }}">Сумма часов</th>
                     {% elseif column == 'times' %}
@@ -109,6 +109,9 @@
 {% block javascripts %} {{ parent() }}
     <script>
         $(function() {
+            var timetableId = '{{ timetable.id }}';
+            var timetableUpdated = '{{ timetable.updated.timestamp }}';
+
             var offset = $('#timetable_container').offset();
             var height = $(window).height() - offset.top;
             var tmpCustomer = '';
@@ -152,6 +155,7 @@
                     case 'object':
                     case 'mechanism':
                     case 'comment':
+                    case 'price_for_customer':
                         value = value || '';
                         return '<div class="tt-tooltip" title="' + value + '">' + value + '</div>';
                     case 'provider':
@@ -191,8 +195,6 @@
                 },
                 onPostBody: function () {
                     setTimeout(function() {
-                        hideLoader();
-
                         $('.tt-tooltip').tooltip({
                             trigger: 'click',
                             container: 'body'
@@ -222,6 +224,7 @@
             $(document).on('blur', '#timetable .times-input', function() {
                 var $input = $(this);
                 var $td = $input.parent('td');
+                var $tr = $input.closest('tr');
 
                 var id = $td.data('id');
                 var day = $td.data('day');
@@ -237,9 +240,18 @@
                     return;
                 }
 
+                var customerId = $tr.data('customer-id');
+                var $trByCustomer = $('[data-customer-id="' + customerId + '"]');
+
+                var providerId = $tr.data('provider-id');
+                var $trByProvider = null;
+                if (providerId) {
+                    $trByProvider = $('[data-provider-id="' + providerId + '"]');
+                }
+
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('timetable_row_times_update', {'timetableRowTimes': id}),
+                    url: Routing.generate('timetable_row_times_update', {'timetableRowTimes': id, 'show': '{{ 'view_mode'}}'}),
                     data: {
                         day: day,
                         value: value
@@ -250,8 +262,55 @@
                     success: function(response) {
                         if (response.status === 'OK') {
                             $input.data('value', value);
+                            var data = response.data;
 
-                            $('#timetable').bootstrapTable('refresh', { silent: true });
+
+                            $trByProvider.each(function () {
+                                index = $(this).data('index');
+
+                                $('#timetable').bootstrapTable('updateCell', {
+                                    index: index,
+                                    field: 'provider_balance',
+                                    value: data.provider_balance,
+                                    reinit: false
+                                });
+
+                                if (data._provider_balance_class) {
+                                    $('#timetable').bootstrapTable('updateCell', {
+                                        index: index,
+                                        field: '_provider_balance_class',
+                                        value: data._provider_balance_class,
+                                        reinit: false
+                                    });
+                                }
+                            });
+
+                            $trByCustomer.each(function () {
+                                index = $(this).data('index');
+
+                                $('#timetable').bootstrapTable('updateCell', {
+                                    index: index,
+                                    field: 'customer_balance',
+                                    value: data.customer_balance,
+                                    reinit: false
+                                });
+
+                                if (data._customer_balance_class) {
+                                    $('#timetable').bootstrapTable('updateCell', {
+                                        index: index,
+                                        field: '_customer_balance_class',
+                                        value: data._customer_balance_class,
+                                        reinit: false
+                                    });
+                                }
+                            });
+
+                            $('#timetable').bootstrapTable('updateRow', {
+                                index: $tr.data('index'),
+                                row: response.data
+                            });
+
+                            hideLoader();
                         } else {
                             $input.val(oldValue);
                             hideLoader();
@@ -318,6 +377,19 @@
                     }
                 });
             });
+
+            setInterval(function() {
+                $.ajax({
+                    url: Routing.generate('timetable_check_update', {timetable: timetableId, time: timetableUpdated}),
+                    success: function (response) {
+                        if (response !== 'OK') {
+                            timetableUpdated = response;
+
+                            $('#timetable').bootstrapTable('refresh', {silent: true});
+                        }
+                    }
+                });
+            }, 20000);
         });
     </script>
 {% endblock %}

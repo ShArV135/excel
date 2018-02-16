@@ -1209,70 +1209,72 @@
     <index id="297" parent="255" name="IDX_7907A13A53A8AA">
       <ColNames>provider_id</ColNames>
     </index>
-    <key id="298" parent="255" name="PRIMARY">
+    <index id="298" parent="255" name="IDX_7907A13CC306847">
+      <ColNames>timetable_id</ColNames>
+    </index>
+    <key id="299" parent="255" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="299" parent="255" name="FK_7907A13783E3463">
+    <foreign-key id="300" parent="255" name="FK_7907A13783E3463">
       <ColNames>manager_id</ColNames>
       <RefSchemaName>excel</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="300" parent="255" name="FK_7907A139395C3F3">
+    <foreign-key id="301" parent="255" name="FK_7907A139395C3F3">
       <ColNames>customer_id</ColNames>
       <RefSchemaName>excel</RefSchemaName>
       <RefTableName>contractor</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="301" parent="255" name="FK_7907A13A53A8AA">
+    <foreign-key id="302" parent="255" name="FK_7907A13A53A8AA">
       <ColNames>provider_id</ColNames>
       <RefSchemaName>excel</RefSchemaName>
       <RefTableName>contractor</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="302" parent="256" name="id">
+    <foreign-key id="303" parent="255" name="FK_7907A13CC306847">
+      <ColNames>timetable_id</ColNames>
+      <RefSchemaName>excel</RefSchemaName>
+      <RefTableName>timetable</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="304" parent="256" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="303" parent="256" name="timetable_id">
+    <column id="305" parent="256" name="timetable_row_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="304" parent="256" name="timetable_row_id">
+    <column id="306" parent="256" name="times">
       <Position>3</Position>
-      <DataType>int(11)|0</DataType>
+      <Comment>(DC2Type:array)</Comment>
+      <DataType>longtext|0</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="305" parent="256" name="times">
+    <column id="307" parent="256" name="comments">
       <Position>4</Position>
       <Comment>(DC2Type:array)</Comment>
       <DataType>longtext|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="306" parent="256" name="comments">
+    <column id="308" parent="256" name="colors">
       <Position>5</Position>
       <Comment>(DC2Type:array)</Comment>
       <DataType>longtext|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="307" parent="256" name="colors">
-      <Position>6</Position>
-      <Comment>(DC2Type:array)</Comment>
-      <DataType>longtext|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="308" parent="256" name="IDX_19C07D6ACC306847">
-      <ColNames>timetable_id</ColNames>
-    </index>
     <index id="309" parent="256" name="IDX_19C07D6A5DFEDA26">
       <ColNames>timetable_row_id</ColNames>
     </index>
@@ -1281,74 +1283,67 @@
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="311" parent="256" name="FK_19C07D6ACC306847">
-      <ColNames>timetable_id</ColNames>
-      <RefSchemaName>excel</RefSchemaName>
-      <RefTableName>timetable</RefTableName>
-      <RefColNames>id</RefColNames>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <foreign-key id="312" parent="256" name="FK_19C07D6A5DFEDA26">
+    <foreign-key id="311" parent="256" name="FK_19C07D6A5DFEDA26">
       <ColNames>timetable_row_id</ColNames>
       <RefSchemaName>excel</RefSchemaName>
       <RefTableName>timetable_row</RefTableName>
       <RefColNames>id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="313" parent="257" name="id">
+    <column id="312" parent="257" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="314" parent="257" name="username">
+    <column id="313" parent="257" name="username">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="315" parent="257" name="password">
+    <column id="314" parent="257" name="password">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="316" parent="257" name="roles">
+    <column id="315" parent="257" name="roles">
       <Position>4</Position>
       <Comment>(DC2Type:array)</Comment>
       <DataType>longtext|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="317" parent="257" name="firstname">
+    <column id="316" parent="257" name="firstname">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="318" parent="257" name="lastname">
+    <column id="317" parent="257" name="lastname">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="319" parent="257" name="surname">
+    <column id="318" parent="257" name="surname">
       <Position>7</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="320" parent="257" name="UNIQ_8D93D649F85E0677">
+    <index id="319" parent="257" name="UNIQ_8D93D649F85E0677">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="321" parent="257" name="PRIMARY">
+    <key id="320" parent="257" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="322" parent="257" name="UNIQ_8D93D649F85E0677">
+    <key id="321" parent="257" name="UNIQ_8D93D649F85E0677">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>UNIQ_8D93D649F85E0677</UnderlyingIndexName>
     </key>

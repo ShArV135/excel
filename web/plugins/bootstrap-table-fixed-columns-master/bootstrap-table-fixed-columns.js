@@ -26,7 +26,7 @@
 
         this.timeoutHeaderColumns_ = 0;
         this.$fixedHeader.find('table').attr('class', this.$el.attr('class'));
-        this.$fixedHeader.css('height', '78px');
+        this.$fixedHeader.css('height', '77px');
         this.$fixedHeaderColumns = this.$fixedHeader.find('thead');
         this.$tableHeader.before(this.$fixedHeader);
 
@@ -126,7 +126,10 @@
                 .find('.fht-cell').width($this.innerWidth());
             headerWidth += $this.outerWidth();
         });
-        this.$fixedHeader.width(headerWidth + 1).show();
+
+        if (headerWidth > 0) {
+            this.$fixedHeader.width(headerWidth + 1).show();
+        }
     };
 
     BootstrapTable.prototype.fitBodyColumns = function () {

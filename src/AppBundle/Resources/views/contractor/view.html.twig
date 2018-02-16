@@ -49,6 +49,7 @@
                             <th>Дата</th>
                             <th>Сумма</th>
                             <th>Комментарий</th>
+                            <th class="col-sm-1">&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -57,6 +58,7 @@
                                 <td>{{ payment.date|date('d.m.Y') }}</td>
                                 <td>{{ payment.amount }}</td>
                                 <td>{{ payment.comment }}</td>
+                                <td><a href="{{ path('payment_delete', {'payment': payment.id}) }}" class="btn-sm btn btn-danger">Удалить</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

@@ -37,7 +37,7 @@ class TimetableRowController extends Controller
 
                 $this->addFlash('success', 'Запись успешно добавлена.');
 
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('homepage', ['id' => $timetable->getId()]);
             } catch (\Exception $e) {
                 $this->addFlash('warning', 'При сохранении возникла ошибка.');
             }
@@ -73,7 +73,7 @@ class TimetableRowController extends Controller
 
                 $this->addFlash('success', 'Запись успешно изменена.');
 
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('homepage', ['id' => $timetableRow->getTimetable()->getId()]);
             } catch (\Exception $e) {
                 $this->addFlash('warning', 'При сохранении возникла ошибка.');
             }
@@ -106,7 +106,7 @@ class TimetableRowController extends Controller
             $this->addFlash('warning', 'При удалении возникла ошибка.');
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('homepage', ['id' => $timetableRow->getTimetable()->getId()]);
     }
 
     private function getForm(TimetableRow $timetableRow)

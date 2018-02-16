@@ -50,8 +50,13 @@ class TimetableRowTimesController extends Controller
         $timetableRowTimes->setTimes($times);
         $this->getDoctrine()->getManager()->flush();
 
+        $timetableHelper = $this->get('timetable.helper');
+        $show = $timetableHelper->getShowMode();
+        $columns = $timetableHelper->getColumnsByShow($show);
+
         return new JsonResponse([
             'status' => 'OK',
+            'data' => $timetableHelper->timetableRowFormat($timetableRowTimes->getTimetableRow(), $columns),
         ]);
     }
 

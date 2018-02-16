@@ -43,6 +43,13 @@ class Timetable
      */
     private $created;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $updated;
+
     public function __construct()
     {
         $this->rows = new ArrayCollection();
@@ -116,6 +123,25 @@ class Timetable
     public function setCreated($created)
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param \DateTime $updated
+     * @return Timetable
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
 
         return $this;
     }

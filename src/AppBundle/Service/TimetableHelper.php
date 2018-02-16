@@ -6,9 +6,11 @@ use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Payment;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
+use AppBundle\Entity\TimetableRowTimes;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\NotImplementedException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class TimetableHelper
@@ -16,18 +18,21 @@ class TimetableHelper
     private $entityManager;
     private $authorizationChecker;
     private $request;
+    private $router;
 
     /**
      * TimetableHelper constructor.
      * @param EntityManager        $entityManager
      * @param AuthorizationChecker $authorizationChecker
      * @param RequestStack         $requestStack
+     * @param Router               $router
      */
-    public function __construct(EntityManager $entityManager, AuthorizationChecker $authorizationChecker, RequestStack $requestStack)
+    public function __construct(EntityManager $entityManager, AuthorizationChecker $authorizationChecker, RequestStack $requestStack, Router $router)
     {
         $this->entityManager = $entityManager;
         $this->authorizationChecker = $authorizationChecker;
         $this->request = $requestStack->getCurrentRequest();
+        $this->router = $router;
     }
 
     /**
@@ -236,5 +241,160 @@ class TimetableHelper
         }
 
         return $columns;
+    }
+
+    /**
+     * @param TimetableRow $timetableRow
+     * @param array        $columns
+     * @return array
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function timetableRowFormat(TimetableRow $timetableRow, array $columns)
+    {
+        $manager = $timetableRow->getManager();
+        $customer = $timetableRow->getCustomer();
+        $provider = $timetableRow->getProvider();
+
+        list(
+            $timetableRowTimes,
+            $sumTimes,
+            $customerSalary,
+            $providerSalary,
+            $customerBalance,
+            $providerBalance,
+            $marginSum,
+            $marginPercent,
+            $customerPaid,
+            $providerPaid,
+            ) = array_values($this->calculateRowData($timetableRow));
+
+        if (in_array('manager', $columns)) {
+            $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById();
+        } else {
+            $managersById = [];
+        }
+
+        $row = [
+            'id' => $timetableRow->getId(),
+            'customer_id' => $customer->getId(),
+        ];
+
+        if ($provider) {
+            $row['provider_id'] = $provider->getId();
+        }
+
+        $row['controls'] = [
+            'update' => $this->router->generate('timetable_row_update', ['timetableRow' => $timetableRow->getId()]),
+            'delete' => $this->router->generate('timetable_row_delete', ['timetableRow' => $timetableRow->getId()]),
+        ];
+
+        foreach ($columns as $column) {
+            switch ($column) {
+                case 'manager':
+                    $value = $managersById[$manager->getId()];
+                    break;
+                case 'customer':
+                    $value = [
+                        'url' => $this->router->generate('contractor_view', ['contractor' => $customer->getId()]),
+                        'name' => $customer->getName(),
+                    ];
+                    break;
+                case 'provider':
+                    if ($provider) {
+                        $value = [
+                            'url' => $this->router->generate('contractor_view', ['contractor' => $provider->getId()]),
+                            'name' => $provider->getName(),
+                        ];
+                    } else {
+                        $value = null;
+                    }
+                    break;
+                case 'object':
+                    $value = $timetableRow->getObject();
+                    break;
+                case 'mechanism':
+                    $value = $timetableRow->getMechanism();
+                    break;
+                case 'comment':
+                    $value = $timetableRow->getComment();
+                    break;
+                case 'price_for_customer':
+                    $value = number_format($timetableRow->getPriceForCustomer(), 2, '.', ' ');
+                    break;
+                case 'price_for_provider':
+                    $value = number_format($timetableRow->getPriceForProvider(), 2, '.', ' ');
+                    break;
+                case 'sum_times':
+                    $value = number_format($sumTimes, 0, '.', ' ');
+                    break;
+                case 'times':
+                    /** @var TimetableRowTimes $timetableRowTimes */
+                    $colors = $timetableRowTimes->getColors();
+                    $comments = $timetableRowTimes->getComments();
+                    foreach ($timetableRowTimes->getTimes() as $day => $time) {
+                        $row['times_'.$day] = [
+                            'id' => $timetableRowTimes->getId(),
+                            'day' => $day,
+                            'comment' => $comments[$day],
+                            'comment_url' => $this->router->generate(
+                                'timetable_row_times_update_comment',
+                                [
+                                    'timetableRowTimes' => $timetableRowTimes->getId(),
+                                ]
+                            ),
+                            'time' => $time,
+                        ];
+                        $row['_times_'.$day.'_class'] = 'times '.$colors[$day];
+                        $row['_times_'.$day.'_data'] = [
+                            'id' => $timetableRowTimes->getId(),
+                            'day' => $day,
+                        ];
+                    }
+                    $value = $timetableRowTimes;
+                    break;
+                case 'customer_salary':
+                    $value = number_format($customerSalary, 2, '.', ' ');
+                    break;
+                case 'provider_salary':
+                    $value = number_format($providerSalary, 2, '.', ' ');
+                    break;
+                case 'customer_paid':
+                    $value = number_format($customerPaid, 2, '.', ' ');
+                    break;
+                case 'provider_paid':
+                    $value = number_format($providerPaid, 2, '.', ' ');
+                    break;
+                case 'customer_balance':
+                    $value = number_format($customerBalance, 2, '.', ' ');
+
+                    if ($customerBalance < 0) {
+                        $row['_customer_balance_class'] = 'customer_balance bg-red text-white';
+                    } else {
+                        $row['_customer_balance_class'] = 'customer_balance';
+                    }
+                    break;
+                case 'provider_balance':
+                    $value = number_format($providerBalance, 2, '.', ' ');
+
+                    if ($providerBalance < 0) {
+                        $row['_provider_balance_class'] = 'provider_balance bg-pink';
+                    } else {
+                        $row['_provider_balance_class'] = 'provider_balance';
+                    }
+                    break;
+                case 'margin_sum':
+                    $value = number_format($marginSum, 2, '.', ' ');
+                    break;
+                case 'margin_percent':
+                    $value = number_format($marginPercent, 2, '.', ' ');
+                    break;
+                default:
+                    $value = '';
+            }
+
+            $row[$column] = $value;
+        }
+
+        return $row;
     }
 }

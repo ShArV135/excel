@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="timetable_row")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class TimetableRow
 {
@@ -273,5 +274,15 @@ class TimetableRow
         $this->price_for_provider = $price_for_provider;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function preFlush()
+    {
+        if ($timetable = $this->getTimetable()) {
+            $timetable->setUpdated(new \DateTime());
+        }
     }
 }

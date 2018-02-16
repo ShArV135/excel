@@ -21,8 +21,12 @@
     width: 30px !important;
 }
 
+.timetable .manager {
+    width: 51px !important;
+}
+
 .timetable .mechanism {
-    width: 130px !important;
+    width: 180px !important;
 }
 .timetable .comment {
     width: 71px !important;
@@ -31,7 +35,7 @@
 .timetable .price_for_customer,
 .timetable .price_for_provider,
 .timetable .sum_times {
-    width: 51px !important;
+    width: 70px !important;
 }
 
 .timetable .comment .th-inner {
@@ -41,6 +45,10 @@
 .timetable .price_for_customer .th-inner,
 .timetable .price_for_provider .th-inner,
 .timetable .sum_times .th-inner {
+    width: 70px !important;
+}
+
+.timetable .manager .th-inner {
     width: 50px !important;
 }
 
@@ -50,6 +58,7 @@
     padding: 0 !important;
     white-space: normal !important;
     word-wrap: break-word;
+    margin-bottom: 12px;
 }
 
 .timetable td.sum_times,

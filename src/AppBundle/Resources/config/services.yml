@@ -5,7 +5,11 @@ services:
             - { name: twig.extension }
     timetable.helper:
         class: AppBundle\Service\TimetableHelper
-        arguments: ['@doctrine.orm.entity_manager', '@security.authorization_checker', '@request_stack']
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@security.authorization_checker'
+            - '@request_stack'
+            - '@router'
     acme.twig.acme_extension:
         class: AppBundle\Twig\TimetableExtension
         public: false

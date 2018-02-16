@@ -38,150 +38,10 @@ class TimetableController extends Controller
         $show = $timetableHelper->getShowMode();
         $columns = $timetableHelper->getColumnsByShow($show);
 
-        if (in_array('manager', $columns)) {
-            $managersById = $em->getRepository('AppBundle:User')->getManagersById();
-        } else {
-            $managersById = [];
-        }
-
         $rows = [];
         /** @var TimetableRow $timetableRow */
         foreach ($timetableRows as $timetableRow) {
-            $manager = $timetableRow->getManager();
-            $customer = $timetableRow->getCustomer();
-            $provider = $timetableRow->getProvider();
-
-            $row = [
-                'id' => $timetableRow->getId(),
-                'customer_id' => $customer->getId(),
-            ];
-
-            if ($provider) {
-                $row['provider_id'] = $provider->getId();
-            }
-
-            $row['controls'] = [
-                'update' => $this->generateUrl('timetable_row_update', ['timetableRow' => $timetableRow->getId()]),
-                'delete' => $this->generateUrl('timetable_row_delete', ['timetableRow' => $timetableRow->getId()]),
-            ];
-
-            list(
-                $timetableRowTimes,
-                $sumTimes,
-                $customerSalary,
-                $providerSalary,
-                $customerBalance,
-                $providerBalance,
-                $marginSum,
-                $marginPercent,
-                $customerPaid,
-                $providerPaid,
-                ) = array_values($this->get('timetable.helper')->calculateRowData($timetableRow));
-
-            foreach ($columns as $column) {
-                switch ($column) {
-                    case 'manager':
-                        $value = $managersById[$manager->getId()];
-                        break;
-                    case 'customer':
-                        $value = [
-                            'url' => $this->generateUrl('contractor_view', ['contractor' => $customer->getId()]),
-                            'name' => $customer->getName(),
-                        ];
-                        break;
-                    case 'provider':
-                        if ($provider) {
-                            $value = [
-                                'url' => $this->generateUrl('contractor_view', ['contractor' => $provider->getId()]),
-                                'name' => $provider->getName(),
-                            ];
-                        } else {
-                            $value = null;
-                        }
-                        break;
-                    case 'object':
-                        $value = $timetableRow->getObject();
-                        break;
-                    case 'mechanism':
-                        $value = $timetableRow->getMechanism();
-                        break;
-                    case 'comment':
-                        $value = $timetableRow->getComment();
-                        break;
-                    case 'price_for_customer':
-                        $value = number_format($timetableRow->getPriceForCustomer(), 0, '.', ' ');
-                        break;
-                    case 'price_for_provider':
-                        $value = number_format($timetableRow->getPriceForProvider(), 0, '.', ' ');
-                        break;
-                    case 'sum_times':
-                        $value = number_format($sumTimes, 0, '.', ' ');
-                        break;
-                    case 'times':
-                        /** @var TimetableRowTimes $timetableRowTimes */
-                        $colors = $timetableRowTimes->getColors();
-                        $comments = $timetableRowTimes->getComments();
-                        foreach ($timetableRowTimes->getTimes() as $day => $time) {
-                            $row['times_'.$day] = [
-                                'id' => $timetableRowTimes->getId(),
-                                'day' => $day,
-                                'comment' => $comments[$day],
-                                'comment_url' => $this->generateUrl(
-                                    'timetable_row_times_update_comment',
-                                    [
-                                        'timetableRowTimes' => $timetableRowTimes->getId(),
-                                    ]
-                                ),
-                                'time' => $time,
-                            ];
-                            $row['_times_'.$day.'_class'] = 'times '.$colors[$day];
-                            $row['_times_'.$day.'_data'] = [
-                                'id' => $timetableRowTimes->getId(),
-                                'day' => $day,
-                            ];
-                        }
-                        $value = $timetableRowTimes;
-                        break;
-                    case 'customer_salary':
-                        $value = number_format($customerSalary, 0, '.', ' ');
-                        break;
-                    case 'provider_salary':
-                        $value = number_format($providerSalary, 0, '.', ' ');
-                        break;
-                    case 'customer_paid':
-                        $value = number_format($customerPaid, 0, '.', ' ');
-                        break;
-                    case 'provider_paid':
-                        $value = number_format($providerPaid, 0, '.', ' ');
-                        break;
-                    case 'customer_balance':
-                        $value = number_format($customerBalance, 0, '.', ' ');
-
-                        if ($customerBalance < 0) {
-                            $row['_customer_balance_class'] = 'customer_balance bg-red text-white';
-                        }
-                        break;
-                    case 'provider_balance':
-                        $value = number_format($providerBalance, 0, '.', ' ');
-
-                        if ($providerBalance < 0) {
-                            $row['_provider_balance_class'] = 'provider_balance bg-pink';
-                        }
-                        break;
-                    case 'margin_sum':
-                        $value = number_format($marginSum, 0, '.', ' ');
-                        break;
-                    case 'margin_percent':
-                        $value = number_format($marginPercent, 2, '.', ' ');
-                        break;
-                    default:
-                        $value = '';
-                }
-
-                $row[$column] = $value;
-            }
-
-            $rows[] = $row;
+            $rows[] = $timetableHelper->timetableRowFormat($timetableRow, $columns);
         }
 
         return new JsonResponse($rows);
@@ -280,7 +140,7 @@ class TimetableController extends Controller
         }
         $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC']);
 
-        if (!$this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+        if (in_array('manager', $columns)) {
             $managersById = $em->getRepository('AppBundle:User')->getManagersById();
         } else {
             $managersById = [];
@@ -471,5 +331,22 @@ class TimetableController extends Controller
         $writer->save('php://output');
 
         return new Response();
+    }
+
+    /**
+     * @param Timetable $timetable
+     * @param           $time
+     * @return JsonResponse
+     * @Route("/timetable/{timetable}/check-update/{time}", name="timetable_check_update", options={"expose"=true})
+     */
+    public function checkUpdateAction(Timetable $timetable, $time)
+    {
+        $time = (new \DateTime())->setTimestamp($time);
+
+        if ($timetable->getUpdated() > $time ) {
+            return new JsonResponse($timetable->getUpdated()->getTimestamp());
+        }
+
+        return new JsonResponse('OK');
     }
 }
