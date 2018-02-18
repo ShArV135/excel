@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% set page_title = 'Отчет по менеджерам' %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-header">
+            <h2>{{ page_title }}</h2>
+        </div>
+        <div class="row">
+            {{ form_start(timetable_filter, {'attr': {'class': 'form-inline'}}) }}
+            {{ form_rest(timetable_filter) }}
+            <button class="btn btn-primary form-control" type="submit">Показать</button>
+            {{ form_end(timetable_filter) }}
+        </div>
+        {% if customer_manager_data %}
+            <div class="row">
+                <ul class="nav nav-pills" style="margin: 10px;">
+                    <li class="active"><a data-toggle="pill" href="#customer_manager">Менеджеры по продажам</a></li>
+                    <li><a data-toggle="pill" href="#provider_manager">Менеджеры по снабжению</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="customer_manager" class="tab-pane fade in active">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ФИО</th>
+                                <th>Заказчиков</th>
+                                <th>Наработка</th>
+                                <th>Маржа</th>
+                                <th>Маржа, %</th>
+                                <th>Сумма предоплат</th>
+                                <th>Сумма задолженностей</th>
+                            </tr>
+                            {% if summary_data %}
+                                <th colspan="2" style="text-align: right">Всего:</th>
+                                <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
+                                <th>{{ summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
+                                <th>{{ summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                                <th colspan="2">&nbsp;</th>
+                            {% endif %}
+                            </thead>
+                            <tbody>
+                            {% for customer_row in customer_manager_data %}
+                                <tr>
+                                    <td>{{ customer_row.fio }}</td>
+                                    <td>{{ customer_row.customers }}</td>
+                                    <td>{{ customer_row.salary|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ customer_row.margin_sum|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ customer_row.margin_percent|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ customer_row.balance_positive|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ customer_row.balance_negative|number_format(2, '.', ' ') }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div id="provider_manager" class="tab-pane fade">
+                        {% if provider_manager_data %}
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Наработка</th>
+                                    <th>Сумма предоплат</th>
+                                    <th>Сумма задолженностей</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{ provider_manager_data.salary|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ provider_manager_data.balance_positive|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ provider_manager_data.balance_negative|number_format(2, '.', ' ') }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

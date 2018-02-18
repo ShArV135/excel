@@ -66,6 +66,7 @@ class ContractorController extends Controller
                     'attr' => [
                         'placeholder' => 'Название или ИНН',
                     ],
+                    'required' => false,
                 ]
             )
         ;

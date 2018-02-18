@@ -46,14 +46,15 @@ class UserRepository extends EntityRepository
     }
 
     /**
+     * @param string $role
      * @return array
      */
-    public function getManagers()
+    public function getManagers($role = 'ROLE_CUSTOMER_MANAGER')
     {
         $qb = $this->createQueryBuilder('user');
         $qb = $qb
             ->where($qb->expr()->like('user.roles', ':roles'))
-            ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
+            ->setParameter('roles', '%'.$role.'%')
         ;
 
         return $qb
