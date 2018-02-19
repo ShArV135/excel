@@ -146,16 +146,6 @@
     color: #eee !important;
 }
 
-.bg-red {
-    background: #ff0000 !important;
-}
-.bg-pink {
-    background: #FFC0CB !important;
-}
-.text-white {
-    color: #fff;
-}
-
 .selectable-color.yellow,
 .times.yellow {
     background: yellow !important;

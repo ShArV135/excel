@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% set page_title = 'Отчет по снабжению' %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-header">
+            <h2>{{ page_title }}</h2>
+        </div>
+        <div class="row">
+            {{ form_start(timetable_filter, {'attr': {'class': 'form-inline'}}) }}
+            {{ form_rest(timetable_filter) }}
+            <button class="btn btn-primary form-control" type="submit">Показать</button>
+            {{ form_end(timetable_filter) }}
+        </div>
+        {% if provide_data %}
+            <div class="row" style="margin-top: 10px;">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Поставщик</th>
+                        <th>Наработка</th>
+                        <th>Баланс</th>
+                    </tr>
+                    {% if summary_data %}
+                        <tr>
+                            <th style="text-align: right">Всего:</th>
+                            <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
+                            <th>{{ summary_data.balance|number_format(2, '.', ' ') }}</th>
+                        </tr>
+                    {% endif %}
+                    </thead>
+                    <tbody>
+                    {% for data in provide_data %}
+                        <tr>
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
+                            <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
+                                {{ data.balance|number_format(2, '.', ' ') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        </div>
+{% endblock %}

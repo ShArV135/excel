@@ -117,11 +117,13 @@
             var tmpCustomer = '';
 
             var showLoader = function() {
-                $('.loader-overflow').show();
+                // $('.loader-overflow').show();
+                $('input.times-input').attr('disabled', 'disabled');
             };
 
             var hideLoader = function() {
-                $('.loader-overflow').hide();
+                // $('.loader-overflow').hide();
+                $('input.times-input').removeAttr('disabled');
             };
 
             cellFormatter = function(value, row, index, field) {

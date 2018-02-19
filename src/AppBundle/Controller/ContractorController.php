@@ -288,13 +288,12 @@ class ContractorController extends Controller
     public function viewAction(Contractor $contractor)
     {
         $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
-        $timetable = $this->getDoctrine()->getManager()->getRepository('AppBundle:Timetable')->getCurrent();
 
         return $this->render(
             '@App/contractor/view.html.twig',
             [
                 'contractor' => $contractor,
-                'balance' => $this->get('timetable.helper')->contractorBalance($contractor, $timetable)
+                'balance' => $this->get('timetable.helper')->contractorBalance($contractor)
             ]
         );
     }

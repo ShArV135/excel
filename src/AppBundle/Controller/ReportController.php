@@ -6,6 +6,7 @@ use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -51,7 +52,6 @@ class ReportController extends Controller
             }
 
             $customerManagers = $em->getRepository('AppBundle:User')->getManagers();
-            $currentTimetable = $em->getRepository('AppBundle:Timetable')->getCurrent();
             $customerManagerData = [];
             $providerManagerData = [
                 'salary' => 0,
@@ -97,7 +97,7 @@ class ReportController extends Controller
                 ]);
 
                 foreach ($customers as $customer) {
-                    $customerBalance = $timetableHelper->contractorBalance($customer, $currentTimetable);
+                    $customerBalance = $timetableHelper->contractorBalance($customer);
 
                     if ($customerBalance > 0) {
                         $row['balance_positive'] += $customerBalance;
@@ -110,10 +110,10 @@ class ReportController extends Controller
             }
 
             $providers = $em->getRepository('AppBundle:Contractor')->findBy([
-                'type' => Contractor::PROVIDER
+                'type' => Contractor::PROVIDER,
             ]);
             foreach ($providers as $provider) {
-                $providerBalance = $timetableHelper->contractorBalance($provider, $currentTimetable);
+                $providerBalance = $timetableHelper->contractorBalance($provider);
 
                 if ($providerBalance > 0) {
                     $providerManagerData['balance_positive'] += $providerBalance;
@@ -138,7 +138,7 @@ class ReportController extends Controller
         }
 
         return $this->render(
-            '@App/report/customer_manager.html.twig',
+            '@App/report/manager.html.twig',
             [
                 'timetable_filter' => $timetableFilter->createView(),
                 'summary_data' => $summaryData,
@@ -146,5 +146,249 @@ class ReportController extends Controller
                 'provider_manager_data' => $providerManagerData,
             ]
         );
+    }
+
+    /**
+     * @Route("/report-sale", name="report_sale")
+     * @param Request $request
+     * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function saleAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $timetableFilter = $this
+            ->createFormBuilder(null, ['method' => 'GET', 'csrf_protection' => false])
+            ->add(
+                'timetable',
+                EntityType::class,
+                [
+                    'placeholder' => 'За всё время',
+                    'required' => false,
+                    'class' => 'AppBundle\Entity\Timetable',
+                    'choice_label' => 'name',
+                    'label' => 'Табель',
+                ]
+            )
+            ->add(
+                'manager',
+                EntityType::class,
+                [
+                    'required' => false,
+                    'attr' => ['class' => 'select2me'],
+                    'class' => 'AppBundle\Entity\User',
+                    'choice_label' => 'fullname',
+                    'label' => 'Менеджер',
+                    'choices' => $em->getRepository('AppBundle:User')->getManagers(),
+                ]
+            )
+            ->add(
+                'customer',
+                EntityType::class,
+                [
+                    'required' => false,
+                    'attr' => ['class' => 'select2me'],
+                    'class' => 'AppBundle\Entity\Contractor',
+                    'choice_label' => 'name',
+                    'label' => 'Заказчик',
+                    'query_builder' => function(EntityRepository $repository) {
+                        $qb = $repository->createQueryBuilder('e');
+
+                        $qb
+                            ->where($qb->expr()->eq('e.type', ':type'))
+                            ->setParameter('type', Contractor::CUSTOMER)
+                        ;
+
+                        return $qb;
+                    },
+                ]
+            )
+            ->getForm()
+        ;
+        $timetableFilter->handleRequest($request);
+
+        if ($timetableFilter->isValid()) {
+            $data = $timetableFilter->getData();
+            $timetableHelper = $this->get('timetable.helper');
+
+            if (!empty($data['timetable'])) {
+                $timetables = $data['timetable'];
+            } else {
+                $timetables = $em->getRepository('AppBundle:Timetable')->findAll();
+            }
+
+            $criteria = [
+                'timetable' => $timetables,
+            ];
+            if (!empty($data['manager'])) {
+                $criteria['manager'] = $data['manager'];
+            }
+            if (!empty($data['customer'])) {
+                $criteria['customer'] = $data['customer'];
+            }
+            $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria);
+
+            $salesData = [];
+            foreach ($timetableRows as $timetableRow) {
+                $customer = $timetableRow->getCustomer();
+
+                if (!isset($salesData[$customer->getId()])) {
+                    $salesData[$customer->getId()] = [
+                        'manager' => $timetableRow->getManager()->getFullName(),
+                        'name' => $customer->getName(),
+                        'salary' => 0,
+                        'balance' => $timetableHelper->contractorBalance($customer),
+                        'margin_sum' => 0,
+                        'margin_percent' => 0,
+                        'counter' => 0,
+                    ];
+                }
+
+                $rowData = $timetableHelper->calculateRowData($timetableRow);
+
+                $salesData[$customer->getId()]['salary'] += $rowData['customer_salary'];
+                $salesData[$customer->getId()]['margin_sum'] += $rowData['margin_sum'];
+                $salesData[$customer->getId()]['margin_percent'] += $rowData['margin_percent'];
+                $salesData[$customer->getId()]['counter']++;
+            }
+
+            foreach ($salesData as $i => $data) {
+                $salesData[$i]['margin_percent'] = $data['margin_percent'] / $data['counter'];
+            }
+
+            $summaryData = [
+                'salary' => array_sum(array_column($salesData, 'salary')),
+                'balance' => array_sum(array_column($salesData, 'balance')),
+                'margin_sum' => array_sum(array_column($salesData, 'margin_sum')),
+                'margin_percent' => 0,
+            ];
+            if ($count = count(array_filter(array_column($salesData, 'margin_percent')))) {
+                $summaryData['margin_percent'] = array_sum(array_column($salesData, 'margin_percent')) / $count;
+            }
+
+        } else {
+            $salesData = null;
+            $summaryData = null;
+        }
+
+        return $this->render(
+            '@App/report/sale.html.twig',
+            [
+                'timetable_filter' => $timetableFilter->createView(),
+                'sales_data' => $salesData,
+                'summary_data' => $summaryData,
+            ]
+        );
+    }
+
+    /**
+     * @Route("/report-provide", name="report_provide")
+     * @param Request $request
+     * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function provideAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $timetableFilter = $this
+            ->createFormBuilder(null, ['method' => 'GET', 'csrf_protection' => false])
+            ->add(
+                'timetable',
+                EntityType::class,
+                [
+                    'placeholder' => 'За всё время',
+                    'required' => false,
+                    'class' => 'AppBundle\Entity\Timetable',
+                    'choice_label' => 'name',
+                    'label' => 'Табель',
+                ]
+            )
+            ->add(
+                'provider',
+                EntityType::class,
+                [
+                    'required' => false,
+                    'attr' => ['class' => 'select2me'],
+                    'class' => 'AppBundle\Entity\Contractor',
+                    'choice_label' => 'name',
+                    'label' => 'Поставщик',
+                    'query_builder' => function(EntityRepository $repository) {
+                        $qb = $repository->createQueryBuilder('e');
+
+                        $qb
+                            ->where($qb->expr()->eq('e.type', ':type'))
+                            ->setParameter('type', Contractor::PROVIDER)
+                        ;
+
+                        return $qb;
+                    },
+                ]
+            )
+            ->getForm()
+        ;
+        $timetableFilter->handleRequest($request);
+
+        if ($timetableFilter->isValid()) {
+            $data = $timetableFilter->getData();
+            $timetableHelper = $this->get('timetable.helper');
+
+            if (!empty($data['timetable'])) {
+                $timetables = $data['timetable'];
+            } else {
+                $timetables = $em->getRepository('AppBundle:Timetable')->findAll();
+            }
+
+            $criteria = [
+                'timetable' => $timetables,
+            ];
+            if (!empty($data['provider'])) {
+                $criteria['provider'] = $data['provider'];
+            }
+            $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria);
+
+            $provideData = [];
+            foreach ($timetableRows as $timetableRow) {
+                $provider = $timetableRow->getProvider();
+
+                if (!$provider) {
+                    continue;
+                }
+
+                if (!isset($provideData[$provider->getId()])) {
+                    $provideData[$provider->getId()] = [
+                        'name' => $provider->getName(),
+                        'salary' => 0,
+                        'balance' => $timetableHelper->contractorBalance($provider),
+                    ];
+                }
+
+                $rowData = $timetableHelper->calculateRowData($timetableRow);
+
+                $provideData[$provider->getId()]['salary'] += $rowData['provider_salary'];
+            }
+
+            $summaryData = [
+                'salary' => array_sum(array_column($provideData, 'salary')),
+                'balance' => array_sum(array_column($provideData, 'balance')),
+            ];
+
+        } else {
+            $provideData = null;
+            $summaryData = null;
+        }
+
+        return $this->render(
+            '@App/report/provide.html.twig',
+            [
+                'timetable_filter' => $timetableFilter->createView(),
+                'provide_data' => $provideData,
+                'summary_data' => $summaryData,
+            ]
+        );
+
     }
 }

@@ -33,11 +33,13 @@
                                 <th>Сумма задолженностей</th>
                             </tr>
                             {% if summary_data %}
-                                <th colspan="2" style="text-align: right">Всего:</th>
-                                <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
-                                <th>{{ summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
-                                <th>{{ summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
-                                <th colspan="2">&nbsp;</th>
+                                <tr>
+                                    <th colspan="2" style="text-align: right">Всего:</th>
+                                    <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
+                                    <th>{{ summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
+                                    <th>{{ summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                                    <th colspan="2">&nbsp;</th>
+                                </tr>
                             {% endif %}
                             </thead>
                             <tbody>

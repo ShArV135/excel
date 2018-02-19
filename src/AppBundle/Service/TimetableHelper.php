@@ -38,6 +38,7 @@ class TimetableHelper
     /**
      * @param TimetableRow $timetableRow
      * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function calculateRowData(TimetableRow $timetableRow)
@@ -103,11 +104,17 @@ class TimetableHelper
      * @param Contractor $contractor
      * @param Timetable  $timetable
      * @return float|int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function contractorBalance(Contractor $contractor, Timetable $timetable)
+    public function contractorBalance(Contractor $contractor, Timetable $timetable = null)
     {
         $timetableRowTimesRepository = $this->entityManager->getRepository('AppBundle:TimetableRowTimes');
         $paymentRepository = $this->entityManager->getRepository('AppBundle:Payment');
+
+        if (!$timetable) {
+            $timetable = $this->entityManager->getRepository('AppBundle:Timetable')->getCurrent();
+        }
 
         $payments = $paymentRepository->getByContractorAndDate($contractor, clone $timetable->getCreated()->modify('last day of'));
         $paid = 0;
@@ -247,6 +254,7 @@ class TimetableHelper
      * @param TimetableRow $timetableRow
      * @param array        $columns
      * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function timetableRowFormat(TimetableRow $timetableRow, array $columns)
