@@ -73,6 +73,7 @@ class Contractor
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="contractor")
+     * @ORM\OrderBy(value={"date"="DESC"})
      */
     private $payments;
 

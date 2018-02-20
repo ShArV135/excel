@@ -32,7 +32,11 @@ class ContractorController extends Controller
     public function listAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->getRepository('AppBundle:Contractor')->createQueryBuilder('contractor');
+        $qb = $em
+            ->getRepository('AppBundle:Contractor')
+            ->createQueryBuilder('contractor')
+            ->addOrderBy('contractor.name', 'ASC')
+        ;
 
         switch (true) {
             case $this->isGranted('ROLE_CUSTOMER_MANAGER'):

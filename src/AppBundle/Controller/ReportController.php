@@ -212,11 +212,27 @@ class ReportController extends Controller
         if ($timetableFilter->isValid()) {
             $data = $timetableFilter->getData();
             $timetableHelper = $this->get('timetable.helper');
+            $salesData = [];
 
             if (!empty($data['timetable'])) {
                 $timetables = $data['timetable'];
             } else {
                 $timetables = $em->getRepository('AppBundle:Timetable')->findAll();
+
+                if (empty($data['manager']) && empty($data['customer'])) {
+                    $customers = $em->getRepository('AppBundle:Contractor')->findBy(['type' => Contractor::CUSTOMER], ['name' => 'ASC']);
+                    foreach ($customers as $customer) {
+                        $salesData[$customer->getId()] = [
+                            'name' => $customer->getName(),
+                            'balance' => $timetableHelper->contractorBalance($customer),
+                            'manager' => '',
+                            'salary' => 0,
+                            'margin_sum' => 0,
+                            'margin_percent' => 0,
+                            'counter' => 0,
+                        ];
+                    }
+                }
             }
 
             $criteria = [
@@ -230,7 +246,6 @@ class ReportController extends Controller
             }
             $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria);
 
-            $salesData = [];
             foreach ($timetableRows as $timetableRow) {
                 $customer = $timetableRow->getCustomer();
 
@@ -248,6 +263,7 @@ class ReportController extends Controller
 
                 $rowData = $timetableHelper->calculateRowData($timetableRow);
 
+                $salesData[$customer->getId()]['manager'] = $timetableRow->getManager()->getFullName();
                 $salesData[$customer->getId()]['salary'] += $rowData['customer_salary'];
                 $salesData[$customer->getId()]['margin_sum'] += $rowData['margin_sum'];
                 $salesData[$customer->getId()]['margin_percent'] += $rowData['margin_percent'];
@@ -255,7 +271,9 @@ class ReportController extends Controller
             }
 
             foreach ($salesData as $i => $data) {
-                $salesData[$i]['margin_percent'] = $data['margin_percent'] / $data['counter'];
+                if ($data['counter'] > 0) {
+                    $salesData[$i]['margin_percent'] = $data['margin_percent'] / $data['counter'];
+                }
             }
 
             $summaryData = [
@@ -335,11 +353,24 @@ class ReportController extends Controller
         if ($timetableFilter->isValid()) {
             $data = $timetableFilter->getData();
             $timetableHelper = $this->get('timetable.helper');
+            $provideData = [];
 
             if (!empty($data['timetable'])) {
                 $timetables = $data['timetable'];
             } else {
                 $timetables = $em->getRepository('AppBundle:Timetable')->findAll();
+
+                if (empty($data['provider'])) {
+                    $providers = $em->getRepository('AppBundle:Contractor')->findBy(['type' => Contractor::PROVIDER], ['name' => 'ASC']);
+                    foreach ($providers as $provider) {
+                        $provideData[$provider->getId()] = [
+                            'name' => $provider->getName(),
+                            'balance' => $timetableHelper->contractorBalance($provider),
+                            'manager' => '',
+                            'salary' => 0,
+                        ];
+                    }
+                }
             }
 
             $criteria = [
@@ -350,7 +381,6 @@ class ReportController extends Controller
             }
             $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria);
 
-            $provideData = [];
             foreach ($timetableRows as $timetableRow) {
                 $provider = $timetableRow->getProvider();
 
