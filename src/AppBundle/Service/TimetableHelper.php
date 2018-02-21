@@ -353,6 +353,11 @@ class TimetableHelper
                             'time' => $time,
                         ];
                         $row['_times_'.$day.'_class'] = 'times '.$colors[$day];
+
+                        if ($day == 16) {
+                            $row['_times_'.$day.'_class'] .= ' bold-border';
+                        }
+
                         $row['_times_'.$day.'_data'] = [
                             'id' => $timetableRowTimes->getId(),
                             'day' => $day,

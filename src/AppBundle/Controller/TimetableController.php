@@ -17,9 +17,10 @@ class TimetableController extends Controller
 {
     /**
      * @param Timetable $timetable
-     * @Route("/timetable/{timetable}/data", name="timetable_data")
      * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @Route("/timetable/{timetable}/data", name="timetable_data")
      */
     public function getDataAction(Timetable $timetable)
     {
@@ -51,8 +52,10 @@ class TimetableController extends Controller
      * @Route("/timetable/{timetable}/export", name="timetable_export")
      * @param Timetable $timetable
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function exportAction(Timetable $timetable)
     {
