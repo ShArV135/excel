@@ -10,7 +10,9 @@
         <div class="row">
             {{ form_start(timetable_filter) }}
             <div class="col-md-3">{{ form_row(timetable_filter.timetable) }}</div>
-            <div class="col-md-3">{{ form_row(timetable_filter.manager) }}</div>
+            {% if timetable_filter.manager is defined %}
+                <div class="col-md-3">{{ form_row(timetable_filter.manager) }}</div>
+            {% endif %}
             <div class="col-md-3">{{ form_row(timetable_filter.customer) }}</div>
             <div class="col-md-3">
                 <div class="form-group">
@@ -21,38 +23,68 @@
             {{ form_end(timetable_filter) }}
         </div>
         {% if sales_data %}
+            {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                <div class="row">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-success margin-checker">
+                            <i class="state-icon glyphicon glyphicon-unchecked"></i>
+                            Показать маржу
+                        </button>
+                    </div>
+                </div>
+            {% endif %}
             <div class="row" style="margin-top: 10px;">
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered table-report">
                     <thead>
                     <tr>
-                        <th>Менеджер</th>
+                        {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                            <th>Менеджер</th>
+                        {% endif %}
                         <th>Заказчик</th>
                         <th>Наработка</th>
                         <th>Баланс</th>
-                        <th>Маржа</th>
-                        <th>Маржа, %</th>
+                        {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                            {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                                <th class="margin-col" style="display: none;">Маржа</th>
+                            {% endif %}
+                            <th class="margin-col" style="display: none;">Маржа, %</th>
+                        {% endif %}
                     </tr>
                     {% if summary_data %}
                         <tr>
-                            <th colspan="2" style="text-align: right">Всего:</th>
+                            {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                                <th colspan="2" style="text-align: right">Всего:</th>
+                            {% else %}
+                                <th style="text-align: right">Всего:</th>
+                            {% endif %}
                             <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
                             <th>{{ summary_data.balance|number_format(2, '.', ' ') }}</th>
-                            <th>{{ summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
-                            <th>{{ summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                            {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                                {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                                    <th class="margin-col" style="display: none;">{{ summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
+                                {% endif %}
+                                <th class="margin-col" style="display: none;">{{ summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                            {% endif %}
                         </tr>
                     {% endif %}
                     </thead>
                     <tbody>
                     {% for data in sales_data %}
                         <tr>
-                            <td>{{ data.manager }}</td>
+                            {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                                <td>{{ data.manager }}</td>
+                            {% endif %}
                             <td>{{ data.name }}</td>
                             <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
                             <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
                                 {{ data.balance|number_format(2, '.', ' ') }}
                             </td>
-                            <td>{{ data.margin_sum|number_format(2, '.', ' ') }}</td>
-                            <td>{{ data.margin_percent|number_format(2, '.', ' ') }}</td>
+                            {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                                {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                                    <td class="margin-col" style="display: none;">{{ data.margin_sum|number_format(2, '.', ' ') }}</td>
+                                {% endif %}
+                                <td class="margin-col" style="display: none;">{{ data.margin_percent|number_format(2, '.', ' ') }}</td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -60,4 +92,20 @@
             </div>
         {% endif %}
         </div>
+{% endblock %}
+
+{% block javascripts %} {{ parent() }}
+    <script>
+        $('.margin-checker').click(function() {
+            var checked = $('i', $(this)).hasClass('glyphicon-check');
+
+            if (checked) {
+                $('i', $(this)).removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                $('.table-report .margin-col').hide()
+            } else {
+                $('i', $(this)).removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                $('.table-report .margin-col').show()
+            }
+        });
+    </script>
 {% endblock %}

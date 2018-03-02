@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
+use AppBundle\Security\UserVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,6 +31,15 @@ class UserController extends Controller
         $qb = $em->getRepository('AppBundle:User')->createQueryBuilder('user');
         $qb->andWhere($qb->expr()->neq('user.id', $user->getId()));
 
+        if (!$this->isGranted('ROLE_GENERAL_MANAGER')) {
+            $qb
+                ->andWhere($qb->expr()->notLike('user.roles', ':role1'))
+                ->andWhere($qb->expr()->notLike('user.roles', ':role2'))
+                ->setParameter('role1', '%ROLE_MANAGER%')
+                ->setParameter('role2', '%ROLE_GENERAL_MANAGER%')
+            ;
+        }
+
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page,20);
 
@@ -51,11 +61,28 @@ class UserController extends Controller
     {
         $user = new User();
 
+        if ($this->isGranted('ROLE_GENERAL_MANAGER')) {
+            $roles = [
+                'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
+                'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
+                'Диспетчер' => 'ROLE_DISPATCHER',
+                'Генеральный менеджер' => 'ROLE_GENERAL_MANAGER',
+                'Управляющий' => 'ROLE_MANAGER',
+            ];
+        } else {
+            $roles = [
+                'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
+                'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
+                'Диспетчер' => 'ROLE_DISPATCHER',
+            ];
+        }
+
         $form = $this->createForm(
             UserType::class,
             $user,
             [
                 'validation_groups' => ['create'],
+                'roles' => $roles,
             ]
         );
         $form->handleRequest($request);
@@ -98,9 +125,30 @@ class UserController extends Controller
      */
     public function updateAction(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $this->denyAccessUnlessGranted(UserVoter::EDIT, $user);
+
+        if ($this->isGranted('ROLE_GENERAL_MANAGER')) {
+            $roles = [
+                'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
+                'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
+                'Диспетчер' => 'ROLE_DISPATCHER',
+                'Генеральный менеджер' => 'ROLE_GENERAL_MANAGER',
+                'Управляющий' => 'ROLE_MANAGER',
+            ];
+        } else {
+            $roles = [
+                'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
+                'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
+                'Диспетчер' => 'ROLE_DISPATCHER',
+            ];
+        }
+
         $form = $this->createForm(
             UserType::class,
-            $user
+            $user,
+            [
+                'roles' => $roles,
+            ]
         );
         $form->handleRequest($request);
 
@@ -137,6 +185,7 @@ class UserController extends Controller
      */
     public function deleteAction(User $user)
     {
+        $this->denyAccessUnlessGranted(UserVoter::DELETE, $user);
         try {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);

@@ -43,6 +43,11 @@ class UserFixtures extends Fixture
                 'roles' => ['ROLE_GENERAL_MANAGER'],
             ],
             [
+                'username' => 'manager',
+                'password' => 'manager',
+                'roles' => ['ROLE_MANAGER'],
+            ],
+            [
                 'username' => 'dispatcher',
                 'password' => 'dispatcher',
                 'roles' => ['ROLE_DISPATCHER'],

@@ -22,10 +22,14 @@ security:
     role_hierarchy:
         ROLE_CUSTOMER_MANAGER: ROLE_USER
         ROLE_PROVIDER_MANAGER: ROLE_USER
-        ROLE_GENERAL_MANAGER: ROLE_USER
+        ROLE_MANAGER: ROLE_USER
         ROLE_DISPATCHER: ROLE_USER
+        ROLE_GENERAL_MANAGER: ROLE_MANAGER
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/users, roles: ROLE_GENERAL_MANAGER }
-        - { path: ^/contractors, roles: [ROLE_CUSTOMER_MANAGER, ROLE_PROVIDER_MANAGER, ROLE_GENERAL_MANAGER] }
+        - { path: ^/users, roles: ROLE_MANAGER }
+        - { path: ^/contractors, roles: [ROLE_CUSTOMER_MANAGER, ROLE_PROVIDER_MANAGER, ROLE_MANAGER] }
+        - { path: ^report-manager, roles: ROLE_MANAGER }
+        - { path: ^report-sale, roles: [ROLE_MANAGER, ROLE_CUSTOMER_MANAGER] }
+        - { path: ^report-provide, roles: [ROLE_MANAGER, ROLE_PROVIDER_MANAGER] }
         - { path: ^/, roles: [ROLE_USER] }

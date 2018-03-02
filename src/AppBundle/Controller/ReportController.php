@@ -159,6 +159,8 @@ class ReportController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        $manager = $this->isGranted('ROLE_CUSTOMER_MANAGER') ? $this->getUser() : null;
+
         $timetableFilter = $this
             ->createFormBuilder(null, ['method' => 'GET', 'csrf_protection' => false])
             ->add(
@@ -173,18 +175,6 @@ class ReportController extends Controller
                 ]
             )
             ->add(
-                'manager',
-                EntityType::class,
-                [
-                    'required' => false,
-                    'attr' => ['class' => 'select2me'],
-                    'class' => 'AppBundle\Entity\User',
-                    'choice_label' => 'fullname',
-                    'label' => 'Менеджер',
-                    'choices' => $em->getRepository('AppBundle:User')->getManagers(),
-                ]
-            )
-            ->add(
                 'customer',
                 EntityType::class,
                 [
@@ -193,7 +183,7 @@ class ReportController extends Controller
                     'class' => 'AppBundle\Entity\Contractor',
                     'choice_label' => 'name',
                     'label' => 'Заказчик',
-                    'query_builder' => function(EntityRepository $repository) {
+                    'query_builder' => function(EntityRepository $repository) use ($manager) {
                         $qb = $repository->createQueryBuilder('e');
 
                         $qb
@@ -201,12 +191,37 @@ class ReportController extends Controller
                             ->setParameter('type', Contractor::CUSTOMER)
                         ;
 
+                        if ($manager) {
+                            $qb
+                                ->andWhere($qb->expr()->eq('e.manager', ':manager'))
+                                ->setParameter('manager', $manager)
+                            ;
+                        }
+
                         return $qb;
                     },
                 ]
             )
             ->getForm()
         ;
+
+        if (!$this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+            $timetableFilter
+                ->add(
+                    'manager',
+                    EntityType::class,
+                    [
+                        'required' => false,
+                        'attr' => ['class' => 'select2me'],
+                        'class' => 'AppBundle\Entity\User',
+                        'choice_label' => 'fullname',
+                        'label' => 'Менеджер',
+                        'choices' => $em->getRepository('AppBundle:User')->getManagers(),
+                    ]
+                )
+            ;
+        }
+
         $timetableFilter->handleRequest($request);
 
         if ($timetableFilter->isValid()) {
@@ -224,8 +239,12 @@ class ReportController extends Controller
                         'type' => Contractor::CUSTOMER,
                     ];
 
-                    if (!empty($data['manager'])) {
-                        $criteria['manager'] = $data['manager'];
+                    if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+                        $criteria['manager'] = $this->getUser();
+                    } else {
+                        if (!empty($data['manager'])) {
+                            $criteria['manager'] = $data['manager'];
+                        }
                     }
 
                     $customers = $em->getRepository('AppBundle:Contractor')->findBy($criteria, ['name' => 'ASC']);
@@ -246,8 +265,12 @@ class ReportController extends Controller
             $criteria = [
                 'timetable' => $timetables,
             ];
-            if (!empty($data['manager'])) {
-                $criteria['manager'] = $data['manager'];
+            if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+                $criteria['manager'] = $this->getUser();
+            } else {
+                if (!empty($data['manager'])) {
+                    $criteria['manager'] = $data['manager'];
+                }
             }
             if (!empty($data['customer'])) {
                 $criteria['customer'] = $data['customer'];

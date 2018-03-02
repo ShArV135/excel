@@ -143,7 +143,7 @@ class TimetableHelper
             case $this->authorizationChecker->isGranted('ROLE_PROVIDER_MANAGER'):
                 $show = 'provider_manager';
                 break;
-            case $this->authorizationChecker->isGranted('ROLE_GENERAL_MANAGER'):
+            case $this->authorizationChecker->isGranted('ROLE_MANAGER'):
                 $show = $this->request->get('show', 'general_manager');
                 break;
             default:
@@ -245,6 +245,14 @@ class TimetableHelper
                     'margin_percent',
                 ];
                 break;
+        }
+
+        if (!$this->authorizationChecker->isGranted('ROLE_GENERAL_MANAGER')) {
+            $index = array_search('margin_sum', $columns);
+
+            if ($index >= 0) {
+                unset($columns[$index]);
+            }
         }
 
         return $columns;

@@ -50,12 +50,7 @@ class UserType extends AbstractType
                 ChoiceType::class,
                 [
                     'label' => 'Роль',
-                    'choices' => [
-                        'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
-                        'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
-                        'Диспетчер' => 'ROLE_DISPATCHER',
-                        'Генеральный менеджер' => 'ROLE_GENERAL_MANAGER',
-                    ],
+                    'choices' => $options['roles'],
                 ]
             )
             ->add('save', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn-primary']])
@@ -70,5 +65,12 @@ class UserType extends AbstractType
                 return [$value];
             }
         ));
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'roles' => [],
+        ]);
     }
 }

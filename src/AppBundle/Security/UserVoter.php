@@ -2,12 +2,11 @@
 
 namespace AppBundle\Security;
 
-use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class TimetableVoter extends Voter
+class UserVoter extends Voter
 {
     const VIEW = 'view';
     const EDIT = 'edit';
@@ -19,7 +18,7 @@ class TimetableVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof Timetable) {
+        if (!$subject instanceof User) {
             return false;
         }
 
@@ -44,14 +43,20 @@ class TimetableVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof Timetable) {
+        if (!$subject instanceof User) {
             return false;
         }
 
-        if ($attribute === self::DELETE) {
-            return in_array('ROLE_GENERAL_MANAGER', $user->getRoles());
+        if (in_array('ROLE_GENERAL_MANAGER', $user->getRoles())) {
+            return true;
         }
 
-        return true;
+        if ($subject->getId() === $user->getId()) {
+            return false;
+        }
+
+        $roles = $subject->getRoles();
+
+        return !in_array('ROLE_GENERAL_MANAGER', $roles) && !in_array('ROLE_MANAGER', $roles);
     }
 }
