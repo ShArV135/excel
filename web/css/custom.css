@@ -37,3 +37,11 @@ textarea.noresize {
 .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 34px;
 }
+
+.table.table-bordered thead>tr th {
+    text-align: center;
+}
+
+a.nostyle {
+    color: inherit;
+}

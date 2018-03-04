@@ -219,6 +219,14 @@
                         $('#timetable').selectable({
                             filter: 'div.times-item'
                         });
+
+                        $('.timetable td').hover(function() {
+                            var index = $(this).index() + 1;
+                            $('.timetable th:nth-child(' + index + ')').addClass('hover');
+                        }, function() {
+                            var index = $(this).index() + 1;
+                            $('.timetable th:nth-child(' + index + ')').removeClass('hover');
+                        });
                     }, 1000);
                 }
             });

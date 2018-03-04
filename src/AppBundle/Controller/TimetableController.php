@@ -34,7 +34,7 @@ class TimetableController extends Controller
             $criteria['manager'] = $this->getUser();
         }
 
-        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC']);
+        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC', 'object' => 'ASC']);
 
         $show = $timetableHelper->getShowMode();
         $columns = $timetableHelper->getColumnsByShow($show);
@@ -141,7 +141,7 @@ class TimetableController extends Controller
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
             $criteria['manager'] = $this->getUser();
         }
-        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC']);
+        $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC', 'object' => 'ASC']);
 
         if (in_array('manager', $columns)) {
             $managersById = $em->getRepository('AppBundle:User')->getManagersById();

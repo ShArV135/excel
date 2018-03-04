@@ -20,7 +20,7 @@
                     <tr>
                         <th>Поставщик</th>
                         <th>Наработка</th>
-                        <th>Баланс</th>
+                        <th>Баланс (среднее)</th>
                     </tr>
                     {% if summary_data %}
                         <tr>
@@ -31,9 +31,9 @@
                     {% endif %}
                     </thead>
                     <tbody>
-                    {% for data in provide_data %}
+                    {% for id, data in provide_data %}
                         <tr>
-                            <td>{{ data.name }}</td>
+                            <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.name }}</a></td>
                             <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
                             <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
                                 {{ data.balance|number_format(2, '.', ' ') }}

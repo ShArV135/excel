@@ -42,7 +42,7 @@
                         {% endif %}
                         <th>Заказчик</th>
                         <th>Наработка</th>
-                        <th>Баланс</th>
+                        <th>Баланс (среднее)</th>
                         {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                             {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                 <th class="margin-col" style="display: none;">Маржа</th>
@@ -69,12 +69,12 @@
                     {% endif %}
                     </thead>
                     <tbody>
-                    {% for data in sales_data %}
+                    {% for id, data in sales_data %}
                         <tr>
                             {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                                 <td>{{ data.manager }}</td>
                             {% endif %}
-                            <td>{{ data.name }}</td>
+                            <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.name }}</a></td>
                             <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
                             <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
                                 {{ data.balance|number_format(2, '.', ' ') }}

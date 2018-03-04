@@ -17,6 +17,10 @@
     overflow: hidden;
 }
 
+.timetable th.hover {
+    background: #ccc;
+}
+
 .timetable th.times {
     width: 30px !important;
 }
@@ -54,11 +58,10 @@
 
 .timetable th .th-inner {
     font-size: 13px !important;
-    line-height: 15px !important;
+    line-height: 20px !important;
     padding: 0 !important;
     white-space: normal !important;
     word-wrap: break-word;
-    margin-bottom: 12px;
 }
 
 .timetable td.sum_times,
