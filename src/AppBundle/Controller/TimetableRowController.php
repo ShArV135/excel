@@ -72,8 +72,9 @@ class TimetableRowController extends Controller
                 $em->flush();
 
                 $this->addFlash('success', 'Запись успешно изменена.');
+                $redirectUrl = $this->generateUrl('homepage', ['id' => $timetableRow->getTimetable()->getId()]).'#'.$timetableRow->getId();
 
-                return $this->redirectToRoute('homepage', ['id' => $timetableRow->getTimetable()->getId()]);
+                return $this->redirect($redirectUrl);
             } catch (\Exception $e) {
                 $this->addFlash('warning', 'При сохранении возникла ошибка.');
             }

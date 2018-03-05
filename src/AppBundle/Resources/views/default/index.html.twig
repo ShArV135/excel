@@ -196,7 +196,17 @@
                     return output;
                 },
                 onPostBody: function () {
+                    var scrollTo = location.hash.substr(1);
+                    if (scrollTo) {
+                        var $row = $('[data-row=' + scrollTo + ']');
+                        if ($row.length > 0) {
+                            $('#timetable').bootstrapTable('scrollTo', $row.position().top - 80);
+                        }
+                    }
+
                     setTimeout(function() {
+                        $('#timetable').trigger('scroll');
+
                         $('.tt-tooltip').tooltip({
                             trigger: 'click',
                             container: 'body'
