@@ -93,6 +93,7 @@ assetic:
                 - '%kernel.root_dir%/../vendor/select2/select2/dist/js/select2.min.js'
                 - '%kernel.root_dir%/../web/plugins/bootstrap-table-fixed-columns-master/bootstrap-table-fixed-columns.js'
                 - '%kernel.root_dir%/../web/plugins/bootstrap3-editable/js/bootstrap-editable.min.js'
+                - '%kernel.root_dir%/../web/js/custom-bootstrap-table.js'
             output: 'assets/js/bootstrap.js'
         bootstrap_css:
             inputs:

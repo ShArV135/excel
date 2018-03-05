@@ -174,18 +174,8 @@
     position: relative;;
 }
 
-.loader-overflow {
+.timetable-loader {
     display: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.6);
-    z-index: 999;
-}
-
-.loader-overflow .loader {
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */
     border-radius: 50%;
@@ -195,6 +185,7 @@
     position: absolute;
     left: 4px;
     top: 4px;
+    z-index: 999;
 }
 
 @keyframes spin {

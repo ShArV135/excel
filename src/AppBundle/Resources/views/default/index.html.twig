@@ -16,6 +16,9 @@
                 <button type="button" class="btn btn-default selectable-close hidden">
                     <span class="glyphicon glyphicon-ok"></span>
                 </button>
+                {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                    <button type="button" class="btn btn-default show-empty">Только незаполненные</button>
+                {% endif %}
             </div>
         </div>
         <div class="btn-group pull-right" role="group">
@@ -96,9 +99,7 @@
             </tr>
             </thead>
         </table>
-        <div class="loader-overflow">
-            <div class="loader"></div>
-        </div>
+        <div class="timetable-loader"></div>
     </div>
 {% endblock %}
 
@@ -117,13 +118,11 @@
             var tmpCustomer = '';
 
             var showLoader = function() {
-                // $('.loader-overflow').show();
-                $('input.times-input').attr('disabled', 'disabled');
+                 $('.timetable-loader').show();
             };
 
             var hideLoader = function() {
-                // $('.loader-overflow').hide();
-                $('input.times-input').removeAttr('disabled');
+                 $('.timetable-loader').hide();
             };
 
             cellFormatter = function(value, row, index, field) {
@@ -179,6 +178,7 @@
                 filterControl: true,
                 disableControlWhenSearch: true,
                 height: height,
+                uniqueId: 'id',
                 rowAttributes: function (row, index) {
                     return {
                         'data-row': row.id,
@@ -234,29 +234,19 @@
             $(document).on('blur', '#timetable .times-input', function() {
                 var $input = $(this);
                 var $td = $input.parent('td');
-                var $tr = $input.closest('tr');
 
                 var id = $td.data('id');
                 var day = $td.data('day');
                 var oldValue = $input.data('value');
                 var value = $input.val();
 
-                if (value == '') {
+                if (value === '') {
                     $input.val(oldValue);
                     return;
                 }
 
-                if (value == oldValue) {
+                if (value === oldValue) {
                     return;
-                }
-
-                var customerId = $tr.data('customer-id');
-                var $trByCustomer = $('[data-customer-id="' + customerId + '"]');
-
-                var providerId = $tr.data('provider-id');
-                var $trByProvider = null;
-                if (providerId) {
-                    $trByProvider = $('[data-provider-id="' + providerId + '"]');
                 }
 
                 $.ajax({
@@ -274,52 +264,7 @@
                             $input.data('value', value);
                             var data = response.data;
 
-
-                            $trByProvider.each(function () {
-                                index = $(this).data('index');
-
-                                $('#timetable').bootstrapTable('updateCell', {
-                                    index: index,
-                                    field: 'provider_balance',
-                                    value: data.provider_balance,
-                                    reinit: false
-                                });
-
-                                if (data._provider_balance_class) {
-                                    $('#timetable').bootstrapTable('updateCell', {
-                                        index: index,
-                                        field: '_provider_balance_class',
-                                        value: data._provider_balance_class,
-                                        reinit: false
-                                    });
-                                }
-                            });
-
-                            $trByCustomer.each(function () {
-                                index = $(this).data('index');
-
-                                $('#timetable').bootstrapTable('updateCell', {
-                                    index: index,
-                                    field: 'customer_balance',
-                                    value: data.customer_balance,
-                                    reinit: false
-                                });
-
-                                if (data._customer_balance_class) {
-                                    $('#timetable').bootstrapTable('updateCell', {
-                                        index: index,
-                                        field: '_customer_balance_class',
-                                        value: data._customer_balance_class,
-                                        reinit: false
-                                    });
-                                }
-                            });
-
-                            $('#timetable').bootstrapTable('updateRow', {
-                                index: $tr.data('index'),
-                                row: response.data
-                            });
-
+                            $('#timetable').bootstrapTable('updateTimetable', data);
                             hideLoader();
                         } else {
                             $input.val(oldValue);
@@ -400,6 +345,19 @@
                     }
                 });
             }, 20000);
+
+            $('.show-empty').click(function() {
+                var isActive = $(this).hasClass('active');
+                $(this).toggleClass('active');
+
+                if (isActive) {
+                    $('#timetable').bootstrapTable('filterBy');
+                } else {
+                    $('#timetable').bootstrapTable('filterBy', {
+                        provider: null
+                    });
+                }
+            });
         });
     </script>
 {% endblock %}
