@@ -250,7 +250,7 @@ class TimetableHelper
         if (!$this->authorizationChecker->isGranted('ROLE_GENERAL_MANAGER')) {
             $index = array_search('margin_sum', $columns);
 
-            if ($index >= 0) {
+            if ($index !== false) {
                 unset($columns[$index]);
             }
         }
