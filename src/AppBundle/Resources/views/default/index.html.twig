@@ -194,50 +194,6 @@
                     tmpCustomer = row.customer_id;
 
                     return output;
-                },
-                onPostBody: function () {
-                    var scrollTo = location.hash.substr(1);
-                    if (scrollTo) {
-                        var $row = $('[data-row=' + scrollTo + ']');
-                        if ($row.length > 0) {
-                            $('#timetable').bootstrapTable('scrollTo', $row.position().top - 80);
-                        }
-                    }
-
-                    setTimeout(function() {
-                        $('#timetable').trigger('scroll');
-
-                        $('.tt-tooltip').tooltip({
-                            trigger: 'click',
-                            container: 'body'
-                        });
-
-                        $('#timetable .times-comment').editable({
-                            container: 'body',
-                            display: function() {
-                                return '';
-                            },
-                            success : function (response, newValue) {
-                                if (newValue == '') {
-                                    $(this).addClass('text-muted');
-                                } else {
-                                    $(this).removeClass('text-muted');
-                                }
-                            }
-                        });
-
-                        $('#timetable').selectable({
-                            filter: 'div.times-item'
-                        });
-
-                        $('.timetable td').hover(function() {
-                            var index = $(this).index() + 1;
-                            $('.timetable th:nth-child(' + index + ')').addClass('hover');
-                        }, function() {
-                            var index = $(this).index() + 1;
-                            $('.timetable th:nth-child(' + index + ')').removeClass('hover');
-                        });
-                    }, 1000);
                 }
             });
 
@@ -326,7 +282,7 @@
                         data: data
                     },
                     beforeSend: function() {
-                        $('#timetable').selectable('disable');
+                        $('.ui-selectable').selectable('disable');
                         $('.selectable-color').attr('disabled', 'disabled');
                     },
                     success: function(response) {
@@ -337,7 +293,7 @@
                         }
                     },
                     complete: function() {
-                        $('#timetable').selectable('enable');
+                        $('.ui-selectable').selectable('enable');
                         $('.selectable-color').removeAttr('disabled');
                     }
                 });
