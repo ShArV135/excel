@@ -148,7 +148,7 @@
                 }
                 switch (field) {
                     case 'controls':
-                        return html = '<a href="' + value.update + '"><span class="glyphicon glyphicon-edit"></span></a>' +
+                        return '<a href="' + value.update + '"><span class="glyphicon glyphicon-edit"></span></a>' +
                             '<a class="delete-confirm" onclick="deleteConfirm(\''+ value.delete +'\')" href="javascript: void(0)">' +
                                 '<span class="glyphicon glyphicon-remove"></span>' +
                             '</a>';
@@ -167,6 +167,8 @@
                                 '</div>';
                         }
                         return '';
+                    case 'sum_times':
+                        return value + '<a class="row-act-toggle"><span class="glyphicon glyphicon-certificate"></span></a>';
                     default:
                         return value;
                 }
@@ -194,6 +196,9 @@
                     tmpCustomer = row.customer_id;
 
                     return output;
+                },
+                onPostBody: function() {
+                    hideLoader();
                 }
             });
 
@@ -306,6 +311,7 @@
                         if (response !== 'OK') {
                             timetableUpdated = response;
 
+                            showLoader();
                             $('#timetable').bootstrapTable('refresh', {silent: true});
                         }
                     }

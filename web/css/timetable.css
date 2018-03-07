@@ -40,6 +40,7 @@
 .timetable .price_for_provider,
 .timetable .sum_times {
     width: 70px !important;
+    position: relative;
 }
 
 .timetable .comment .th-inner {
@@ -134,7 +135,8 @@
     border-top: 2px solid #aaa !important;
 }
 
-.timetable .times-comment {
+.timetable .times-comment,
+.timetable .row-act-toggle {
     position: absolute;
     right: 0;
     top: 0;
@@ -143,6 +145,11 @@
     white-space: normal;
     text-decoration: none;
     border: 0;
+}
+
+.timetable .row-act-toggle {
+    right: 2px;
+    top: 2px;
 }
 
 .timetable .times-comment.text-muted {
@@ -164,6 +171,10 @@
 .selectable-color.purple,
 .times.purple {
     background: #cb00cb !important;;
+}
+
+td.has-act {
+    background: lightgreen;
 }
 
 .provider-cell {

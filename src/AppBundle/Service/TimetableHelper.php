@@ -57,11 +57,13 @@ class TimetableHelper
             $customerPaid += $payment->getAmount();
         }
 
-        $providerPayments = $paymentRepository->getByContractorAndTimetable($customer, $timetable);
         $providerPaid = 0;
-        /** @var Payment $payment */
-        foreach ($providerPayments as $payment) {
-            $providerPaid += $payment->getAmount();
+        if ($provider) {
+            $providerPayments = $paymentRepository->getByContractorAndTimetable($provider, $timetable);
+            /** @var Payment $payment */
+            foreach ($providerPayments as $payment) {
+                $providerPaid += $payment->getAmount();
+            }
         }
 
         $timetableRowTimes = $timetableRowTimesRepository->getTimesOrCreate($timetableRow);
@@ -342,6 +344,7 @@ class TimetableHelper
                     break;
                 case 'sum_times':
                     $value = number_format($sumTimes, 0, '.', ' ');
+                    $row['_sum_times_class'] = $timetableRow->isHasAct() ? 'sum_times has-act' : '';
                     break;
                 case 'times':
                     /** @var TimetableRowTimes $timetableRowTimes */

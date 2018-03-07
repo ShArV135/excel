@@ -101,6 +101,21 @@
             var index = $(this).index() + 1;
             $('.timetable th:nth-child(' + index + ')').removeClass('hover');
         });
+
+        $('.row-act-toggle').click(function() {
+            var id = $(this).parents('tr').data('row');
+            var $td = $(this).parents('td');
+            $.ajax({
+                url: Routing.generate('timetable_row_toggle_act', {timetableRow: id}),
+                success: function (response) {
+                    if (response.has_act) {
+                        $td.addClass('has-act');
+                    } else {
+                        $td.removeClass('has-act');
+                    }
+                }
+            });
+        });
     };
 
     BootstrapTable.prototype.horizontalScroll = function () {

@@ -8,6 +8,7 @@ use AppBundle\Form\TimetableRowType;
 use AppBundle\Security\TimetableRowVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,7 +73,7 @@ class TimetableRowController extends Controller
                 $em->flush();
 
                 $this->addFlash('success', 'Запись успешно изменена.');
-                $redirectUrl = $this->generateUrl('homepage', ['id' => $timetableRow->getTimetable()->getId()]).'#'.$timetableRow->getId();
+                $redirectUrl = $this->generateUrl('homepage', ['id' => $timetableRow->getTimetable()->getId()]);
 
                 return $this->redirect($redirectUrl);
             } catch (\Exception $e) {
@@ -108,6 +109,25 @@ class TimetableRowController extends Controller
         }
 
         return $this->redirectToRoute('homepage', ['id' => $timetableRow->getTimetable()->getId()]);
+    }
+
+    /**
+     * @Route("/timetable-row/{timetableRow}/toggle-act", name="timetable_row_toggle_act", options={"expose"=true})
+     * @param TimetableRow $timetableRow
+     * @return JsonResponse
+     */
+    public function toggleActAction(TimetableRow $timetableRow)
+    {
+        $this->denyAccessUnlessGranted(TimetableRowVoter::EDIT, $timetableRow);
+
+        if ($timetableRow->isHasAct()) {
+            $timetableRow->setHasAct(false);
+        } else {
+            $timetableRow->setHasAct(true);
+        }
+        $this->getDoctrine()->getManager()->flush();
+
+        return new JsonResponse(['has_act' => $timetableRow->isHasAct()]);
     }
 
     private function getForm(TimetableRow $timetableRow)

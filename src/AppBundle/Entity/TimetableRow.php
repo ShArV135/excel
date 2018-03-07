@@ -98,6 +98,13 @@ class TimetableRow
     private $price_for_provider;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="has_act", type="boolean", options={"default": false})
+     */
+    private $hasAct = false;
+
+    /**
      * @return int
      */
     public function getId()
@@ -272,6 +279,25 @@ class TimetableRow
     public function setPriceForProvider($price_for_provider)
     {
         $this->price_for_provider = $price_for_provider;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasAct()
+    {
+        return $this->hasAct;
+    }
+
+    /**
+     * @param bool $hasAct
+     * @return TimetableRow
+     */
+    public function setHasAct($hasAct)
+    {
+        $this->hasAct = $hasAct;
 
         return $this;
     }
