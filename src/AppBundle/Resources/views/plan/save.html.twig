@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        {{ form_start(form) }}
+        <div class="panel panel-default">
+            <div class="panel-heading">Информация о плане продаж</div>
+            <div class="panel-body">
+                {{ form_errors(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.user) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.amount) }}
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                {{ form_widget(form.save)}}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

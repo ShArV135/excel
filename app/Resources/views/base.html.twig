@@ -37,6 +37,9 @@
                         <li>
                             <a href="{{ path('user_list') }}">Пользователи</a>
                         </li>
+                        <li>
+                            <a href="{{ path('plan_list') }}">Планы продаж</a>
+                        </li>
                     {% endif %}
                     {% if is_granted('ROLE_MANAGER')
                         or is_granted('ROLE_PROVIDER_MANAGER')
