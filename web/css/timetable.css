@@ -75,6 +75,10 @@
     font-weight: bold;
 }
 
+.timetable td.sum_times {
+    text-align: center;
+}
+
 .timetable td {
     border: 1px solid #D0D7E5;
     padding: 2px 4px !important;

@@ -23,16 +23,20 @@
             {{ form_end(timetable_filter) }}
         </div>
         {% if sales_data %}
-            {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                 <div class="row">
                     <div class="btn-group" role="group">
-                        <button class="btn btn-success margin-checker">
+                        {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                            <button class="btn btn-success margin-checker">
+                                <i class="state-icon glyphicon glyphicon-unchecked"></i>
+                                Показать маржу
+                            </button>
+                        {% endif %}
+                        <button class="btn btn-warning debt-checker">
                             <i class="state-icon glyphicon glyphicon-unchecked"></i>
-                            Показать маржу
+                            Только с долгом
                         </button>
                     </div>
                 </div>
-            {% endif %}
             <div class="row" style="margin-top: 10px;">
                 <table class="table table-striped table-bordered table-report">
                     <thead>
@@ -70,7 +74,7 @@
                     </thead>
                     <tbody>
                     {% for id, data in sales_data %}
-                        <tr>
+                        <tr class="{{ data.balance < 0 ? 'is-debt' : '' }}">
                             {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                                 <td>{{ data.manager }}</td>
                             {% endif %}
@@ -107,5 +111,17 @@
                 $('.table-report .margin-col').show()
             }
         });
+
+        $('.debt-checker').click(function () {
+            var checked = $('i', $(this)).hasClass('glyphicon-check');
+
+            if (checked) {
+                $('i', $(this)).removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                $('.table-report tbody tr').show()
+            } else {
+                $('i', $(this)).removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                $('.table-report tbody tr:not(.is-debt)').hide()
+            }
+        })
     </script>
 {% endblock %}

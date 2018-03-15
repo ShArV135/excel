@@ -7,16 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/PlanController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/PlanController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/css/timetable.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/css/timetable.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -62,62 +53,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PlanController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/PlanController.php">
+      <file leaf-file-name="ReportController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="775">
-              <caret line="97" column="13" lean-forward="true" selection-start-line="97" selection-start-column="13" selection-end-line="97" selection-end-column="13" />
+            <state relative-caret-position="327">
+              <caret line="332" column="33" selection-start-line="332" selection-start-column="33" selection-end-line="332" selection-end-column="33" />
               <folding>
-                <element signature="e#40#66#0#PHP" expanded="true" />
+                <element signature="e#40#72#0#PHP" expanded="true" />
+                <element signature="e#1780#1796#1#PHP" expanded="true" />
+                <element signature="e#2178#2202#1#PHP" expanded="true" />
+                <element signature="e#3475#3497#1#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TimetableHelper.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php">
+      <file leaf-file-name="sale.html.twig" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="259" lean-forward="true" selection-start-line="259" selection-end-line="259" />
+            <state relative-caret-position="373">
+              <caret line="119" column="38" selection-start-line="119" selection-start-column="38" selection-end-line="119" selection-end-column="38" />
               <folding>
-                <element signature="e#37#69#0#PHP" expanded="true" />
+                <element signature="e#12#26#0#Twig" expanded="true" />
+                <element signature="e#4448#4470#0#HTML" expanded="true" />
+                <element signature="e#4624#4646#0#HTML" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1080">
-              <caret line="63" column="35" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html.twig" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="74" column="206" selection-start-line="74" selection-start-column="206" selection-end-line="74" selection-end-column="206" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="timetable.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/css/timetable.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="57" column="28" selection-start-line="57" selection-start-column="21" selection-end-line="57" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="custom.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/css/custom.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="745">
-              <caret line="55" column="6" selection-start-line="55" selection-start-column="6" selection-end-line="55" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -126,10 +86,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>refresh'</find>
-      <find>refresh</find>
-      <find>onRefresh</find>
-      <find>'refresh'</find>
       <find>initBody</find>
       <find>hideLoader</find>
       <find>panel-footer</find>
@@ -153,9 +109,13 @@
       <find>$customerManagerData</find>
       <find>choice_manager</find>
       <find>$managersById</find>
-      <find>manager</find>
       <find>manaf</find>
+      <find>manager</find>
       <find>по сн</find>
+      <find>$providerManagerData</find>
+      <find>sum_</find>
+      <find>saleac</find>
+      <find>margin-checker</find>
     </findStrings>
     <replaceStrings>
       <replace>ROLE_PROVIDER_MANAGER</replace>
@@ -205,7 +165,6 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Security/UserVoter.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/UserController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/users/list.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/report/provide.html.twig" />
         <option value="$PROJECT_DIR$/app/config/config.yml" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php" />
@@ -222,7 +181,6 @@
         <option value="$PROJECT_DIR$/web/css/custom.css" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/PlanController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" />
@@ -230,8 +188,10 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" />
-        <option value="$PROJECT_DIR$/web/css/timetable.css" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" />
+        <option value="$PROJECT_DIR$/web/css/timetable.css" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" />
       </list>
     </option>
   </component>
@@ -588,14 +548,7 @@
       <workItem from="1520277837707" duration="20324000" />
       <workItem from="1520445372270" duration="4462000" />
       <workItem from="1520968513321" duration="4341000" />
-      <workItem from="1521055629938" duration="13880000" />
-    </task>
-    <task id="LOCAL-00001" summary="timetable layout">
-      <created>1515787910692</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1515787910692</updated>
+      <workItem from="1521055629938" duration="15971000" />
     </task>
     <task id="LOCAL-00002" summary="timetable functional">
       <created>1515951376641</created>
@@ -933,11 +886,18 @@
       <option name="project" value="LOCAL" />
       <updated>1521143520633</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="features">
+      <created>1521145837530</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1521145837531</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="310924000" />
+    <option name="totallyTimeSpent" value="313015000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -953,8 +913,9 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32984293" />
+      <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50193477" side_tool="true" weight="0.32984293" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49806523" weight="0.2623295" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49806523" visible="true" weight="0.2623295" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3291536" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32843652" />
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49856323" visible="true" weight="0.21337755" />
@@ -970,7 +931,6 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="SQL Generator" order="11" weight="0.32984293" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="9" weight="0.32984293" />
-      <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Database Console" order="11" weight="0.32948583" />
@@ -1030,7 +990,6 @@
     <MESSAGE value="CreateUserCommand" />
     <MESSAGE value="Contractor filter" />
     <MESSAGE value="rebuild table" />
-    <MESSAGE value="features" />
     <MESSAGE value="export" />
     <MESSAGE value="test phpinfo" />
     <MESSAGE value="fix remove" />
@@ -1044,7 +1003,8 @@
     <MESSAGE value="fixes" />
     <MESSAGE value="has act" />
     <MESSAGE value="plan" />
-    <option name="LAST_COMMIT_MESSAGE" value="plan" />
+    <MESSAGE value="features" />
+    <option name="LAST_COMMIT_MESSAGE" value="features" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1113,13 +1073,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vendor/wenzhixin/bootstrap-table/src/extensions/cookie/bootstrap-table-cookie.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="229" column="41" lean-forward="true" selection-start-line="229" selection-start-column="41" selection-end-line="229" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/config/security.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
@@ -1404,22 +1357,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="292" column="64" selection-start-line="292" selection-start-column="64" selection-end-line="292" selection-end-column="64" />
-          <folding>
-            <element signature="e#40#72#0#PHP" expanded="true" />
-            <element signature="e#1780#1796#1#PHP" expanded="true" />
-            <element signature="e#2178#2202#1#PHP" expanded="true" />
-            <element signature="e#3475#3497#1#PHP" expanded="true" />
-            <element signature="e#4085#4107#1#PHP" expanded="true" />
-            <element signature="e#5267#5298#0#PHP" expanded="true" />
-            <element signature="e#16812#16843#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="das://table:/684a2985/b4bf153f-0306-4fbe-a9d6-54c9efeb4786/excel.timetable_row">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -1460,34 +1397,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="259" lean-forward="true" selection-start-line="259" selection-end-line="259" />
-          <folding>
-            <element signature="e#37#69#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/css/timetable.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="57" column="28" selection-start-line="57" selection-start-column="21" selection-end-line="57" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/css/custom.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="745">
           <caret line="55" column="6" selection-start-line="55" selection-start-column="6" selection-end-line="55" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1080">
-          <caret line="63" column="35" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -1504,7 +1417,56 @@
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="290">
-          <caret line="74" column="206" selection-start-line="74" selection-start-column="206" selection-end-line="74" selection-end-column="206" />
+          <caret line="74" column="207" selection-start-line="74" selection-start-column="207" selection-end-line="74" selection-end-column="207" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1080">
+          <caret line="63" column="35" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="266" column="5" lean-forward="true" selection-start-line="266" selection-start-column="5" selection-end-line="266" selection-end-column="5" />
+          <folding>
+            <element signature="e#37#69#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/timetable.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="78" column="22" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="332" column="33" selection-start-line="332" selection-start-column="33" selection-end-line="332" selection-end-column="33" />
+          <folding>
+            <element signature="e#40#72#0#PHP" expanded="true" />
+            <element signature="e#1780#1796#1#PHP" expanded="true" />
+            <element signature="e#2178#2202#1#PHP" expanded="true" />
+            <element signature="e#3475#3497#1#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="119" column="38" selection-start-line="119" selection-start-column="38" selection-end-line="119" selection-end-column="38" />
+          <folding>
+            <element signature="e#12#26#0#Twig" expanded="true" />
+            <element signature="e#4448#4470#0#HTML" expanded="true" />
+            <element signature="e#4624#4646#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
