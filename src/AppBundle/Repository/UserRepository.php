@@ -58,6 +58,7 @@ class UserRepository extends EntityRepository
         ;
 
         return $qb
+            ->addOrderBy('user.lastname', 'ASC')
             ->getQuery()
             ->getResult()
         ;

@@ -4,12 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Plan;
 use AppBundle\Entity\Timetable;
-use AppBundle\Form\PlanType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class ContractorController
@@ -17,130 +17,112 @@ use Symfony\Component\HttpFoundation\Response;
 class PlanController extends Controller
 {
     /**
-     * @Route("/plans", name="plan_list")
+     * @Route("/plans", name="plan_index")
      * @return Response
      */
-    public function listAction()
+    public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $timetables = $em->getRepository('AppBundle:Timetable')->findAll();
-
-        $plansByTimetable = [];
-        foreach ($timetables as $timetable) {
-            $plans = $em->getRepository('AppBundle:Plan')->findBy(['timetable' => $timetable]);
-
-            $plansByTimetable[] = [
-                'timetable' => $timetable,
-                'plans' => $plans,
-            ];
-        }
+        $timetables = $em->getRepository('AppBundle:Timetable')->findBy([], ['id' => 'DESC']);
 
         return $this->render(
-            '@App/plan/list.html.twig',
+            '@App/plan/index.html.twig',
             [
-                'plans_by_timetable' => $plansByTimetable,
+                'timetables' => $timetables,
             ]
         );
     }
 
     /**
-     * @Route("/plans/create/{timetable}", name="plan_create")
-     * @param Request   $request
+     * @Route("/plans/{timetable}", name="plan_data", options={"expose"=true})
      * @param Timetable $timetable
-     * @return RedirectResponse|Response
+     * @param Request   $request
+     * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function createAction(Request $request, Timetable $timetable)
+    public function dataAction(Timetable $timetable, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $plan = new Plan();
-        $plan->setTimetable($timetable);
-
-        $form = $this->createForm(
-            PlanType::class,
-            $plan,
-            [
-                'users' => $em->getRepository('AppBundle:Plan')->getAvailableManagers($timetable),
-            ]
-        );
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            try {
-                $em->persist($plan);
-                $em->flush();
-
-                $this->addFlash('success', 'План продаж успешно добавлен');
-
-                return $this->redirectToRoute('plan_list');
-            } catch (\Exception $e) {
-                $this->addFlash('warning', 'При сохранении возникла ошибка.');
-            }
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
         }
 
-        return $this->render(
-            '@App/plan/save.html.twig',
-            [
-                'page_header' => 'Новый план продаж',
-                'form' => $form->createView(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/plans/{plan}/update", name="plan_update")
-     * @param Request $request
-     * @param Plan    $plan
-     * @return RedirectResponse|Response
-     */
-    public function updateAction(Request $request, Plan $plan)
-    {
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(
-            PlanType::class,
-            $plan,
-            [
-                'users' => $em->getRepository('AppBundle:Plan')->getAvailableManagers($plan->getTimetable(), $plan),
-            ]
-        );
-        $form->handleRequest($request);
+        $currentTimetable = $em->getRepository('AppBundle:Timetable')->getCurrent();
 
-        if ($form->isValid()) {
-            try {
-                $em->flush();
-                $this->addFlash('success', 'План продаж успешно изменен');
-
-                return $this->redirectToRoute('plan_list');
-            } catch (\Exception $e) {
-                $this->addFlash('warning', 'При сохранении возникла ошибка.');
+        if ($data = $request->get('plans')) {
+            if (!is_array($data)) {
+                throw new BadRequestHttpException();
             }
-        }
+            foreach ($data as $userId => $amount) {
+                $amount = (double) $amount;
 
-        return $this->render(
-            '@App/plan/save.html.twig',
-            [
-                'page_header' => 'Редактировать план продаж',
-                'form' => $form->createView(),
-            ]
-        );
-    }
+                if ($amount <= 0) {
+                    continue;
+                }
 
-    /**
-     * @Route("/plans/{plan}/delete", name="plan_delete")
-     * @param Plan $plan
-     * @return RedirectResponse
-     */
-    public function deleteAction(Plan $plan)
-    {
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($plan);
+                $plan = $em->getRepository('AppBundle:Plan')->findOneBy(['user' => $userId, 'timetable' => $currentTimetable]);
+                if (!$plan) {
+                    $plan = new Plan();
+                    $plan->setUser($em->find('AppBundle:User', $userId));
+                    $plan->setTimetable($currentTimetable);
+                    $em->persist($plan);
+                }
+
+                $plan->setAmount($amount);
+            }
+
             $em->flush();
-            $this->addFlash('success', 'Пользователь удален.');
-        } catch (\Exception $e) {
-            $this->addFlash('warning', 'При удалении возникла ошибка.');
         }
 
-        return $this->redirectToRoute('plan_list');
+        $users = $em->getRepository('AppBundle:User')->getManagers();
+        $plans = $em->getRepository('AppBundle:Plan')->findBy(['timetable' => $timetable]);
+        $planByUsers = [];
+        foreach ($plans as $plan) {
+            $user = $plan->getUser();
+            $planByUsers[$user->getId()] = $plan;
+        }
+
+        if ($currentTimetable === $timetable) {
+            $view = '@App/plan/save.html.twig';
+        } else {
+            $view = '@App/plan/view.html.twig';
+        }
+
+        return $this->render(
+            $view,
+            [
+                'users' => $users,
+                'plans_by_user' => $planByUsers,
+            ]
+        );
+    }
+
+    /**
+     * @Route("/plan-timetable/{timetable}", name="timetable_plan_data", options={"expose"=true})
+     * @param Timetable $timetable
+     * @param Request   $request
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function timetableDataAction(Timetable $timetable, Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+        $timetableHelper = $this->get('timetable.helper');
+
+        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+            $planData = $timetableHelper->planData($timetable, $this->getUser());
+        } elseif ($this->isGranted('ROLE_MANAGER')) {
+            $planData = $timetableHelper->planData($timetable);
+        } else {
+            $planData = [];
+        }
+
+        return new JsonResponse($planData);
     }
 }

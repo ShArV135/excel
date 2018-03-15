@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% set page_header = 'Планы продаж' %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="form-group form-inline" style="text-align: center">
+                <label class="form-control-label">Месяц</label>
+                <select class="form-control" id="timetable">
+                    {% for timetable in timetables %}
+                        <option value="{{ timetable.id }}">{{ timetable.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div id="plan_wrapper"></div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %} {{ parent() }}
+    <script>
+        $(function() {
+            var onAjaxSuccess = function (response) {
+                $('#plan_wrapper').html(response);
+
+                if ($('#save_plan').length > 0) {
+                    $('#save_plan').parents('form').on('submit', onSubmitForm);
+                }
+            };
+
+            $('#timetable').change(function() {
+                var timetable = $(this).val();
+                $.ajax({
+                    url: Routing.generate('plan_data', {timetable: timetable}),
+                    success: onAjaxSuccess
+                });
+            }).trigger('change');
+
+            var onSubmitForm = function(e) {
+                e.preventDefault();
+                var $form = $(this);
+                var timetable = $('#timetable').val();
+
+                $('#save_plan').attr('disabled', 'disabled');
+
+                $.ajax({
+                    url: Routing.generate('plan_data', {timetable: timetable}),
+                    type: 'POST',
+                    data: $form.serialize(),
+                    success: onAjaxSuccess
+                });
+            }
+        });
+    </script>
+{% endblock %}

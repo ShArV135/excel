@@ -22,6 +22,19 @@
             </div>
         </div>
         <div class="btn-group pull-right" role="group">
+            <div class="block-group plan-wrapper">
+                    <span class="label label-info hide">
+                        План на текущий месяц: <b class="plan-amount"></b>
+                    </span>
+                <span class="label label-success hide">
+                        Текущее выполнение: <b class="plan-completed"></b>
+                        (<b class="plan-completed-percent"></b>)
+                    </span>
+                <span class="label label-warning hide">
+                        Осталось до выполнения плана: <b class="plan-left"></b>
+                        (<b class="plan-left-percent"></b>)
+                </span>
+            </div>
             <a class="btn btn-primary" href="{{ path('timetable_row_create', {'timetable': timetable.id}) }}">
                 Добавить запись
             </a>
@@ -47,7 +60,7 @@
         </div>
     </div>
     <div id="timetable_container" class="row" style="margin: 10px 0 0;">
-        <table id="timetable" class="timetable" data-url="{{ path('timetable_data', {'timetable': timetable.id, 'show': view_mode}) }}">
+        <table id="timetable" class="timetable" data-id="{{ timetable.id }}" data-url="{{ path('timetable_data', {'timetable': timetable.id, 'show': view_mode}) }}">
             <thead>
             <tr>
                 <th data-field="controls" data-formatter="cellFormatter" class="timetable-fixed-cell controls">&nbsp;</th>

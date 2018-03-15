@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>Архив ранее установленных планов</h4></div>
+    <div class="panel-body">
+        <table class="table">
+            <tr>
+                <th class="col-md-8">Менеджеры отдела продаж</th>
+                <th class="col-md-4">План</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.fullname }}</td>
+                    <td>
+                        <div style="padding: 6px 8px;">
+                            {{ plans_by_user[user.id].amount|default(0)|number_format(2, '.', ' ') }}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

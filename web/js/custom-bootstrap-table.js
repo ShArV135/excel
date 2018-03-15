@@ -62,14 +62,50 @@
             }
         }
 
+        this.updatePlanData();
         this.initSearch();
         this.initPagination();
         this.initSort();
         this.initBody(true);
     };
 
+    BootstrapTable.prototype.updatePlanData = function () {
+        var timetableId = $('#timetable').data('id');
+
+        $.ajax({
+            url: Routing.generate('timetable_plan_data', {timetable: timetableId}),
+            success: function (planData) {
+                var $wrapper = $('.plan-wrapper');
+
+                if (planData.plan_amount) {
+                    $('.plan-amount', $wrapper).html(planData.plan_amount);
+                    $('.plan-amount', $wrapper).parent('.label').removeClass('hide');
+                } else {
+                    $('.plan-amount', $wrapper).parent('.label').addClass('hide');
+                }
+
+                if (planData.plan_completed) {
+                    $('.plan-completed', $wrapper).html(planData.plan_completed);
+                    $('.plan-completed-percent', $wrapper).html(planData.plan_completed_percent);
+                    $('.plan-completed', $wrapper).parent('.label').removeClass('hide');
+                } else {
+                    $('.plan-completed', $wrapper).parent('.label').addClass('hide');
+                }
+
+                if (planData.left_amount) {
+                    $('.plan-left', $wrapper).html(planData.left_amount);
+                    $('.plan-left-percent', $wrapper).html(planData.left_amount_percent);
+                    $('.plan-left', $wrapper).parent('.label').removeClass('hide');
+                } else {
+                    $('.plan-left', $wrapper).parent('.label').addClass('hide');
+                }
+            }
+        });
+    };
+
     BootstrapTable.prototype.initBody = function () {
         _initBody.apply(this, Array.prototype.slice.apply(arguments));
+        this.updatePlanData();
 
         $('.tt-tooltip').tooltip({
             trigger: 'click',

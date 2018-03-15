@@ -21,6 +21,7 @@ class TimetableRowTimesController extends Controller
      * @param Request           $request
      * @return Response
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function updateAction(TimetableRowTimes $timetableRowTimes, Request $request)
     {

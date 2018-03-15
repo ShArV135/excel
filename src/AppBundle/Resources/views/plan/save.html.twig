@@ -1,25 +1,22 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <div class="container">
-        {{ form_start(form) }}
-        <div class="panel panel-default">
-            <div class="panel-heading">Информация о плане продаж</div>
-            <div class="panel-body">
-                {{ form_errors(form) }}
-                <div class="row">
-                    <div class="col-md-6">
-                        {{ form_row(form.user) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(form.amount) }}
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
-                {{ form_widget(form.save)}}
-            </div>
+<form>
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4>Установка планов продаж</h4></div>
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <th class="col-md-8">Менеджеры отдела продаж</th>
+                    <th class="col-md-4">План</th>
+                </tr>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.fullname }}</td>
+                        <td><input type="text" name="plans[{{ user.id }}]" value="{{ plans_by_user[user.id].amount|default(0) }}"> </td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
-        {{ form_end(form) }}
+        <div class="panel-footer" style="text-align: center">
+            <button id="save_plan" class="btn btn-success">Установить</button>
+        </div>
     </div>
-{% endblock %}
+</form>

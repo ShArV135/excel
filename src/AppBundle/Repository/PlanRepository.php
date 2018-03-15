@@ -2,8 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Plan;
-use AppBundle\Entity\Timetable;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -14,39 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class PlanRepository extends EntityRepository
 {
-    /**
-     * @param Timetable $timetable
-     * @param Plan|null $plan
-     * @return array
-     */
-    public function getAvailableManagers(Timetable $timetable, Plan $plan = null)
-    {
-        $existsUsersQb = $this
-            ->createQueryBuilder('plan')
-            ->select('plan_user.id')
-            ->join('plan.user', 'plan_user')
-            ->andWhere('plan.timetable = :timetable')
-        ;
-
-        $qb = $this
-            ->getEntityManager()
-            ->getRepository('AppBundle:User')
-            ->createQueryBuilder('user')
-            ->select('user')
-        ;
-
-        if ($plan) {
-            $existsUsersQb->andWhere($existsUsersQb->expr()->neq('plan.id', ':plan'));
-            $qb->setParameter('plan', $plan);
-        }
-
-        return $qb
-            ->andWhere($qb->expr()->notIn('user.id', $existsUsersQb->getDQL()))
-            ->setParameter('timetable', $timetable)
-            ->andWhere($qb->expr()->like('user.roles', ':roles'))
-            ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }

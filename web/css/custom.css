@@ -45,3 +45,13 @@ textarea.noresize {
 a.nostyle {
     color: inherit;
 }
+
+.btn-group > .block-group {
+    padding: 6px;
+    position: relative;
+    float: left;
+}
+
+.plan-wrapper .label {
+    margin-left: 5px;
+}

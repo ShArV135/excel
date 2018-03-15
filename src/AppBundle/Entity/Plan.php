@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Contractor
+ * Plan
  *
  * @ORM\Table(name="plan")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PlanRepository")
@@ -23,7 +23,7 @@ class Plan
     private $id;
 
     /**
-     * @var Contractor
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
@@ -59,7 +59,7 @@ class Plan
     }
 
     /**
-     * @return Contractor
+     * @return User
      */
     public function getUser()
     {
@@ -67,7 +67,7 @@ class Plan
     }
 
     /**
-     * @param Contractor $user
+     * @param User $user
      * @return Plan
      */
     public function setUser($user)
