@@ -116,9 +116,9 @@ class PlanController extends Controller
         $timetableHelper = $this->get('timetable.helper');
 
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $planData = $timetableHelper->planData($timetable, $this->getUser());
+            $planData = $timetableHelper->planDataFormat($timetable, $this->getUser());
         } elseif ($this->isGranted('ROLE_MANAGER')) {
-            $planData = $timetableHelper->planData($timetable);
+            $planData = $timetableHelper->planDataFormat($timetable);
         } else {
             $planData = [];
         }

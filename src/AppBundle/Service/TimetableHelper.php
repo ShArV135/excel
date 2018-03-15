@@ -182,6 +182,7 @@ class TimetableHelper
             case 'dispatcher':
                 $columns = [
                     'manager',
+                    'provider_manager',
                     'customer',
                     'provider',
                     'object',
@@ -196,6 +197,7 @@ class TimetableHelper
             case 'provider_manager':
                 $columns = [
                     'manager',
+                    'provider_manager',
                     'object',
                     'provider',
                     'mechanism',
@@ -213,6 +215,7 @@ class TimetableHelper
             case 'general_manager':
                 $columns = [
                     'manager',
+                    'provider_manager',
                     'customer',
                     'object',
                     'mechanism',
@@ -230,6 +233,7 @@ class TimetableHelper
             default:
                 $columns = [
                     'manager',
+                    'provider_manager',
                     'customer',
                     'provider',
                     'object',
@@ -272,6 +276,7 @@ class TimetableHelper
     public function timetableRowFormat(TimetableRow $timetableRow, array $columns)
     {
         $manager = $timetableRow->getManager();
+        $providerManager = $timetableRow->getProviderManager();
         $customer = $timetableRow->getCustomer();
         $provider = $timetableRow->getProvider();
 
@@ -287,12 +292,6 @@ class TimetableHelper
             $customerPaid,
             $providerPaid,
             ) = array_values($this->calculateRowData($timetableRow));
-
-        if (in_array('manager', $columns)) {
-            $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById();
-        } else {
-            $managersById = [];
-        }
 
         $row = [
             'id' => $timetableRow->getId(),
@@ -311,7 +310,16 @@ class TimetableHelper
         foreach ($columns as $column) {
             switch ($column) {
                 case 'manager':
+                    $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById();
                     $value = $managersById[$manager->getId()];
+                    break;
+                case 'provider_manager':
+                    if ($providerManager) {
+                        $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById('ROLE_PROVIDER_MANAGER');
+                        $value = $managersById[$providerManager->getId()];
+                    } else {
+                        $value = '';
+                    }
                     break;
                 case 'customer':
                     $value = [
@@ -476,14 +484,39 @@ class TimetableHelper
         }
 
         $data = [
-            'plan_amount' => number_format($planAmount, 2, '.', ' ').' руб.',
-            'plan_completed' => number_format($planCompleted, 2, '.', ' ').' руб.',
-            'plan_completed_percent' => $planCompletedPercent.'%',
+            'plan_amount' => $planAmount,
+            'plan_completed' => $planCompleted,
+            'plan_completed_percent' => $planCompletedPercent,
         ];
 
         if ($planAmount > $planCompleted) {
-            $data['left_amount'] = number_format( $planAmount - $planCompleted, 2, '.', ' ').' руб.';
-            $data['left_amount_percent'] = 100 - $planCompletedPercent.'%';
+            $data['left_amount'] = $planAmount - $planCompleted;
+            $data['left_amount_percent'] = 100 - $planCompletedPercent;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param Timetable $timetable
+     * @param User|null $user
+     * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function planDataFormat(Timetable $timetable, User $user = null)
+    {
+        $planData = $this->planData($timetable, $user);
+
+        $data = [
+            'plan_amount' => number_format($planData['plan_amount'], 2, '.', ' ').' руб.',
+            'plan_completed' => number_format($planData['plan_completed'], 2, '.', ' ').' руб.',
+            'plan_completed_percent' => $planData['plan_completed_percent'].'%',
+        ];
+
+        if (isset($planData['left_amount'])) {
+            $data['left_amount'] = number_format( $planData['left_amount'], 2, '.', ' ').' руб.';
+            $data['left_amount_percent'] = $planData['left_amount_percent'].'%';
         }
 
         return $data;

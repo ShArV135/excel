@@ -14,11 +14,12 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
     /**
+     * @param string $role
      * @return array
      */
-    public function getManagersByFio()
+    public function getManagersByFio($role = 'ROLE_CUSTOMER_MANAGER')
     {
-        $managers = $this->getManagers();
+        $managers = $this->getManagers($role);
 
         $managersByFio = [];
         /** @var User $manager */
@@ -30,11 +31,12 @@ class UserRepository extends EntityRepository
     }
 
     /**
+     * @param string $role
      * @return array
      */
-    public function getManagersById()
+    public function getManagersById($role = 'ROLE_CUSTOMER_MANAGER')
     {
-        $managers = $this->getManagers();
+        $managers = $this->getManagers($role);
 
         $managersById = [];
         /** @var User $manager */

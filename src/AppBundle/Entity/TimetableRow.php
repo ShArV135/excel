@@ -42,6 +42,15 @@ class TimetableRow
     private $manager;
 
     /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="provider_manager_id", referencedColumnName="id")
+     * @Assert\NotBlank()
+     */
+    private $providerManager;
+
+    /**
      * @var Contractor
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Contractor")
@@ -146,6 +155,25 @@ class TimetableRow
     public function setManager($manager)
     {
         $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getProviderManager()
+    {
+        return $this->providerManager;
+    }
+
+    /**
+     * @param User $providerManager
+     * @return TimetableRow
+     */
+    public function setProviderManager($providerManager)
+    {
+        $this->providerManager = $providerManager;
 
         return $this;
     }

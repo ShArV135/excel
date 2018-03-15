@@ -26,6 +26,7 @@
                             <tr>
                                 <th>ФИО</th>
                                 <th>Заказчиков</th>
+                                <th>Выполнение<br>плана продаж</th>
                                 <th>Наработка</th>
                                 {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                     <th>Маржа</th>
@@ -37,6 +38,7 @@
                             {% if summary_data %}
                                 <tr>
                                     <th colspan="2" style="text-align: right">Всего:</th>
+                                    <th>{{ summary_data.plan_completed~'%' }}</th>
                                     <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
                                     {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                         <th>{{ summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
@@ -51,6 +53,7 @@
                                 <tr>
                                     <td>{{ customer_row.fio }}</td>
                                     <td>{{ customer_row.customers }}</td>
+                                    <td>{{ customer_row.plan_completed~'%' }}</td>
                                     <td>{{ customer_row.salary|number_format(2, '.', ' ') }}</td>
                                     {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                         <td>{{ customer_row.margin_sum|number_format(2, '.', ' ') }}</td>

@@ -90,6 +90,23 @@ class TimetableRowType extends AbstractType
                         },
                     ]
                 )
+                ->add(
+                    'providerManager',
+                    EntityType::class,
+                    [
+                        'label' => 'Менеджер по снабжению',
+                        'class' => User::class,
+                        'attr' => ['class' => 'select2me'],
+                        'choice_label' => 'fullname',
+                        'query_builder' => function(EntityRepository $repository) {
+                            $qb = $repository->createQueryBuilder('e');
+                            return $qb
+                                ->where($qb->expr()->like('e.roles', ':roles'))
+                                ->setParameter('roles', '%ROLE_PROVIDER_MANAGER%')
+                                ;
+                        },
+                    ]
+                )
             ;
         }
 

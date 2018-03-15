@@ -71,6 +71,8 @@
                     {% endif %}
                     {% if column == 'manager' %}
                         <th data-field="manager" data-formatter="cellFormatter" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">Менеджер</th>
+                    {% elseif column == 'provider_manager' %}
+                        <th data-field="provider_manager" data-formatter="cellFormatter" data-filter-data="json:{{ provider_managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МС</th>
                     {% elseif column == 'customer' %}
                         <th data-field="customer" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }}">Заказчик</th>
                     {% elseif column == 'provider' %}
@@ -165,7 +167,6 @@
                             '<a class="delete-confirm" onclick="deleteConfirm(\''+ value.delete +'\')" href="javascript: void(0)">' +
                                 '<span class="glyphicon glyphicon-remove"></span>' +
                             '</a>';
-                    case 'manager':
                     case 'object':
                     case 'mechanism':
                     case 'comment':

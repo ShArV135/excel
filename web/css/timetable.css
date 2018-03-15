@@ -25,7 +25,8 @@
     width: 30px !important;
 }
 
-.timetable .manager {
+.timetable .manager,
+.timetable .provider_manager {
     width: 51px !important;
 }
 
@@ -53,7 +54,8 @@
     width: 70px !important;
 }
 
-.timetable .manager .th-inner {
+.timetable .manager .th-inner,
+.timetable .provider_manager .th-inner {
     width: 50px !important;
 }
 

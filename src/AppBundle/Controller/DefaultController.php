@@ -33,6 +33,7 @@ class DefaultController extends Controller
 
         $fixedColumns = [
             'manager',
+            'provider_manager',
             'customer',
             'provider',
             'object',
@@ -53,6 +54,12 @@ class DefaultController extends Controller
             $managersByFio = [];
         }
 
+        if (in_array('provider_manager', $columns)) {
+            $providerManagersByFio = $em->getRepository('AppBundle:User')->getManagersByFio('ROLE_PROVIDER_MANAGER');
+        } else {
+            $providerManagersByFio = [];
+        }
+
         return $this->render(
             '@App/default/index.html.twig',
             [
@@ -61,6 +68,7 @@ class DefaultController extends Controller
                 'num_of_fixed' => $numOfFixed,
                 'fixed_columns' => $fixedColumns,
                 'managers_by_fio' => $managersByFio,
+                'provider_managers_by_fio' => $providerManagersByFio,
                 'view_mode' => $show,
             ]
         );
