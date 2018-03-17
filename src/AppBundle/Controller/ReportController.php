@@ -53,7 +53,7 @@ class ReportController extends Controller
 
             $customerManagers = $em->getRepository('AppBundle:User')->getManagers();
             $customerManagerData = [];
-            $providerManagerData = [
+            $providerData = [
                 'salary' => 0,
                 'balance_positive' => 0,
                 'balance_negative' => 0,
@@ -84,7 +84,7 @@ class ReportController extends Controller
                     $row['margin_sum'] += $rowData['margin_sum'];
                     $row['margin_percent'] += $rowData['margin_percent'];
 
-                    $providerManagerData['salary'] += $rowData['provider_salary'];
+                    $providerData['salary'] += $rowData['provider_salary'];
                 }
 
                 if ($timetableRows) {
@@ -112,6 +112,29 @@ class ReportController extends Controller
                 $customerManagerData[] = $row;
             }
 
+            $providerManagers = $em->getRepository('AppBundle:User')->getManagers('ROLE_PROVIDER_MANAGER');
+            $providerManagerData = [];
+            /** @var User $providerManager */
+            foreach ($providerManagers as $providerManager) {
+                $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy([
+                    'providerManager' => $providerManager,
+                    'timetable' => $timetable,
+                ]);
+
+                $row = [
+                    'fio' => $providerManager->getFullName(),
+                    'salary' => 0,
+                ];
+
+                foreach ($timetableRows as $timetableRow) {
+                    $rowData = $timetableHelper->calculateRowData($timetableRow);
+
+                    $row['salary'] += $rowData['provider_salary'];
+                }
+
+                $providerManagerData[] = $row;
+            }
+
             $providers = $em->getRepository('AppBundle:Contractor')->findBy([
                 'type' => Contractor::PROVIDER,
             ]);
@@ -119,9 +142,9 @@ class ReportController extends Controller
                 $providerBalance = $timetableHelper->contractorBalance($provider);
 
                 if ($providerBalance > 0) {
-                    $providerManagerData['balance_positive'] += $providerBalance;
+                    $providerData['balance_positive'] += $providerBalance;
                 } else {
-                    $providerManagerData['balance_negative'] += $providerBalance;
+                    $providerData['balance_negative'] += $providerBalance;
                 }
             }
 
@@ -142,7 +165,7 @@ class ReportController extends Controller
         } else {
             $summaryData = null;
             $customerManagerData = null;
-            $providerManagerData = null;
+            $providerData = null;
         }
 
         return $this->render(
@@ -152,6 +175,7 @@ class ReportController extends Controller
                 'summary_data' => $summaryData,
                 'customer_manager_data' => $customerManagerData,
                 'provider_manager_data' => $providerManagerData,
+                'provider_data' => $providerData,
             ]
         );
     }

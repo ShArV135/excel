@@ -353,7 +353,11 @@ class TimetableHelper
                     $value = number_format($timetableRow->getPriceForProvider(), 2, '.', ' ');
                     break;
                 case 'sum_times':
-                    $value = number_format($sumTimes, 0, '.', ' ');
+                    $value = [
+                        'value' => number_format($sumTimes, 0, '.', ' '),
+                        'set_act' => $this->authorizationChecker->isGranted('ROLE_MANAGER')
+                            || $this->authorizationChecker->isGranted('ROLE_DISPATCHER'),
+                    ];
                     $row['_sum_times_class'] = $timetableRow->isHasAct() ? 'sum_times has-act' : '';
                     break;
                 case 'times':

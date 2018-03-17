@@ -182,7 +182,12 @@
                         }
                         return '';
                     case 'sum_times':
-                        return value + '<a class="row-act-toggle"><span class="glyphicon glyphicon-certificate"></span></a>';
+                        return value.value +
+                            (
+                                value.set_act
+                                    ? '<a class="row-act-toggle"><span class="glyphicon glyphicon-certificate"></span></a>'
+                                    : ''
+                            );
                     default:
                         return value;
                 }

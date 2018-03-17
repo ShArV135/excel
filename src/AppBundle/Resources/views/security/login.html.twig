@@ -37,7 +37,7 @@
         .main-center {
             margin: 0 auto;
             max-width: 330px;
-            padding: 40px 40px;
+            padding: 10px 40px;
         }
 
         .login-button {
@@ -55,6 +55,7 @@
                 </div>
             </div>
             <div class="main-login main-center">
+                <h3 style="text-align: center;">CRM BPMS</h3>
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
@@ -73,6 +74,9 @@
                         <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Войти</button>
                     </div>
                 </form>
+                <div class="row" style="text-align: center">
+                    <a href="http://jetbit.ru" target="_blank">by jetbit.ru</a>
+                </div>
             </div>
         </div>
     </div>

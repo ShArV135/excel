@@ -68,7 +68,7 @@
                         </table>
                     </div>
                     <div id="provider_manager" class="tab-pane fade">
-                        {% if provider_manager_data %}
+                        {% if provider_data %}
                             <table class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
@@ -79,12 +79,28 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>{{ provider_manager_data.salary|number_format(2, '.', ' ') }}</td>
-                                    <td>{{ provider_manager_data.balance_positive|number_format(2, '.', ' ') }}</td>
-                                    <td>{{ provider_manager_data.balance_negative|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ provider_data.salary|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ provider_data.balance_positive|number_format(2, '.', ' ') }}</td>
+                                    <td>{{ provider_data.balance_negative|number_format(2, '.', ' ') }}</td>
                                 </tr>
                                 </tbody>
                             </table>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ФИО</th>
+                                <th>Наработка</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for provider_row in provider_manager_data %}
+                                <tr>
+                                    <td>{{ provider_row.fio }}</td>
+                                    <td>{{ provider_row.salary|number_format(2, '.', ' ') }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                         {% endif %}
                     </div>
                 </div>
