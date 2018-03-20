@@ -46,7 +46,6 @@ class TimetableRow
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="provider_manager_id", referencedColumnName="id")
-     * @Assert\NotBlank()
      */
     private $providerManager;
 

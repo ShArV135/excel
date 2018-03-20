@@ -22,19 +22,6 @@
             </div>
         </div>
         <div class="btn-group pull-right" role="group">
-            <div class="block-group plan-wrapper">
-                    <span class="label label-info hide">
-                        План на текущий месяц: <b class="plan-amount"></b>
-                    </span>
-                <span class="label label-success hide">
-                        Текущее выполнение: <b class="plan-completed"></b>
-                        (<b class="plan-completed-percent"></b>)
-                    </span>
-                <span class="label label-warning hide">
-                        Осталось до выполнения плана: <b class="plan-left"></b>
-                        (<b class="plan-left-percent"></b>)
-                </span>
-            </div>
             <a class="btn btn-primary" href="{{ path('timetable_row_create', {'timetable': timetable.id}) }}">
                 Добавить запись
             </a>
@@ -57,6 +44,21 @@
                     <li><a href="{{ path('homepage', {'show': 'all', 'id': timetable.id}) }}">Показать всё</a></li>
                 </ul>
             {% endif %}
+        </div>
+    </div>
+    <div class="clearfix" style="margin: 10px 0; height: 20px;">
+        <div class="pull-right plan-wrapper">
+            <span class="label label-info hide">
+                План на текущий месяц: <b class="plan-amount"></b>
+            </span>
+            <span class="label label-success hide">
+                        Текущее выполнение: <b class="plan-completed"></b>
+                        (<b class="plan-completed-percent"></b>)
+                    </span>
+            <span class="label label-warning hide">
+                        Осталось до выполнения плана: <b class="plan-left"></b>
+                        (<b class="plan-left-percent"></b>)
+                </span>
         </div>
     </div>
     <div id="timetable_container" class="row" style="margin: 10px 0 0;">

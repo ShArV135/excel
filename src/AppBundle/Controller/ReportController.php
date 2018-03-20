@@ -107,7 +107,7 @@ class ReportController extends Controller
                 }
 
                 $planData = $timetableHelper->planData($timetable, $customerManager);
-                $row['plan_completed'] = $planData['plan_completed'];
+                $row['plan_completed_percent'] = $planData['plan_completed_percent'];
 
                 $customerManagerData[] = $row;
             }
@@ -152,20 +152,21 @@ class ReportController extends Controller
                 'salary' => array_sum(array_column($customerManagerData, 'salary')),
                 'margin_sum' => array_sum(array_column($customerManagerData, 'margin_sum')),
                 'margin_percent' => 0,
-                'plan_completed' => 0,
+                'plan_completed_percent' => 0,
             ];
 
             if ($count = count(array_filter(array_column($customerManagerData, 'margin_percent')))) {
                 $summaryData['margin_percent'] = array_sum(array_column($customerManagerData, 'margin_percent')) / $count;
             }
 
-            if ($count = count(array_filter(array_column($customerManagerData, 'plan_completed')))) {
-                $summaryData['plan_completed'] = floor(array_sum(array_column($customerManagerData, 'plan_completed')) / $count);
+            if ($count = count(array_filter(array_column($customerManagerData, 'plan_completed_percent')))) {
+                $summaryData['plan_completed_percent'] = floor(array_sum(array_column($customerManagerData, 'plan_completed_percent')) / $count);
             }
         } else {
             $summaryData = null;
             $customerManagerData = null;
             $providerData = null;
+            $providerManagerData = null;
         }
 
         return $this->render(
