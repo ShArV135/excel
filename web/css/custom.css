@@ -46,6 +46,13 @@ a.nostyle {
     color: inherit;
 }
 
+.btn-group > .block-group {
+    position: relative;
+    float: left;
+}
+
 .plan-wrapper .label {
-    margin-left: 5px;
+    line-height: 14px;
+    display: inline-block;
+    margin-right: 5px;
 }
