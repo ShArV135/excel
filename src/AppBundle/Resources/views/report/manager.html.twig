@@ -25,15 +25,15 @@
                             <thead>
                             <tr>
                                 <th>ФИО</th>
-                                <th>Заказчиков</th>
-                                <th>Выполнение<br>плана продаж</th>
-                                <th>Наработка</th>
+                                <th class="col-md-1">Заказчиков</th>
+                                <th class="col-md-1">Выполнение<br>плана продаж</th>
+                                <th class="col-md-1">Наработка</th>
                                 {% if is_granted('ROLE_GENERAL_MANAGER') %}
-                                    <th>Маржа</th>
+                                    <th class="col-md-1">Маржа</th>
                                 {% endif %}
-                                <th>Маржа, %</th>
-                                <th>Сумма предоплат (за все время)</th>
-                                <th>Сумма задолженностей (за все время)</th>
+                                <th class="col-md-1">Маржа, %</th>
+                                <th class="col-md-2">Сумма предоплат (за все время)</th>
+                                <th class="col-md-2">Сумма задолженностей (за все время)</th>
                             </tr>
                             {% if summary_data %}
                                 <tr>
