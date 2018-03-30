@@ -82,7 +82,7 @@ class TimetableHelper
             $providerBalance = 0;
         }
 
-        if ($providerSalary) {
+        if ($customerSalary > 0) {
             $marginPercent = round(100-($providerSalary/$customerSalary*100), 2);
         } else {
             $marginPercent = 0;

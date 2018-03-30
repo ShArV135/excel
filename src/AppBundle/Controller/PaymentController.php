@@ -71,7 +71,13 @@ class PaymentController extends Controller
     {
         $payment = new Payment();
 
-        $qb = $this->getDoctrine()->getManager()->getRepository('AppBundle:Contractor')->createQueryBuilder('contractor');
+        $qb = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('AppBundle:Contractor')
+            ->createQueryBuilder('contractor')
+            ->addOrderBy('contractor.name', 'ASC')
+        ;
 
         switch (true) {
             case $this->isGranted('ROLE_CUSTOMER_MANAGER'):

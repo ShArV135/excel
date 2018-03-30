@@ -50,7 +50,10 @@ class TimetableRowType extends AbstractType
                     'attr' => ['class' => 'select2me'],
                     'choice_label' => 'name',
                     'query_builder' => function(EntityRepository $repository) use ($options) {
-                        $qb = $repository->createQueryBuilder('e');
+                        $qb = $repository
+                            ->createQueryBuilder('e')
+                            ->addOrderBy('e.name', 'ASC')
+                        ;
 
                         $qb
                             ->where($qb->expr()->eq('e.type', ':type'))
@@ -129,7 +132,10 @@ class TimetableRowType extends AbstractType
                         'attr' => ['class' => 'select2me'],
                         'choice_label' => 'name',
                         'query_builder' => function(EntityRepository $repository) use ($options) {
-                            $qb = $repository->createQueryBuilder('e');
+                            $qb = $repository
+                                ->createQueryBuilder('e')
+                                ->addOrderBy('e.name', 'ASC')
+                            ;
 
                             $qb
                                 ->where($qb->expr()->eq('e.type', ':type'))

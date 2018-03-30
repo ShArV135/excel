@@ -94,6 +94,8 @@ class ReportController extends Controller
 
                 $customers = $em->getRepository('AppBundle:Contractor')->findBy([
                     'manager' => $customerManager,
+                ], [
+                    'name' => 'ASC',
                 ]);
 
                 foreach ($customers as $customer) {
@@ -137,6 +139,8 @@ class ReportController extends Controller
 
             $providers = $em->getRepository('AppBundle:Contractor')->findBy([
                 'type' => Contractor::PROVIDER,
+            ], [
+                'name' => 'ASC',
             ]);
             foreach ($providers as $provider) {
                 $providerBalance = $timetableHelper->contractorBalance($provider);
@@ -215,7 +219,10 @@ class ReportController extends Controller
                     'choice_label' => 'name',
                     'label' => 'Заказчик',
                     'query_builder' => function(EntityRepository $repository) use ($manager) {
-                        $qb = $repository->createQueryBuilder('e');
+                        $qb = $repository
+                            ->createQueryBuilder('e')
+                            ->addOrderBy('e.name', 'ASC')
+                        ;
 
                         $qb
                             ->where($qb->expr()->eq('e.type', ':type'))
@@ -396,7 +403,10 @@ class ReportController extends Controller
                     'choice_label' => 'name',
                     'label' => 'Поставщик',
                     'query_builder' => function(EntityRepository $repository) {
-                        $qb = $repository->createQueryBuilder('e');
+                        $qb = $repository
+                            ->createQueryBuilder('e')
+                            ->addOrderBy('e.name', 'ASC')
+                        ;
 
                         $qb
                             ->where($qb->expr()->eq('e.type', ':type'))

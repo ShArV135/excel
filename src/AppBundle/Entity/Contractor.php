@@ -65,7 +65,7 @@ class Contractor
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="manager_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="manager_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $manager;
 
