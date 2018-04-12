@@ -76,6 +76,9 @@ class TimetableController extends Controller
                 case 'manager':
                     $row[] = 'Менеджер';
                     break;
+                case 'provider_manager':
+                    $row[] = 'МС';
+                    break;
                 case 'customer':
                     $row[] = 'Заказчик';
                     break;
@@ -130,6 +133,8 @@ class TimetableController extends Controller
                 case 'margin_percent':
                     $row[] = 'Маржа, %';
                     break;
+                default:
+                    $row[] = $column;
             }
         }
         $tableData[] = $row;

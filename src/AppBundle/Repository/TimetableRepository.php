@@ -93,15 +93,18 @@ class TimetableRepository extends EntityRepository
         $timetable
             ->setName($name)
             ->setCreated($created)
+            ->setUpdated($created)
         ;
 
-        /** @var TimetableRow $row */
-        foreach ($lastTimetable->getRows() as $row) {
-            $em->detach($row);
+        if ($lastTimetable) {
+            /** @var TimetableRow $row */
+            foreach ($lastTimetable->getRows() as $row) {
+                $em->detach($row);
 
-            $row->setTimetable($timetable);
-            $em->persist($row);
-            $timetable->getRows()->add($row);
+                $row->setTimetable($timetable);
+                $em->persist($row);
+                $timetable->getRows()->add($row);
+            }
         }
 
         $em->persist($timetable);

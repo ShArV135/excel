@@ -56,7 +56,12 @@ class UserFixtures extends Fixture
 
         foreach ($userData as $data) {
             $user = new User();
-            $user->setUsername($data['username']);
+            $user
+                ->setUsername($data['username'])
+                ->setFirstname($data['username'])
+                ->setLastname($data['username'])
+                ->setSurname($data['username'])
+            ;
             $user->setRoles($data['roles']);
 
             $password = $this->encoder->encodePassword($user, $data['password']);
