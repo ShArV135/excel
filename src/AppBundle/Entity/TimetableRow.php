@@ -45,7 +45,7 @@ class TimetableRow
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="provider_manager_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="provider_manager_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $providerManager;
 
