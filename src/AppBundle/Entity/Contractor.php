@@ -81,7 +81,7 @@ class Contractor
      * @var Organisation
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organisation")
-     * @ORM\JoinColumn(name="organisation_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="organisation_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $organisation;
 
