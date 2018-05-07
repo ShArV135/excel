@@ -19,6 +19,12 @@
                 {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                     <button type="button" class="btn btn-default show-empty">Только незаполненные</button>
                 {% endif %}
+                {% if is_granted('ROLE_MANAGER') %}
+                    <button class="btn btn-default margin-checker">
+                        <i class="state-icon glyphicon glyphicon-unchecked"></i>
+                        Показать маржу
+                    </button>
+                {% endif %}
             </div>
         </div>
         <div class="btn-group pull-right" role="group">
@@ -104,9 +110,9 @@
                     {% elseif column == 'provider_balance' %}
                         <th data-field="provider_balance" data-formatter="cellFormatter" class="{{ class }} provider-cell">Баланс<br>поставщика</th>
                     {% elseif column == 'margin_sum' %}
-                        <th data-field="margin_sum" data-formatter="cellFormatter" class="{{ class }}">Маржа,<br>сумма</th>
+                        <th data-field="margin_sum" data-formatter="cellFormatter" data-visible="false" class="{{ class }}">Маржа,<br>сумма</th>
                     {% elseif column == 'margin_percent' %}
-                        <th data-field="margin_percent" data-formatter="cellFormatter" class="{{ class }}">Маржа,<br>%</th>
+                        <th data-field="margin_percent" data-formatter="cellFormatter" data-visible="false" class="{{ class }}">Маржа,<br>%</th>
                     {% elseif column == 'customer_organisation' %}
                         <th data-field="customer_organisation" data-formatter="cellFormatter" class="{{ class }}">Работаем<br>с зак-м от...</th>
                     {% elseif column == 'provider_organisation' %}
@@ -351,6 +357,22 @@
                     $('#timetable').bootstrapTable('filterBy', {
                         provider: null
                     });
+                }
+            });
+
+            $('.margin-checker').click(function() {
+                var checked = $('i', $(this)).hasClass('glyphicon-check');
+
+                if (checked) {
+                    $('i', $(this)).removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+
+                    $('#timetable').bootstrapTable('hideColumn', 'margin_sum');
+                    $('#timetable').bootstrapTable('hideColumn', 'margin_percent');
+                } else {
+                    $('i', $(this)).removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
+                    $('#timetable').bootstrapTable('showColumn', 'margin_sum');
+                    $('#timetable').bootstrapTable('showColumn', 'margin_percent');
                 }
             });
         });

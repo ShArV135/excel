@@ -49,13 +49,13 @@ class DefaultController extends Controller
         $numOfFixed = count(array_intersect($columns, $fixedColumns));
 
         if (in_array('manager', $columns)) {
-            $managersByFio = $em->getRepository('AppBundle:User')->getManagersByFio();
+            $managersByFio = $em->getRepository('AppBundle:User')->getManagersByFio($timetable);
         } else {
             $managersByFio = [];
         }
 
         if (in_array('provider_manager', $columns)) {
-            $providerManagersByFio = $em->getRepository('AppBundle:User')->getManagersByFio('ROLE_PROVIDER_MANAGER');
+            $providerManagersByFio = $em->getRepository('AppBundle:User')->getManagersByFio($timetable, 'ROLE_PROVIDER_MANAGER');
         } else {
             $providerManagersByFio = [];
         }

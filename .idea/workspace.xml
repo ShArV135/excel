@@ -6,14 +6,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Controller/OrganisationController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Organisation.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Form/OrganisationType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Repository/OrganisationRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/organisations/list.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/organisations/save.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
@@ -25,19 +17,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/symfony2.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Resources/views/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/app/Resources/views/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/security.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/security.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/config/services.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/config/services.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/save.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/save.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/provide.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/provide.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -82,66 +64,59 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ReportController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php">
+      <file leaf-file-name="TimetableController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="284" column="17" lean-forward="true" selection-start-line="284" selection-start-column="17" selection-end-line="284" selection-end-column="17" />
+            <state relative-caret-position="-255">
+              <caret line="150" column="19" selection-start-line="150" selection-start-column="19" selection-end-line="150" selection-end-column="19" />
               <folding>
-                <element signature="e#40#72#0#PHP" expanded="true" />
-                <element signature="e#1317#1338#1#PHP" expanded="true" />
-                <element signature="e#2376#2400#1#PHP" expanded="true" />
-                <element signature="e#7200#7231#0#PHP" expanded="true" />
-                <element signature="e#6659#6683#1#PHP" expanded="true" />
-                <element signature="e#14195#14223#0#PHP" expanded="true" />
-                <element signature="e#10184#10208#1#PHP" expanded="true" />
-                <element signature="e#18736#18767#0#PHP" expanded="true" />
+                <element signature="e#40#71#0#PHP" expanded="true" />
+                <element signature="e#5271#5287#1#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReportHelper.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php">
+      <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="308" column="31" selection-start-line="308" selection-start-column="31" selection-end-line="308" selection-end-column="31" />
+            <state relative-caret-position="476">
+              <caret line="57" column="81" lean-forward="true" selection-start-line="57" selection-start-column="81" selection-end-line="57" selection-end-column="81" />
               <folding>
-                <element signature="e#37#69#0#PHP" expanded="true" />
+                <element signature="e#1923#1953#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="provide.html.twig" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/report/provide.html.twig">
+      <file leaf-file-name="UserRepository.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-120">
-              <caret line="16" column="39" selection-start-line="16" selection-start-column="39" selection-end-line="16" selection-end-column="39" />
+            <state relative-caret-position="548">
+              <caret line="55" column="49" selection-start-line="55" selection-start-column="49" selection-end-line="55" selection-end-column="49" />
               <folding>
-                <element signature="e#12#26#0#Twig" expanded="true" />
+                <element signature="e#40#71#0#PHP" expanded="true" />
+                <element signature="e#787#811#1#PHP" expanded="true" />
+                <element signature="e#1080#1104#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="manager.html.twig" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager.html.twig">
+      <file leaf-file-name="TimetableRow.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="103" column="9" lean-forward="true" selection-start-line="103" selection-end-line="104" />
+            <state relative-caret-position="306">
+              <caret line="37" column="53" lean-forward="true" selection-start-line="37" selection-start-column="53" selection-end-line="37" selection-end-column="53" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sale.html.twig" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig">
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/User.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="114" column="19" lean-forward="true" selection-start-line="106" selection-start-column="8" selection-end-line="114" selection-end-column="19" />
-              <folding>
-                <element signature="e#12#26#0#Twig" expanded="true" />
-              </folding>
+            <state relative-caret-position="-544">
+              <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -150,19 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>block-group</find>
-      <find>cal</find>
-      <find>deleteac</find>
-      <find>AppBundle\Entity\User&quot;</find>
-      <find>:Contractor</find>
-      <find>addOrderBy</find>
-      <find>AppBundle:Contractor</find>
-      <find>строй</find>
-      <find>export</find>
-      <find>AppBundle\Entity\Contractor</find>
-      <find>Запрос аутентификации не может быть обработан в связи с проблемой в системе.</find>
-      <find>Authentication request could not be processed due to a system problem.</find>
-      <find>sort</find>
       <find>Оплачено заказчиком</find>
       <find>margin</find>
       <find>customer_paid</find>
@@ -179,7 +141,20 @@
       <find>$data</find>
       <find>manager_report</find>
       <find>sale</find>
+      <find>getColumnsByShow</find>
+      <find>$customerSalary</find>
+      <find>customer_salary</find>
+      <find>margin_sum</find>
+      <find>hideColumn</find>
+      <find>hidecol</find>
+      <find>margin_s</find>
+      <find>hide</find>
       <find>$summaryData</find>
+      <find>toggleColumn</find>
+      <find>visible</find>
+      <find>bootstrapTable</find>
+      <find>getManagersByFio</find>
+      <find>getManagersById</find>
     </findStrings>
     <replaceStrings>
       <replace>ROLE_PROVIDER_MANAGER</replace>
@@ -223,8 +198,6 @@
         <option value="$PROJECT_DIR$/web/js/custom-bootstrap-table.js" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/PlanController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" />
         <option value="$PROJECT_DIR$/web/css/timetable.css" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/security/login.html.twig" />
         <option value="$PROJECT_DIR$/web/css/custom.css" />
@@ -236,7 +209,6 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRepository.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" />
         <option value="$PROJECT_DIR$/app/config/parameters.yml" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
         <option value="$PROJECT_DIR$/app/config/security.yml" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/OrganisationRepository.php" />
@@ -245,18 +217,21 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Form/OrganisationType.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/OrganisationController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/organisations/save.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/save.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/config/services.yml" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/report/provide.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" />
       </list>
     </option>
   </component>
@@ -412,6 +387,15 @@
               <item name="AppBundle" type="462c0819:PsiDirectoryNode" />
               <item name="Resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="default" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="excel.local" type="b2602c69:ProjectViewProjectNode" />
+              <item name="excel.local" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="AppBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="report" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -513,21 +497,7 @@
       <workItem from="1524984098522" duration="13000" />
       <workItem from="1524984131068" duration="2000" />
       <workItem from="1525457700271" duration="1753000" />
-      <workItem from="1525459540901" duration="9807000" />
-    </task>
-    <task id="LOCAL-00009" summary="features">
-      <created>1516656467913</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1516656467913</updated>
-    </task>
-    <task id="LOCAL-00010" summary="features">
-      <created>1516728772234</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1516728772234</updated>
+      <workItem from="1525459540901" duration="13034000" />
     </task>
     <task id="LOCAL-00011" summary="pagination">
       <created>1516814800847</created>
@@ -858,11 +828,25 @@
       <option name="project" value="LOCAL" />
       <updated>1524081995691</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="organisations">
+      <created>1525714179740</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1525714179741</updated>
+    </task>
+    <task id="LOCAL-00059" summary="organisations">
+      <created>1525714697616</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1525714697616</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="339242000" />
+    <option name="totallyTimeSpent" value="342469000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -875,17 +859,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32984293" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50193477" side_tool="true" weight="0.32984293" />
       <window_info anchor="bottom" id="Database Changes" order="8" weight="0.32948583" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.49806523" visible="true" weight="0.2623295" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49806523" weight="0.2623295" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3291536" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32843652" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49856323" visible="true" weight="0.23991156" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.20287451" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32948583" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.20986359" />
       <window_info id="Structure" order="1" sideWeight="0.50143677" side_tool="true" weight="0.21337755" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49806523" weight="0.386149" />
@@ -944,7 +929,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="times comments" />
     <MESSAGE value="pagination" />
     <MESSAGE value="timetable page toolbar &amp; navbar" />
     <MESSAGE value="fix for Timetable::created" />
@@ -969,7 +953,8 @@
     <MESSAGE value="features" />
     <MESSAGE value="plan labels" />
     <MESSAGE value="fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
+    <MESSAGE value="organisations" />
+    <option name="LAST_COMMIT_MESSAGE" value="organisations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -984,8 +969,13 @@
           <line>187</line>
           <option name="timeStamp" value="129" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php</url>
+          <line>23</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="136" />
+      <option name="time" value="138" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="app_dev.php">
@@ -1049,21 +1039,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/var/cache/dev/ContainerTogjbmu/EntityManager_a3e216d.php" />
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Security/UserVoter.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="45" column="40" lean-forward="true" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/PaymentRepository.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
@@ -1124,13 +1099,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="617">
-          <caret line="55" column="69" selection-start-line="55" selection-start-column="69" selection-end-line="55" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/Security/Core/Exception/AuthenticationServiceException.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -1173,20 +1141,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/doctrine/orm/lib/Doctrine/ORM/EntityRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="162" column="5" lean-forward="true" selection-start-line="162" selection-start-column="5" selection-end-line="162" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Resources/views/base.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -1201,13 +1155,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="464">
           <caret line="30" column="33" selection-start-line="30" selection-start-column="33" selection-end-line="30" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="17" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1326,54 +1273,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="47" column="46" selection-start-line="47" selection-start-column="46" selection-end-line="47" selection-end-column="46" />
-          <folding>
-            <element signature="e#1923#1953#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/css/timetable.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1907">
           <caret line="71" column="30" selection-start-line="71" selection-start-column="23" selection-end-line="71" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="112" column="136" selection-start-line="112" selection-start-column="136" selection-end-line="112" selection-end-column="136" />
-          <folding>
-            <element signature="e#12#26#0#Twig" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="69" column="21" lean-forward="true" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
-          <folding>
-            <element signature="e#40#71#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="47" column="5" lean-forward="true" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-726">
-          <caret line="17" column="6" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -1384,20 +1287,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="114" column="19" lean-forward="true" selection-start-line="106" selection-start-column="8" selection-end-line="114" selection-end-column="19" />
-          <folding>
-            <element signature="e#12#26#0#Twig" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="103" column="9" lean-forward="true" selection-start-line="103" selection-end-line="104" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="83" column="92" selection-start-line="83" selection-start-column="92" selection-end-line="83" selection-end-column="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="303" column="7" lean-forward="true" selection-start-line="303" selection-start-column="7" selection-end-line="303" selection-end-column="7" />
+          <folding>
+            <element signature="e#37#69#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1411,29 +1321,118 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="284" column="17" lean-forward="true" selection-start-line="284" selection-start-column="17" selection-end-line="284" selection-end-column="17" />
+        <state relative-caret-position="323">
+          <caret line="19" column="6" lean-forward="true" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="248" column="31" selection-start-line="248" selection-start-column="21" selection-end-line="248" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="130" column="11" lean-forward="true" selection-start-line="120" selection-start-column="8" selection-end-line="130" selection-end-column="11" />
           <folding>
-            <element signature="e#40#72#0#PHP" expanded="true" />
-            <element signature="e#1317#1338#1#PHP" expanded="true" />
-            <element signature="e#2376#2400#1#PHP" expanded="true" />
-            <element signature="e#7200#7231#0#PHP" expanded="true" />
-            <element signature="e#6659#6683#1#PHP" expanded="true" />
-            <element signature="e#14195#14223#0#PHP" expanded="true" />
-            <element signature="e#10184#10208#1#PHP" expanded="true" />
-            <element signature="e#18736#18767#0#PHP" expanded="true" />
+            <element signature="e#12#26#0#Twig" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php">
+    <entry file="file://$PROJECT_DIR$/vendor/wenzhixin/bootstrap-table/src/bootstrap-table.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="308" column="31" selection-start-line="308" selection-start-column="31" selection-end-line="308" selection-end-column="31" />
+        <state relative-caret-position="360">
+          <caret line="566" column="15" selection-start-line="566" selection-start-column="8" selection-end-line="566" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="95" column="30" selection-start-line="95" selection-start-column="30" selection-end-line="95" selection-end-column="30" />
           <folding>
-            <element signature="e#37#69#0#PHP" expanded="true" />
+            <element signature="e#12#26#0#Twig" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="168" column="75" selection-start-line="168" selection-start-column="75" selection-end-line="168" selection-end-column="75" />
+          <folding>
+            <element signature="e#40#72#0#PHP" expanded="true" />
+            <element signature="e#6146#6162#1#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/PlanController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-251">
+          <caret line="78" column="10" selection-start-line="78" selection-start-column="10" selection-end-line="78" selection-end-column="10" />
+          <folding>
+            <element signature="e#2408#2424#1#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <caret line="150" column="19" selection-start-line="150" selection-start-column="19" selection-end-line="150" selection-end-column="19" />
+          <folding>
+            <element signature="e#40#71#0#PHP" expanded="true" />
+            <element signature="e#5271#5287#1#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="57" column="81" lean-forward="true" selection-start-line="57" selection-start-column="81" selection-end-line="57" selection-end-column="81" />
+          <folding>
+            <element signature="e#1923#1953#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/doctrine/orm/lib/Doctrine/ORM/EntityRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="78" column="20" selection-start-line="78" selection-start-column="20" selection-end-line="78" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-544">
+          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="37" column="53" lean-forward="true" selection-start-line="37" selection-start-column="53" selection-end-line="37" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="548">
+          <caret line="55" column="49" selection-start-line="55" selection-start-column="49" selection-end-line="55" selection-end-column="49" />
+          <folding>
+            <element signature="e#40#71#0#PHP" expanded="true" />
+            <element signature="e#787#811#1#PHP" expanded="true" />
+            <element signature="e#1080#1104#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

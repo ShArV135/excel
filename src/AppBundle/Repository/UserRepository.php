@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
@@ -14,12 +15,45 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
     /**
-     * @param string $role
+     * @param Timetable $timetable
+     * @param string    $role
      * @return array
      */
-    public function getManagersByFio($role = 'ROLE_CUSTOMER_MANAGER')
+    public function getManagersByFio(Timetable $timetable, $role = 'ROLE_CUSTOMER_MANAGER')
     {
-        $managers = $this->getManagers($role);
+        $qb = $this->createQueryBuilder('user');
+        $qb
+            ->where($qb->expr()->like('user.roles', ':roles'))
+            ->setParameter('roles', '%'.$role.'%')
+        ;
+
+        $subQb = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->from('AppBundle:TimetableRow', 'timetable_row_1')
+            ->select('manager.id')
+            ->join('timetable_row_1.manager', 'manager')
+            ->where($qb->expr()->eq('timetable_row_1.timetable', ':timetable'))
+        ;
+
+        $subQb2 = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->from('AppBundle:TimetableRow', 'timetable_row_2')
+            ->select('provider_manager.id')
+            ->join('timetable_row_2.providerManager', 'provider_manager')
+            ->where($qb->expr()->eq('timetable_row_2.timetable', ':timetable'))
+        ;
+
+        $qb
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->in('user.id', $subQb->getDQL()),
+                $qb->expr()->in('user.id', $subQb2->getDQL())
+            ))
+            ->setParameter('timetable', $timetable)
+        ;
+
+        $managers = $qb->getQuery()->getResult();
 
         $managersByFio = [];
         /** @var User $manager */
