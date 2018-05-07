@@ -77,6 +77,14 @@ class Contractor
      */
     private $payments;
 
+    /**
+     * @var Organisation
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organisation")
+     * @ORM\JoinColumn(name="organisation_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $organisation;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection();
@@ -209,6 +217,25 @@ class Contractor
     public function setPayments($payments)
     {
         $this->payments = $payments;
+
+        return $this;
+    }
+
+    /**
+     * @return Organisation
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
+     * @param Organisation $organisation
+     * @return Contractor
+     */
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
 
         return $this;
     }

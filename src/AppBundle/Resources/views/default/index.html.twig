@@ -97,8 +97,6 @@
                         <th data-field="customer_salary" data-formatter="cellFormatter" class="{{ class }}">Наработка<br>заказчика</th>
                     {% elseif column == 'provider_salary' %}
                         <th data-field="provider_salary" data-formatter="cellFormatter" class="{{ class }} provider-cell">Наработка<br>поставщика</th>
-                    {% elseif column == 'customer_paid' %}
-                        <th data-field="customer_paid" data-formatter="cellFormatter" class="{{ class }}">Оплачено<br>заказчиком</th>
                     {% elseif column == 'customer_balance' %}
                         <th data-field="customer_balance" data-formatter="cellFormatter" class="{{ class }}">Баланс<br>заказчика</th>
                     {% elseif column == 'provider_paid' %}
@@ -109,6 +107,10 @@
                         <th data-field="margin_sum" data-formatter="cellFormatter" class="{{ class }}">Маржа,<br>сумма</th>
                     {% elseif column == 'margin_percent' %}
                         <th data-field="margin_percent" data-formatter="cellFormatter" class="{{ class }}">Маржа,<br>%</th>
+                    {% elseif column == 'customer_organisation' %}
+                        <th data-field="customer_organisation" data-formatter="cellFormatter" class="{{ class }}">Работаем<br>с зак-м от...</th>
+                    {% elseif column == 'provider_organisation' %}
+                        <th data-field="provider_organisation" data-formatter="cellFormatter" class="{{ class }} provider-cell">Работаем<br>с пост-м от...</th>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -171,6 +173,8 @@
                     case 'mechanism':
                     case 'comment':
                     case 'price_for_customer':
+                    case 'customer_organisation':
+                    case 'provider_organisation':
                         value = value || '';
                         return '<div class="tt-tooltip" title="' + value + '">' + value + '</div>';
                     case 'provider':

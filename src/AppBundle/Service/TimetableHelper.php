@@ -41,6 +41,7 @@ class TimetableHelper
      * @param TimetableRow $timetableRow
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function calculateRowData(TimetableRow $timetableRow)
@@ -51,13 +52,6 @@ class TimetableHelper
 
         $customer = $timetableRow->getCustomer();
         $provider = $timetableRow->getProvider();
-
-        $customerPayments = $paymentRepository->getByContractorAndTimetable($customer, $timetable);
-        $customerPaid = 0;
-        /** @var Payment $payment */
-        foreach ($customerPayments as $payment) {
-            $customerPaid += $payment->getAmount();
-        }
 
         $providerPaid = 0;
         if ($provider) {
@@ -97,7 +91,6 @@ class TimetableHelper
             'provider_balance' => $providerBalance,
             'margin_sum' => $marginSum,
             'margin_percent' => $marginPercent,
-            'customer_paid' => $customerPaid,
             'provider_paid' => $providerPaid,
             'customer_id' => $customer->getId(),
             'provider_id' => $provider ? $provider->getId() : null,
@@ -109,6 +102,7 @@ class TimetableHelper
      * @param Timetable  $timetable
      * @return float|int
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function contractorBalance(Contractor $contractor, Timetable $timetable = null)
@@ -175,8 +169,8 @@ class TimetableHelper
                     'sum_times',
                     'times',
                     'customer_salary',
-                    'customer_paid',
                     'customer_balance',
+                    'customer_organisation',
                 ];
                 break;
             case 'dispatcher':
@@ -192,6 +186,7 @@ class TimetableHelper
                     'sum_times',
                     'times',
                     'customer_salary',
+                    'customer_organisation',
                 ];
                 break;
             case 'provider_manager':
@@ -209,7 +204,9 @@ class TimetableHelper
                     'provider_salary',
                     'provider_paid',
                     'provider_balance',
+                    'provider_organisation',
                     'customer_balance',
+                    'customer_organisation',
                 ];
                 break;
             case 'general_manager':
@@ -224,10 +221,10 @@ class TimetableHelper
                     'sum_times',
                     'times',
                     'customer_salary',
-                    'customer_paid',
                     'customer_balance',
                     'margin_sum',
                     'margin_percent',
+                    'customer_organisation',
                 ];
                 break;
             default:
@@ -245,12 +242,13 @@ class TimetableHelper
                     'times',
                     'customer_salary',
                     'provider_salary',
-                    'customer_paid',
                     'customer_balance',
                     'provider_paid',
+                    'provider_organisation',
                     'provider_balance',
                     'margin_sum',
                     'margin_percent',
+                    'customer_organisation',
                 ];
                 break;
         }
@@ -271,6 +269,7 @@ class TimetableHelper
      * @param array        $columns
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function timetableRowFormat(TimetableRow $timetableRow, array $columns)
@@ -289,7 +288,6 @@ class TimetableHelper
             $providerBalance,
             $marginSum,
             $marginPercent,
-            $customerPaid,
             $providerPaid,
             ) = array_values($this->calculateRowData($timetableRow));
 
@@ -396,9 +394,6 @@ class TimetableHelper
                 case 'provider_salary':
                     $value = number_format($providerSalary, 2, '.', ' ');
                     break;
-                case 'customer_paid':
-                    $value = number_format($customerPaid, 2, '.', ' ');
-                    break;
                 case 'provider_paid':
                     $value = number_format($providerPaid, 2, '.', ' ');
                     break;
@@ -426,6 +421,12 @@ class TimetableHelper
                 case 'margin_percent':
                     $value = number_format($marginPercent, 2, '.', ' ');
                     break;
+                case 'customer_organisation':
+                    $value = $customer->getOrganisation() ? $customer->getOrganisation()->getName() : '';
+                    break;
+                case 'provider_organisation':
+                    $value = ($provider && $provider->getOrganisation()) ? $provider->getOrganisation()->getName() : '';
+                    break;
                 default:
                     $value = '';
             }
@@ -441,6 +442,7 @@ class TimetableHelper
      * @param User|null $user
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function planData(Timetable $timetable, User $user = null)
@@ -506,6 +508,7 @@ class TimetableHelper
      * @param User|null $user
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function planDataFormat(Timetable $timetable, User $user = null)

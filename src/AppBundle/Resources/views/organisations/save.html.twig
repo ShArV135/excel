@@ -4,19 +4,12 @@
     <div class="container">
         {{ form_start(form) }}
         <div class="panel panel-default">
-            <div class="panel-heading">Информация о контрагенте</div>
+            <div class="panel-heading">Информация об организации</div>
             <div class="panel-body">
                 {{ form_errors(form) }}
                 <div class="row">
                     <div class="col-md-6">
                         {{ form_row(form.name) }}
-                        {% if form.manager is defined %}
-                            {{ form_row(form.manager) }}
-                        {% endif %}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(form.inn) }}
-                        {{ form_row(form.organisation) }}
                     </div>
                 </div>
             </div>

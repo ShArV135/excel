@@ -19,6 +19,7 @@ class TimetableController extends Controller
      * @param Timetable $timetable
      * @return JsonResponse
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @Route("/timetable/{timetable}/data", name="timetable_data")
      */
@@ -53,6 +54,7 @@ class TimetableController extends Controller
      * @param Timetable $timetable
      * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
@@ -115,9 +117,6 @@ class TimetableController extends Controller
                 case 'provider_salary':
                     $row[] = 'Наработка поставщика';
                     break;
-                case 'customer_paid':
-                    $row[] = 'Оплачено заказчиком';
-                    break;
                 case 'customer_balance':
                     $row[] = 'Баланс заказчика';
                     break;
@@ -170,7 +169,6 @@ class TimetableController extends Controller
                 $providerBalance,
                 $marginSum,
                 $marginPercent,
-                $customerPaid,
                 $providerPaid,
                 ) = array_values($timetableHelper->calculateRowData($timetableRow));
 
@@ -268,9 +266,6 @@ class TimetableController extends Controller
                             ->setFillType(Fill::FILL_SOLID)
                             ->getStartColor()->setRGB('EEEEEE')
                         ;
-                        break;
-                    case 'customer_paid':
-                        $value = $customerPaid;
                         break;
                     case 'provider_paid':
                         $value = $providerPaid;

@@ -1,4 +1,37 @@
 {% extends 'base.html.twig' %}
+{% import _self as macros %}
+
+{% macro provide_report(report) %}
+    {% set provide_data = report.provide_data %}
+    {% set summary_data = report.summary_data %}
+    <div class="row" style="margin-top: 10px;">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Поставщик</th>
+                <th>Наработка</th>
+                <th>Баланс (среднее)</th>
+            </tr>
+            <tr>
+                <th style="text-align: right">Всего:</th>
+                <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
+                <th>{{ summary_data.balance|number_format(2, '.', ' ') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for id, data in provide_data %}
+                <tr>
+                    <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.name }}</a></td>
+                    <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
+                    <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
+                        {{ data.balance|number_format(2, '.', ' ') }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}
 
 {% set page_title = 'Отчет по снабжению' %}
 
@@ -13,36 +46,15 @@
             <button class="btn btn-primary form-control" type="submit">Показать</button>
             {{ form_end(timetable_filter) }}
         </div>
-        {% if provide_data %}
-            <div class="row" style="margin-top: 10px;">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Поставщик</th>
-                        <th>Наработка</th>
-                        <th>Баланс (среднее)</th>
-                    </tr>
-                    {% if summary_data %}
-                        <tr>
-                            <th style="text-align: right">Всего:</th>
-                            <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
-                            <th>{{ summary_data.balance|number_format(2, '.', ' ') }}</th>
-                        </tr>
-                    {% endif %}
-                    </thead>
-                    <tbody>
-                    {% for id, data in provide_data %}
-                        <tr>
-                            <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.name }}</a></td>
-                            <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
-                            <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
-                                {{ data.balance|number_format(2, '.', ' ') }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        {% if report %}
+            {{ macros.provide_report(report) }}
         {% endif %}
-        </div>
+        {% if report_by_organisations %}
+            {% for report_by_organisation in report_by_organisations %}
+                <h3>{{ report_by_organisation.organisation.name }}</h3>
+                {{ macros.provide_report(report_by_organisation.report) }}
+            {% endfor %}
+        {% endif %}
+
+    </div>
 {% endblock %}

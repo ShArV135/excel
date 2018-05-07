@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,6 +19,15 @@ class ContractorType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Наименование'])
             ->add('inn', TextType::class, ['label' => 'ИНН'])
+            ->add(
+                'organisation',
+                EntityType::class,
+                [
+                    'class' => Organisation::class,
+                    'choice_label' => 'name',
+                    'label' => 'Организация',
+                ]
+            )
             ->add('save', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn-primary']])
         ;
 
