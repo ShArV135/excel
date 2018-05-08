@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Contractor;
+use AppBundle\Entity\Timetable;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +14,50 @@ use Doctrine\ORM\EntityRepository;
  */
 class ContractorRepository extends EntityRepository
 {
+    /**
+     * @param Timetable $timetable
+     * @param string    $type
+     * @return array
+     */
+    public function getByTimetable(Timetable $timetable, $type = Contractor::CUSTOMER)
+    {
+        $qb = $this->createQueryBuilder('contractor');
+
+        $qb
+            ->where($qb->expr()->eq('contractor.type', ':type'))
+            ->setParameter('type', $type)
+        ;
+
+        $subQb = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->from('AppBundle:TimetableRow', 'timetable_row')
+            ->where($qb->expr()->eq('timetable_row.timetable', ':timetable'))
+        ;
+
+        if ($type == Contractor::CUSTOMER) {
+            $subQb
+                ->join('timetable_row.customer', 'customer')
+                ->select('customer.id')
+            ;
+        } else {
+            $subQb
+                ->join('timetable_row.provider', 'provider')
+                ->select('provider.id')
+            ;
+        }
+
+        $qb
+            ->andWhere($qb->expr()->in('contractor.id', $subQb->getDQL()))
+            ->setParameter('timetable', $timetable)
+        ;
+
+        $result = [];
+        /** @var Contractor $contractor */
+        foreach ($qb->getQuery()->getResult() as $contractor) {
+            $result[$contractor->getName()] = $contractor->getName();
+        }
+
+        return $result;
+    }
 }

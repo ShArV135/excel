@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Contractor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,6 +61,18 @@ class DefaultController extends Controller
             $providerManagersByFio = [];
         }
 
+        if (in_array('customer', $columns)) {
+            $customers = $em->getRepository('AppBundle:Contractor')->getByTimetable($timetable);
+        } else {
+            $customers = [];
+        }
+
+        if (in_array('provider', $columns)) {
+            $providers = $em->getRepository('AppBundle:Contractor')->getByTimetable($timetable, Contractor::PROVIDER);
+        } else {
+            $providers = [];
+        }
+
         return $this->render(
             '@App/default/index.html.twig',
             [
@@ -69,6 +82,8 @@ class DefaultController extends Controller
                 'fixed_columns' => $fixedColumns,
                 'managers_by_fio' => $managersByFio,
                 'provider_managers_by_fio' => $providerManagersByFio,
+                'customers' => $customers,
+                'providers' => $providers,
                 'view_mode' => $show,
             ]
         );

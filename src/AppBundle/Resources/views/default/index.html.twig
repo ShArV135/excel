@@ -80,9 +80,9 @@
                     {% elseif column == 'provider_manager' %}
                         <th data-field="provider_manager" data-formatter="cellFormatter" data-filter-data="json:{{ provider_managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МС</th>
                     {% elseif column == 'customer' %}
-                        <th data-field="customer" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }}">Заказчик</th>
+                        <th data-field="customer" data-formatter="cellFormatter" data-filter-control="select" data-filter-data="json:{{ customers|json_encode }}" class="{{ class }}">Заказчик</th>
                     {% elseif column == 'provider' %}
-                        <th data-field="provider" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }} provider-cell">Поставщик</th>
+                        <th data-field="provider" data-formatter="cellFormatter" data-filter-control="select" data-filter-data="json:{{ providers|json_encode }}" class="{{ class }} provider-cell">Поставщик</th>
                     {% elseif column == 'object' %}
                         <th data-field="object" data-formatter="cellFormatter" data-filter-control="input" class="{{ class }}">Объект</th>
                     {% elseif column == 'mechanism' %}
@@ -112,9 +112,9 @@
                     {% elseif column == 'margin_percent' %}
                         <th data-field="margin_percent" data-formatter="cellFormatter" data-visible="false" class="{{ class }}">Маржа,<br>%</th>
                     {% elseif column == 'customer_organisation' %}
-                        <th data-field="customer_organisation" data-formatter="cellFormatter" class="{{ class }}">Работаем<br>с зак-м от...</th>
+                        <th data-field="customer_organisation" data-formatter="cellFormatter" data-filter-control="select" class="{{ class }}">Работаем<br>с зак-м от...</th>
                     {% elseif column == 'provider_organisation' %}
-                        <th data-field="provider_organisation" data-formatter="cellFormatter" class="{{ class }} provider-cell">Работаем<br>с пост-м от...</th>
+                        <th data-field="provider_organisation" data-formatter="cellFormatter" data-filter-control="select" class="{{ class }} provider-cell">Работаем<br>с пост-м от...</th>
                     {% endif %}
                 {% endfor %}
             </tr>
