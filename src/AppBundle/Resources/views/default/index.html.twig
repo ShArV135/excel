@@ -76,7 +76,7 @@
                         {% set class = class ~ ' timetable-fixed-cell' %}
                     {% endif %}
                     {% if column == 'manager' %}
-                        <th data-field="manager" data-formatter="cellFormatter" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">Менеджер</th>
+                        <th data-field="manager" data-formatter="cellFormatter" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МП</th>
                     {% elseif column == 'provider_manager' %}
                         <th data-field="provider_manager" data-formatter="cellFormatter" data-filter-data="json:{{ provider_managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МС</th>
                     {% elseif column == 'customer' %}
@@ -105,8 +105,6 @@
                         <th data-field="provider_salary" data-formatter="cellFormatter" class="{{ class }} provider-cell">Наработка<br>поставщика</th>
                     {% elseif column == 'customer_balance' %}
                         <th data-field="customer_balance" data-formatter="cellFormatter" class="{{ class }}">Баланс<br>заказчика</th>
-                    {% elseif column == 'provider_paid' %}
-                        <th data-field="provider_paid" data-formatter="cellFormatter" class="{{ class }} provider-cell">Оплачено<br>поставщику</th>
                     {% elseif column == 'provider_balance' %}
                         <th data-field="provider_balance" data-formatter="cellFormatter" class="{{ class }} provider-cell">Баланс<br>поставщика</th>
                     {% elseif column == 'margin_sum' %}

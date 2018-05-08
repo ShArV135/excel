@@ -48,19 +48,9 @@ class TimetableHelper
     {
         $timetable = $timetableRow->getTimetable();
         $timetableRowTimesRepository = $this->entityManager->getRepository('AppBundle:TimetableRowTimes');
-        $paymentRepository = $this->entityManager->getRepository('AppBundle:Payment');
 
         $customer = $timetableRow->getCustomer();
         $provider = $timetableRow->getProvider();
-
-        $providerPaid = 0;
-        if ($provider) {
-            $providerPayments = $paymentRepository->getByContractorAndTimetable($provider, $timetable);
-            /** @var Payment $payment */
-            foreach ($providerPayments as $payment) {
-                $providerPaid += $payment->getAmount();
-            }
-        }
 
         $timetableRowTimes = $timetableRowTimesRepository->getTimesOrCreate($timetableRow);
         $times = $timetableRowTimes->getTimes();
@@ -91,7 +81,6 @@ class TimetableHelper
             'provider_balance' => $providerBalance,
             'margin_sum' => $marginSum,
             'margin_percent' => $marginPercent,
-            'provider_paid' => $providerPaid,
             'customer_id' => $customer->getId(),
             'provider_id' => $provider ? $provider->getId() : null,
         ];
@@ -202,7 +191,6 @@ class TimetableHelper
                     'sum_times',
                     'times',
                     'provider_salary',
-                    'provider_paid',
                     'provider_balance',
                     'provider_organisation',
                     'customer_balance',
@@ -214,6 +202,7 @@ class TimetableHelper
                     'manager',
                     'provider_manager',
                     'customer',
+                    'provider',
                     'object',
                     'mechanism',
                     'comment',
@@ -243,7 +232,6 @@ class TimetableHelper
                     'customer_salary',
                     'provider_salary',
                     'customer_balance',
-                    'provider_paid',
                     'provider_organisation',
                     'provider_balance',
                     'margin_sum',
@@ -393,9 +381,6 @@ class TimetableHelper
                     break;
                 case 'provider_salary':
                     $value = number_format($providerSalary, 2, '.', ' ');
-                    break;
-                case 'provider_paid':
-                    $value = number_format($providerPaid, 2, '.', ' ');
                     break;
                 case 'customer_balance':
                     $value = number_format($customerBalance, 2, '.', ' ');

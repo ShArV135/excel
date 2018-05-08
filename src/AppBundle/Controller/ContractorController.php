@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Contractor;
+use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
 use AppBundle\Form\ContractorType;
 use AppBundle\Security\ContractorVoter;
@@ -73,6 +74,15 @@ class ContractorController extends Controller
                     'required' => false,
                 ]
             )
+            ->add(
+                'organisation',
+                EntityType::class,
+                [
+                    'placeholder' => '--Организация--',
+                    'class' => Organisation::class,
+                    'choice_label' => 'name',
+                ]
+            )
         ;
 
         if (
@@ -84,7 +94,7 @@ class ContractorController extends Controller
                     'type',
                     ChoiceType::class,
                     [
-                        'label' => 'Тип',
+                        'placeholder' => '--Тип--',
                         'required' => false,
                         'choices' => [
                             'Поставщик' => Contractor::PROVIDER,
@@ -97,7 +107,7 @@ class ContractorController extends Controller
                     EntityType::class,
                     [
                         'required' => false,
-                        'label' => 'Менеджер по продажам',
+                        'placeholder' => '--Менеджер по продажам--',
                         'class' => User::class,
                         'attr' => ['class' => 'select2me'],
                         'choice_label' => 'fullname',
@@ -124,6 +134,12 @@ class ContractorController extends Controller
                 $qb
                     ->andWhere($qb->expr()->like('LOWER(CONCAT(contractor.name, contractor.inn))', ':keyword'))
                     ->setParameter('keyword', '%'.strtolower($data['keyword']).'%')
+                ;
+            }
+            if (!empty($data['organisation'])) {
+                $qb
+                    ->andWhere($qb->expr()->eq('contractor.organisation', ':organisation'))
+                    ->setParameter('organisation', $data['organisation'])
                 ;
             }
             if (!empty($data['type'])) {
@@ -287,6 +303,7 @@ class ContractorController extends Controller
      * @param Contractor $contractor
      * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function viewAction(Contractor $contractor)

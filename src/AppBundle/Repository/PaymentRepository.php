@@ -29,24 +29,4 @@ class PaymentRepository extends EntityRepository
             ->getResult()
         ;
     }
-
-    public function getByContractorAndTimetable(Contractor $contractor, Timetable $timetable)
-    {
-        $qb = $this->createQueryBuilder('payment');
-
-        $dateTime = $timetable->getCreated();
-
-        return $qb
-            ->andWhere($qb->expr()->gte('payment.date', ':from'))
-            ->andWhere($qb->expr()->lte('payment.date', ':to'))
-            ->andWhere($qb->expr()->eq('payment.contractor', ':contractor'))
-            ->setParameters([
-                'to' => clone $dateTime->modify('last day of')->setTime(0, 0),
-                'from' => clone $dateTime->modify('first day of')->setTime(0, 0),
-                'contractor' => $contractor
-            ])
-            ->getQuery()
-            ->getResult()
-            ;
-    }
 }

@@ -5,14 +5,23 @@
 {% block body %}
     <div class="container">
         {% if form.children|length > 0 %}
-            <div class="row" style="margin-bottom: 20px;">
-                {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+            {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+            <div class="row" style="margin-bottom: 5px;">
                 {{ form_widget(form.keyword) }}
+                {{ form_widget(form.organisation) }}
+                {% if form.type is defined %}
+                    {{ form_widget(form.type) }}
+                {% endif %}
+                {% if form.manager is defined %}
+                    {{ form_widget(form.manager) }}
+                {% endif %}
                 {{ form_rest(form) }}
+            </div>
+            <div class="row" style="margin-bottom: 20px;">
                 <button class="btn btn-primary form-control" type="submit">Фильтр</button>
                 <a href="{{ path('contractor_list') }}">Сбросить</a>
-                {{ form_end(form) }}
             </div>
+            {{ form_end(form) }}
         {% endif %}
         <div class="row">
             <div class="btn-group pull-right" role="group">
@@ -35,6 +44,7 @@
             <tr>
                 <th>ID</th>
                 <th>Название</th>
+                <th>Организация</th>
                 <th>ИНН</th>
                 <th>Тип контрагента</th>
                 <th>Менеджер по продажам</th>
@@ -46,6 +56,7 @@
                 <tr>
                     <td>{{ contractor.id }}</td>
                     <td><a href="{{ path('contractor_view', {'contractor': contractor.id}) }}">{{ contractor.name }}</a></td>
+                    <td>{{ contractor.organisation.name|default }}</td>
                     <td>{{ contractor.inn }}</td>
                     <td>{{ contractor.type == 'provider' ? 'Поставщик' : contractor.type == 'customer' ? 'Заказчик' : '' }}</td>
                     <td>

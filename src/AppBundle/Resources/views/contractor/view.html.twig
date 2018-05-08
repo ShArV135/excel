@@ -30,6 +30,9 @@
                                 <p><b>Менеджер:</b> {{ contractor.manager.fullName }}</p>
                             </div>
                         {% endif %}
+                        <div class="col-md-6">
+                            <p><b>Организация:</b> {{ contractor.organisation.name|default }}</p>
+                        </div>
                     </div>
                 </div>
             </div>

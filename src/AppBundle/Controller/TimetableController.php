@@ -120,9 +120,6 @@ class TimetableController extends Controller
                 case 'customer_balance':
                     $row[] = 'Баланс заказчика';
                     break;
-                case 'provider_paid':
-                    $row[] = 'Оплачено поставщику';
-                    break;
                 case 'provider_balance':
                     $row[] = 'Баланс поставщика';
                     break;
@@ -169,7 +166,6 @@ class TimetableController extends Controller
                 $providerBalance,
                 $marginSum,
                 $marginPercent,
-                $providerPaid,
                 ) = array_values($timetableHelper->calculateRowData($timetableRow));
 
             $row = [];
@@ -259,16 +255,6 @@ class TimetableController extends Controller
                         break;
                     case 'provider_salary':
                         $value = $providerSalary;
-
-                        $sheet
-                            ->getStyleByColumnAndRow($index + 31, $rowIndex)
-                            ->getFill()
-                            ->setFillType(Fill::FILL_SOLID)
-                            ->getStartColor()->setRGB('EEEEEE')
-                        ;
-                        break;
-                    case 'provider_paid':
-                        $value = $providerPaid;
 
                         $sheet
                             ->getStyleByColumnAndRow($index + 31, $rowIndex)
