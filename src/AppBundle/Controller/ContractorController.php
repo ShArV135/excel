@@ -81,6 +81,7 @@ class ContractorController extends Controller
                     'placeholder' => '--Организация--',
                     'class' => Organisation::class,
                     'choice_label' => 'name',
+                    'required' => false,
                 ]
             )
         ;
