@@ -19,6 +19,10 @@ class ContractorType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Наименование'])
             ->add('inn', TextType::class, ['label' => 'ИНН'])
+            ->add('brand', TextType::class, ['label' => 'Бренд'])
+            ->add('businessAddress', TextType::class, ['label' => 'Юридический адрес'])
+            ->add('physicalAddress', TextType::class, ['label' => 'Фактический адрес офиса'])
+            ->add('site', TextType::class, ['label' => 'Сайт'])
             ->add(
                 'organisation',
                 EntityType::class,

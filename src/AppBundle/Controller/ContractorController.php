@@ -284,7 +284,12 @@ class ContractorController extends Controller
                 $em->flush();
 
                 $this->addFlash('success', $successMessage);
-                return $this->redirectToRoute('contractor_list');
+
+                if ($redirectTo = $request->get('redirect_to')) {
+                    return $this->redirect($redirectTo);
+                } else {
+                    return $this->redirectToRoute('contractor_list');
+                }
             } catch (\Exception $e) {
                 $this->addFlash('warning', 'При сохранении возникла ошибка.');
             }
@@ -302,12 +307,13 @@ class ContractorController extends Controller
     /**
      * @Route("/contractors/{contractor}/view", name="contractor_view", requirements={"contractor"="\d+"})
      * @param Contractor $contractor
+     * @param Request    $request
      * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function viewAction(Contractor $contractor)
+    public function viewAction(Contractor $contractor, Request $request)
     {
         $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
 
@@ -315,7 +321,8 @@ class ContractorController extends Controller
             '@App/contractor/view.html.twig',
             [
                 'contractor' => $contractor,
-                'balance' => $this->get('timetable.helper')->contractorBalance($contractor)
+                'balance' => $this->get('timetable.helper')->contractorBalance($contractor),
+                'redirect_to' => $request->get('redirect_to')
             ]
         );
     }

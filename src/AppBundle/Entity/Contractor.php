@@ -55,13 +55,6 @@ class Contractor
     private $type;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="contacts", type="text", nullable=true)
-     */
-    private $contacts;
-
-    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
@@ -85,9 +78,55 @@ class Contractor
      */
     private $organisation;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="brand", type="text", nullable=true)
+     */
+    private $brand;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="businessAddress", type="text", nullable=true)
+     */
+    private $businessAddress;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="physicalAddress", type="text", nullable=true)
+     */
+    private $physicalAddress;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="site", type="text", nullable=true)
+     */
+    private $site;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Object", mappedBy="contractor")
+     * @ORM\OrderBy(value={"address"="ASC"})
+     */
+    private $objects;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Contact", mappedBy="contractor")
+     * @ORM\OrderBy(value={"fio"="ASC"})
+     */
+    private $contacts;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection();
+        $this->objects = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
     }
 
     /**
@@ -184,7 +223,7 @@ class Contractor
     }
 
     /**
-     * @return string
+     * @return ArrayCollection
      */
     public function getContacts()
     {
@@ -192,7 +231,7 @@ class Contractor
     }
 
     /**
-     * @param string $contacts
+     * @param ArrayCollection $contacts
      * @return Contractor
      */
     public function setContacts($contacts)
@@ -236,6 +275,101 @@ class Contractor
     public function setOrganisation($organisation)
     {
         $this->organisation = $organisation;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param string $brand
+     * @return Contractor
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBusinessAddress()
+    {
+        return $this->businessAddress;
+    }
+
+    /**
+     * @param string $businessAddress
+     * @return Contractor
+     */
+    public function setBusinessAddress($businessAddress)
+    {
+        $this->businessAddress = $businessAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhysicalAddress()
+    {
+        return $this->physicalAddress;
+    }
+
+    /**
+     * @param string $physicalAddress
+     * @return Contractor
+     */
+    public function setPhysicalAddress($physicalAddress)
+    {
+        $this->physicalAddress = $physicalAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSite()
+    {
+        return $this->site;
+    }
+
+    /**
+     * @param string $site
+     * @return Contractor
+     */
+    public function setSite($site)
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getObjects()
+    {
+        return $this->objects;
+    }
+
+    /**
+     * @param ArrayCollection $objects
+     * @return Contractor
+     */
+    public function setObjects($objects)
+    {
+        $this->objects = $objects;
 
         return $this;
     }

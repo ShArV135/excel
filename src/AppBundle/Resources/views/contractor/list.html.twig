@@ -55,7 +55,7 @@
             {% for contractor in pagination %}
                 <tr>
                     <td>{{ contractor.id }}</td>
-                    <td><a href="{{ path('contractor_view', {'contractor': contractor.id}) }}">{{ contractor.name }}</a></td>
+                    <td><a href="{{ path('contractor_view', {'contractor': contractor.id, 'redirect_to': app.request.uri}) }}">{{ contractor.name }}</a></td>
                     <td>{{ contractor.organisation.name|default }}</td>
                     <td>{{ contractor.inn }}</td>
                     <td>{{ contractor.type == 'provider' ? 'Поставщик' : contractor.type == 'customer' ? 'Заказчик' : '' }}</td>
@@ -65,7 +65,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('contractor_update', {'contractor': contractor.id}) }}" class="btn-sm btn btn-default">Редактировать</a>
+                        <a href="{{ path('contractor_update', {'contractor': contractor.id, 'redirect_to': app.request.uri}) }}" class="btn-sm btn btn-default">Редактировать</a>
                     </td>
                 </tr>
             {% endfor %}

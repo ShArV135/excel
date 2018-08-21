@@ -10,6 +10,7 @@
                     <h4>
                         {{ contractor.name }}
                         <div class="btn-group pull-right" role="group">
+                            <a href="{{ redirect_to|default(path('contractor_list')) }}" class="btn-sm btn btn-default">Назад</a>
                             <a href="{{ path('contractor_delete', {'contractor': contractor.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
                         </div>
                     </h4>
@@ -34,6 +35,109 @@
                             <p><b>Организация:</b> {{ contractor.organisation.name|default }}</p>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        Информация о контрагенте
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><b>Бренд:</b> {{ contractor.brand }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><b>Юридический адрес:</b> {{ contractor.businessAddress }}</p>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><b>Фактический адрес офиса:</b> {{ contractor.physicalAddress }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                <b>Сайт:</b>
+                                {% if contractor.site %}
+                                    <a href="{{ contractor.site }}" target="_blank">{{ contractor.site }}</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        Объекты
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Адрес</th>
+                            <th>Описание объекта</th>
+                            <th>Описание работ на объекте</th>
+                            <th class="col-sm-1">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for object in contractor.objects %}
+                            <tr>
+                                <td>{{ object.address }}</td>
+                                <td>{{ object.description }}</td>
+                                <td>{{ object.workDescription }}</td>
+                                <td><a href="{{ path('object_delete', {'object': object.id}) }}" class="btn-sm btn btn-danger">Удалить</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <a href="{{ path('object_create', {'contractor': contractor.id}) }}" class="btn btn-primary">Добавить объект</a>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        Контактные лица
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>ФИО</th>
+                            <th>Должность</th>
+                            <th>Дата рождения</th>
+                            <th>Рабочий телефон</th>
+                            <th>Мобильный телефон</th>
+                            <th>E-mail</th>
+                            <th>Примечания</th>
+                            <th class="col-sm-1">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for contact in contractor.contacts %}
+                            <tr>
+                                <td>{{ contact.fio }}</td>
+                                <td>{{ contact.post }}</td>
+                                <td>{{ contact.birthDate|date('d.m.Y') }}</td>
+                                <td>{{ contact.phone }}</td>
+                                <td>{{ contact.mobilePhone }}</td>
+                                <td>{{ contact.email }}</td>
+                                <td>{{ contact.comment }}</td>
+                                <td><a href="{{ path('contact_delete', {'contact': contact.id}) }}" class="btn-sm btn btn-danger">Удалить</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <a href="{{ path('contact_create', {'contractor': contractor.id}) }}" class="btn btn-primary">Добавить контакт</a>
                 </div>
             </div>
             <div class="panel panel-default">
