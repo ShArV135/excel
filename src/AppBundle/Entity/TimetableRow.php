@@ -36,7 +36,7 @@ class TimetableRow
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="manager_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="manager_id", referencedColumnName="id", onDelete="SET NULL")
      * @Assert\NotBlank()
      */
     private $manager;
