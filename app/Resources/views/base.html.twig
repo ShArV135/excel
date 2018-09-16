@@ -64,6 +64,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 {% if is_granted('ROLE_MANAGER') %}
+                                    <li><a href="{{ path('report_manager') }}">Эффективность</a></li>
                                 {% else %}
                                     <li><a href="{{ path('report_manager_detail', {'user': app.user.id}) }}">Эффективность</a></li>
                                 {% endif %}
