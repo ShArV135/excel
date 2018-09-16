@@ -27,6 +27,10 @@ class ReportController extends Controller
      */
     public function managerAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_MANAGER')) {
+            return $this->redirectToRoute('report_manager_detail', ['user' => $this->getUser()->getId()]);
+        }
+
         $em = $this->getDoctrine()->getManager();
         $timetableFilter = $this->createForm(ReportManagerFilterType::class);
         $timetableFilter->handleRequest($request);
@@ -79,7 +83,7 @@ class ReportController extends Controller
      */
     public function managerDetailAction(Request $request, User $user)
     {
-        $this->denyAccessUnlessGranted(UserVoter::VIEW, $user);
+        $this->denyAccessUnlessGranted(UserVoter::VIEW_REPORT, $user);
 
         $timetableFilter = $this->createForm(ReportManagerFilterType::class, null, ['list_mode' => false]);
         $timetableFilter->handleRequest($request);

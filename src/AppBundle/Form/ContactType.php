@@ -16,7 +16,15 @@ class ContactType extends AbstractType
         $builder
             ->add('fio', TextType::class, ['label' => 'ФИО'])
             ->add('post', TextType::class, ['label' => 'Должность', 'required' => false])
-            ->add('birthDate', DateType::class, ['label' => 'Дата рождения', 'required' => false])
+            ->add(
+                'birthDate',
+                DateType::class,
+                [
+                    'label' => 'Дата рождения',
+                    'required' => false,
+                    'years' => range(date('Y') - 80, date('Y') - 16),
+                ]
+            )
             ->add('phone', TextType::class, ['label' => 'Рабочий телефон', 'required' => false])
             ->add('mobilePhone', TextType::class, ['label' => 'Мобильный телефон', 'required' => false])
             ->add('email', TextType::class, ['label' => 'E-mail', 'required' => false])

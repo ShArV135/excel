@@ -391,7 +391,7 @@ class ReportHelper
                 $row['balance_negative'] += $balance;
             }
         }
-        $row['contractors'] = count(array_unique($contractors));
+        $row['contractors'] = count($contractors);
 
         if ($isCustomer) {
             $planData = $this->timetableHelper->planData($timetable, $user);
