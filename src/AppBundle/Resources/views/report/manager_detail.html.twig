@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+{% import '@App/macros.html.twig' as macros %}
+
+{% set page_title = 'Эффективность '~user.fullname %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-header">
+            <h2>{{ page_title }}</h2>
+        </div>
+        <div class="row">
+            {{ form_start(timetable_filter, {'attr': {'class': 'form-inline'}}) }}
+            {{ form_rest(timetable_filter) }}
+            <button class="btn btn-primary form-control" type="submit">Показать</button>
+            {{ form_end(timetable_filter) }}
+        </div>
+        {% if report %}
+            {{ macros.manager_report(report, 0, false) }}
+        {% endif %}
+        {% if sales_data %}
+            <div class="row">
+                <h3>Отчет по продажам</h3>
+            </div>
+            <div class="row">
+                <table class="table table-striped table-bordered table-report">
+                    <thead>
+                    <tr>
+                        <th>Заказчик</th>
+                        <th>Наработка</th>
+                        <th>Баланс (среднее)</th>
+                        {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                            <th>Маржа</th>
+                        {% endif %}
+                        <th>Маржа, %</th>
+                        <th>Бонус</th>
+                    </tr>
+                    {% if sales_data.summary_data %}
+                        <tr>
+                            <th style="text-align: right">Всего:</th>
+                            <th>{{ sales_data.summary_data.salary|number_format(2, '.', ' ') }}</th>
+                            <th>{{ sales_data.summary_data.balance|number_format(2, '.', ' ') }}</th>
+                            {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                                <th>{{ sales_data.summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
+                            {% endif %}
+                            <th>{{ sales_data.summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                            <th>{{ sales_data.summary_data.bonus|number_format(2, '.', ' ') }}</th>
+                        </tr>
+                    {% endif %}
+                    </thead>
+                    <tbody>
+                    {% for id, data in sales_data.sales_data %}
+                        <tr class="{{ data.balance < 0 ? 'is-debt' : '' }}">
+                            <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.name }}</a></td>
+                            <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
+                            <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
+                                {{ data.balance|number_format(2, '.', ' ') }}
+                            </td>
+                            {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                                <td>{{ data.margin_sum|number_format(2, '.', ' ') }}</td>
+                            {% endif %}
+                            <td>{{ data.margin_percent|number_format(2, '.', ' ') }}</td>
+                            <td>{{ data.bonus|number_format(2, '.', ' ') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

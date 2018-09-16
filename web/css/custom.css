@@ -56,3 +56,7 @@ a.nostyle {
     display: inline-block;
     margin-right: 5px;
 }
+
+table .nowrap {
+    white-space: nowrap;
+}

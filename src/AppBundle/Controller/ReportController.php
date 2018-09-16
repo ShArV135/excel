@@ -4,6 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
+use AppBundle\Entity\User;
+use AppBundle\Form\ReportManagerFilterType;
+use AppBundle\Security\UserVoter;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,31 +28,10 @@ class ReportController extends Controller
     public function managerAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $timetableFilter = $this
-            ->createFormBuilder(null, ['method' => 'GET', 'csrf_protection' => false])
-            ->add(
-                'timetable',
-                EntityType::class,
-                [
-                    'class' => 'AppBundle\Entity\Timetable',
-                    'choice_label' => 'name',
-                    'label' => 'Табель',
-                    'choices' => $em->getRepository('AppBundle:Timetable')->findBy([], ['id' => 'DESC']),
-                ]
-            )
-            ->add(
-                'by_organisations',
-                CheckboxType::class,
-                [
-                    'label' => 'Группировать по организациям',
-                    'required' => false,
-                ]
-            )
-            ->getForm()
-        ;
+        $timetableFilter = $this->createForm(ReportManagerFilterType::class);
         $timetableFilter->handleRequest($request);
 
-        $report = $reportByOrganisations = null;
+        $report = $reportByOrganisations = $timetable = null;
         if ($timetableFilter->isValid()) {
             $reportHelper = $this->get('report.helper');
 
@@ -81,6 +63,55 @@ class ReportController extends Controller
                 'timetable_filter' => $timetableFilter->createView(),
                 'report' => $report,
                 'report_by_organisations' => $reportByOrganisations,
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param User    $user
+     * @return Response
+     * @throws EntityNotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @Route("/report-manager/{user}", name="report_manager_detail")
+     */
+    public function managerDetailAction(Request $request, User $user)
+    {
+        $this->denyAccessUnlessGranted(UserVoter::VIEW, $user);
+
+        $timetableFilter = $this->createForm(ReportManagerFilterType::class, null, ['list_mode' => false]);
+        $timetableFilter->handleRequest($request);
+
+        $report = $salesData = null;
+        if ($timetableFilter->isValid()) {
+            $reportHelper = $this->get('report.helper');
+
+            /** @var Timetable $timetable */
+            $timetable = $timetableFilter->get('timetable')->getData();
+
+            if (!$timetable) {
+                throw new EntityNotFoundException('Табель не найден');
+            }
+
+            $report = $reportHelper->getManagerData($timetable, null, $user);
+
+            if (in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles())) {
+                $salesData = $reportHelper->getSalesData([
+                    'manager' => $user,
+                    'timetable' => $timetable,
+                ]);
+            }
+        }
+
+        return $this->render(
+            '@App/report/manager_detail.html.twig',
+            [
+                'timetable_filter' => $timetableFilter->createView(),
+                'report' => $report,
+                'user' => $user,
+                'sales_data' => $salesData,
             ]
         );
     }

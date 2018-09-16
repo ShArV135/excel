@@ -11,10 +11,11 @@ class UserVoter extends Voter
     const VIEW = 'view';
     const EDIT = 'edit';
     const DELETE = 'delete';
+    const VIEW_REPORT = 'view_report';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, array(self::VIEW, self::EDIT, self::DELETE))) {
+        if (!in_array($attribute, array(self::VIEW, self::EDIT, self::DELETE, self::VIEW_REPORT))) {
             return false;
         }
 
@@ -49,6 +50,12 @@ class UserVoter extends Voter
 
         if (in_array('ROLE_GENERAL_MANAGER', $user->getRoles())) {
             return true;
+        }
+
+        if ($attribute === self::VIEW_REPORT) {
+            if ($subject->getId() === $user->getId()) {
+                return true;
+            }
         }
 
         if ($subject->getId() === $user->getId()) {

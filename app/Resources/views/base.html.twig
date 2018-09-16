@@ -48,6 +48,9 @@
                                 <li>
                                     <a href="{{ path('organisation_list') }}">Организации</a>
                                 </li>
+                                <li>
+                                    <a href="{{ path('bonus_index') }}">Бонус</a>
+                                </li>
                             </ul>
                         </li>
                     {% endif %}
@@ -61,7 +64,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 {% if is_granted('ROLE_MANAGER') %}
-                                    <li><a href="{{ path('report_manager') }}">По менеджерам</a></li>
+                                    <li><a href="{{ path('report_manager') }}">Эффективность</a></li>
                                 {% endif %}
                                 {% if is_granted('ROLE_MANAGER') or is_granted('ROLE_CUSTOMER_MANAGER') %}
                                     <li><a href="{{ path('report_sale') }}">По продажам</a></li>

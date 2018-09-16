@@ -17,6 +17,7 @@ services:
                 - '@timetable.helper'
                 - '@security.authorization_checker'
                 - '@security.token_storage'
+                - '@router'
     acme.twig.acme_extension:
         class: AppBundle\Twig\TimetableExtension
         public: false
