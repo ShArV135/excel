@@ -31,7 +31,9 @@
                         {% if is_granted('ROLE_GENERAL_MANAGER') %}
                             <th>Маржа</th>
                         {% endif %}
-                        <th>Маржа, %</th>
+                        {% if is_granted('ROLE_MANAGER') %}
+                            <th>Маржа, %</th>
+                        {% endif %}
                         <th>Бонус</th>
                     </tr>
                     {% if sales_data.summary_data %}
@@ -42,7 +44,9 @@
                             {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                 <th>{{ sales_data.summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
                             {% endif %}
-                            <th>{{ sales_data.summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                            {% if is_granted('ROLE_MANAGER') %}
+                                <th>{{ sales_data.summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                            {% endif %}
                             <th>{{ sales_data.summary_data.bonus|number_format(2, '.', ' ') }}</th>
                         </tr>
                     {% endif %}
@@ -58,7 +62,9 @@
                             {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                 <td>{{ data.margin_sum|number_format(2, '.', ' ') }}</td>
                             {% endif %}
-                            <td>{{ data.margin_percent|number_format(2, '.', ' ') }}</td>
+                            {% if is_granted('ROLE_MANAGER') %}
+                                <td>{{ data.margin_percent|number_format(2, '.', ' ') }}</td>
+                            {% endif %}
                             <td>{{ data.bonus|number_format(2, '.', ' ') }}</td>
                         </tr>
                     {% endfor %}

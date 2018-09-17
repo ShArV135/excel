@@ -28,11 +28,13 @@
                             {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                 <th class="col-md-1">Маржа</th>
                             {% endif %}
-                            <th class="col-md-1">Маржа, %</th>
+                            {% if is_granted('ROLE_MANAGER') %}
+                                <th class="col-md-1">Маржа, %</th>
+                            {% endif %}
                             <th class="col-md-1">Бонус</th>
                             <th class="col-md-2">Сумма задолженностей (за все время)</th>
                         </tr>
-                        {% if customer_summary_data %}
+                        {% if customer_summary_data and list_mode %}
                             <tr>
                                 <th colspan="2" style="text-align: right">Всего:</th>
                                 <th class="nowrap">{{ customer_summary_data.plan_completed_percent~'%' }}</th>
@@ -40,7 +42,9 @@
                                 {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                     <th class="nowrap">{{ customer_summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
                                 {% endif %}
-                                <th class="nowrap">{{ customer_summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                                {% if is_granted('ROLE_MANAGER') %}
+                                    <th class="nowrap">{{ customer_summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                                {% endif %}
                                 <th class="nowrap">{{ customer_summary_data.bonus|number_format(2, '.', ' ') }}</th>
                                 <th>&nbsp;</th>
                             </tr>
@@ -60,7 +64,9 @@
                                 {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                     <td class="nowrap">{{ customer_row.margin_sum|number_format(2, '.', ' ') }}</td>
                                 {% endif %}
-                                <td class="nowrap">{{ customer_row.margin_percent|number_format(2, '.', ' ') }}</td>
+                                {% if is_granted('ROLE_MANAGER') %}
+                                    <td class="nowrap">{{ customer_row.margin_percent|number_format(2, '.', ' ') }}</td>
+                                {% endif %}
                                 <td class="nowrap">{{ customer_row.bonus|number_format(2, '.', ' ') }}</td>
                                 <td class="nowrap">{{ customer_row.balance_negative|number_format(2, '.', ' ') }}</td>
                             </tr>
@@ -81,18 +87,22 @@
                             {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                 <th class="col-md-1">Маржа</th>
                             {% endif %}
-                            <th class="col-md-1">Маржа, %</th>
+                            {% if is_granted('ROLE_MANAGER') %}
+                                <th class="col-md-1">Маржа, %</th>
+                            {% endif %}
                             <th class="col-md-1">Бонус</th>
                             <th class="col-md-2">Сумма задолженностей (за все время)</th>
                         </tr>
-                        {% if provider_summary_data %}
+                        {% if provider_summary_data and list_mode %}
                             <tr>
                                 <th colspan="2" style="text-align: right">Всего:</th>
                                 <th class="nowrap">{{ provider_summary_data.salary|number_format(2, '.', ' ') }}</th>
                                 {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                     <th class="nowrap">{{ provider_summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
                                 {% endif %}
-                                <th class="nowrap">{{ provider_summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                                {% if is_granted('ROLE_MANAGER') %}
+                                    <th class="nowrap">{{ provider_summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
+                                {% endif %}
                                 <th class="nowrap">{{ provider_summary_data.bonus|number_format(2, '.', ' ') }}</th>
                                 <th>&nbsp;</th>
                             </tr>
@@ -111,7 +121,9 @@
                                 {% if is_granted('ROLE_GENERAL_MANAGER') %}
                                     <td class="nowrap">{{ provider_row.margin_sum|number_format(2, '.', ' ') }}</td>
                                 {% endif %}
-                                <td class="nowrap">{{ provider_row.margin_percent|number_format(2, '.', ' ') }}</td>
+                                {% if is_granted('ROLE_MANAGER') %}
+                                    <td class="nowrap">{{ provider_row.margin_percent|number_format(2, '.', ' ') }}</td>
+                                {% endif %}
                                 <td class="nowrap">{{ provider_row.bonus|number_format(2, '.', ' ') }}</td>
                                 <td class="nowrap">{{ provider_row.balance_negative|number_format(2, '.', ' ') }}</td>
                             </tr>

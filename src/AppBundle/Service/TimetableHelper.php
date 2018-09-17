@@ -276,7 +276,6 @@ class TimetableHelper
             $providerBalance,
             $marginSum,
             $marginPercent,
-            $providerPaid,
             ) = array_values($this->calculateRowData($timetableRow));
 
         $row = [
@@ -471,7 +470,7 @@ class TimetableHelper
         }
 
         if ($planAmount > 0) {
-            $planCompletedPercent = ceil($planCompleted * 100 / $planAmount);
+            $planCompletedPercent = floor($planCompleted * 100 / $planAmount);
         }
 
         $data = [
