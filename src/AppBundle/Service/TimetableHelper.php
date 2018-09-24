@@ -295,8 +295,13 @@ class TimetableHelper
         foreach ($columns as $column) {
             switch ($column) {
                 case 'manager':
-                    $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById();
-                    $value = $managersById[$manager->getId()];
+                    if ($manager) {
+                        $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById();
+                        $value = $managersById[$manager->getId()];
+                    } else {
+                        $value = '';
+                    }
+
                     break;
                 case 'provider_manager':
                     if ($providerManager) {
