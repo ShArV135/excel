@@ -144,10 +144,12 @@ class ReportHelper
 
                 $customers = $this->entityManager->getRepository('AppBundle:Contractor')->findBy($criteria, ['name' => 'ASC']);
                 foreach ($customers as $customer) {
+                    $manager = $customer->getManager();
+
                     $salesData[$customer->getId()] = [
                         'name' => $customer->getName(),
                         'balance' => $this->timetableHelper->contractorBalance($customer),
-                        'manager' => $customer->getManager()->getFullName(),
+                        'manager' => $manager ? $manager->getFullName() : '',
                         'salary' => 0,
                         'margin_sum' => 0,
                         'margin_percent' => 0,
