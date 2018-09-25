@@ -155,6 +155,9 @@
                     }
                 }
                 if (field.match(/times_/)) {
+                    if (value.disabled) {
+                        return '<div class="times-disabled">' + value.time + '</div>';
+                    }
                     var html = '<div class="times-item hidden">' + value.time + '</div>';
                     html += '<input class="times-input" type="text" data-value="' + value.time + '" value="' + value.time + '"/>';
                     html += ('<a class="times-comment ' + (value.comment ? '' : 'text-muted') + '"' +

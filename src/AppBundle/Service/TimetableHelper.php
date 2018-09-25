@@ -366,6 +366,10 @@ class TimetableHelper
                                 ]
                             ),
                             'time' => $time,
+                            'disabled' => $timetableRow->isHasAct() && (
+                                $this->authorizationChecker->isGranted('ROLE_CUSTOMER_MANAGER')
+                                || $this->authorizationChecker->isGranted('ROLE_PROVIDER_MANAGER')
+                            ),
                         ];
                         $row['_times_'.$day.'_class'] = 'times '.$colors[$day];
 

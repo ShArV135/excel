@@ -111,6 +111,7 @@
 }
 
 .timetable .times-item,
+.timetable .times-disabled,
 .timetable .times-input {
     border: 0;
     width: 100%;
