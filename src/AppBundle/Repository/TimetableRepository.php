@@ -101,7 +101,10 @@ class TimetableRepository extends EntityRepository
             foreach ($lastTimetable->getRows() as $row) {
                 $em->detach($row);
 
-                $row->setTimetable($timetable);
+                $row
+                    ->setTimetable($timetable)
+                    ->setHasAct(false)
+                ;
                 $em->persist($row);
                 $timetable->getRows()->add($row);
             }
