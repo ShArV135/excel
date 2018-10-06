@@ -29,7 +29,7 @@ security:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users, roles: ROLE_MANAGER }
         - { path: ^/organisations, roles: ROLE_MANAGER }
-        - { path: ^/contractors, roles: [ROLE_CUSTOMER_MANAGER, ROLE_PROVIDER_MANAGER, ROLE_MANAGER] }
+        - { path: ^/contractors, roles: [ROLE_USER] }
         - { path: ^report-manager, roles: ROLE_MANAGER }
         - { path: ^report-sale, roles: [ROLE_MANAGER, ROLE_CUSTOMER_MANAGER] }
         - { path: ^report-provide, roles: [ROLE_MANAGER, ROLE_PROVIDER_MANAGER] }

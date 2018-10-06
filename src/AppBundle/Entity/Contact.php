@@ -33,42 +33,42 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(name="post", type="string", length=255)
+     * @ORM\Column(name="post", type="string", length=255, nullable=true)
      */
     private $post;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birth_date", type="date")
+     * @ORM\Column(name="birth_date", type="date", nullable=true)
      */
     private $birthDate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string", length=255)
+     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      */
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="mobile_phone", type="string", length=255)
+     * @ORM\Column(name="mobile_phone", type="string", length=255, nullable=true)
      */
     private $mobilePhone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="comment", type="text")
+     * @ORM\Column(name="comment", type="text", nullable=true)
      */
     private $comment;
 

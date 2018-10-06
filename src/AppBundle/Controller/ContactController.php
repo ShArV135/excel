@@ -53,7 +53,7 @@ class ContactController extends Controller
         return $this->render(
             '@App/contact/save.html.twig',
             [
-                'page_header' => 'Создать объект',
+                'page_header' => 'Создать контакт',
                 'form' => $form->createView(),
             ]
         );
