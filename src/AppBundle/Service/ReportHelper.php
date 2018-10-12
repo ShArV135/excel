@@ -177,6 +177,7 @@ class ReportHelper
 
         foreach ($timetableRows as $timetableRow) {
             $customer = $timetableRow->getCustomer();
+            $manager = $timetableRow->getManager();
 
             if ($organisation && $customer->getOrganisation() !== $organisation) {
                 continue;
@@ -184,7 +185,7 @@ class ReportHelper
 
             if (!isset($salesData[$customer->getId()])) {
                 $salesData[$customer->getId()] = [
-                    'manager' => $timetableRow->getManager()->getFullName(),
+                    'manager' => $manager ? $manager->getFullName() : null,
                     'name' => $customer->getName(),
                     'salary' => 0,
                     'balance' => $this->timetableHelper->contractorBalance($customer),
