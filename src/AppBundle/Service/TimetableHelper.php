@@ -176,6 +176,8 @@ class TimetableHelper
                     'times',
                     'customer_salary',
                     'customer_organisation',
+                    'customer_balance',
+                    'provider_balance',
                 ];
                 break;
             case 'provider_manager':

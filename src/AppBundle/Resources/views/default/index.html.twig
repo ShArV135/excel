@@ -25,6 +25,12 @@
                         Показать маржу
                     </button>
                 {% endif %}
+                {% if is_granted('ROLE_DISPATCHER') %}
+                    <button class="btn btn-default balance-checker">
+                        <i class="state-icon glyphicon glyphicon-unchecked"></i>
+                        Отображение балансов
+                    </button>
+                {% endif %}
             </div>
         </div>
         <div class="btn-group pull-right" role="group">
@@ -104,9 +110,9 @@
                     {% elseif column == 'provider_salary' %}
                         <th data-field="provider_salary" data-formatter="cellFormatter" class="{{ class }} provider-cell">Наработка<br>поставщика</th>
                     {% elseif column == 'customer_balance' %}
-                        <th data-field="customer_balance" data-formatter="cellFormatter" class="{{ class }}">Баланс<br>заказчика</th>
+                        <th data-field="customer_balance" data-visible="{{ is_granted('ROLE_DISPATCHER') ? 'false' : 'true' }}" data-formatter="cellFormatter" class="{{ class }}">Баланс<br>заказчика</th>
                     {% elseif column == 'provider_balance' %}
-                        <th data-field="provider_balance" data-formatter="cellFormatter" class="{{ class }} provider-cell">Баланс<br>поставщика</th>
+                        <th data-field="provider_balance" data-visible="{{ is_granted('ROLE_DISPATCHER') ? 'false' : 'true' }}" data-formatter="cellFormatter" class="{{ class }} provider-cell">Баланс<br>поставщика</th>
                     {% elseif column == 'margin_sum' %}
                         <th data-field="margin_sum" data-formatter="cellFormatter" data-visible="false" class="{{ class }}">Маржа,<br>сумма</th>
                     {% elseif column == 'margin_percent' %}
@@ -374,6 +380,22 @@
 
                     $('#timetable').bootstrapTable('showColumn', 'margin_sum');
                     $('#timetable').bootstrapTable('showColumn', 'margin_percent');
+                }
+            });
+
+            $('.balance-checker').click(function() {
+                var checked = $('i', $(this)).hasClass('glyphicon-check');
+
+                if (checked) {
+                    $('i', $(this)).removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+
+                    $('#timetable').bootstrapTable('hideColumn', 'provider_balance');
+                    $('#timetable').bootstrapTable('hideColumn', 'customer_balance');
+                } else {
+                    $('i', $(this)).removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
+                    $('#timetable').bootstrapTable('showColumn', 'provider_balance');
+                    $('#timetable').bootstrapTable('showColumn', 'customer_balance');
                 }
             });
         });
