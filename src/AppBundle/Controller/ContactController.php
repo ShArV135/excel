@@ -25,7 +25,7 @@ class ContactController extends Controller
      */
     public function createAction(Request $request, Contractor $contractor)
     {
-        $this->denyAccessUnlessGranted(ContractorVoter::EDIT, $contractor);
+        $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
 
         $contact = new Contact();
         $contact->setContractor($contractor);

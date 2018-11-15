@@ -27,7 +27,7 @@ class PaymentController extends Controller
      */
     public function createContractorAction(Request $request, Contractor $contractor)
     {
-        $this->denyAccessUnlessGranted(ContractorVoter::EDIT, $contractor);
+        $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
 
         $payment = new Payment();
         $payment->setContractor($contractor);

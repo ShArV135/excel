@@ -48,14 +48,19 @@ class ContractorVoter extends Voter
             return false;
         }
 
-        if (in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles())) {
-            return $user === $subject->getManager();
+        if ($attribute === self::VIEW) {
+            if (in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles())) {
+                return $user === $subject->getManager();
+            }
+
+            if (in_array('ROLE_PROVIDER_MANAGER', $user->getRoles())) {
+                return $subject->getType() === Contractor::PROVIDER;
+            }
+
+            return true;
         }
 
-        if (in_array('ROLE_PROVIDER_MANAGER', $user->getRoles())) {
-            return $subject->getType() === Contractor::PROVIDER;
-        }
-
-        return true;
+        return in_array('ROLE_MANAGER', $user->getRoles())
+            || in_array('ROLE_GENERAL_MANAGER', $user->getRoles());
     }
 }

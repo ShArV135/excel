@@ -11,7 +11,9 @@
                         {{ contractor.name }}
                         <div class="btn-group pull-right" role="group">
                             <a href="{{ redirect_to|default(path('contractor_list')) }}" class="btn-sm btn btn-default">Назад</a>
-                            <a href="{{ path('contractor_delete', {'contractor': contractor.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
+                            {% if is_granted('ROLE_MANAGER') %}
+                                <a href="{{ path('contractor_delete', {'contractor': contractor.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
+                            {% endif %}
                         </div>
                     </h4>
                 </div>
@@ -90,7 +92,11 @@
                                 <td>{{ object.address }}</td>
                                 <td>{{ object.description }}</td>
                                 <td>{{ object.workDescription }}</td>
-                                <td><a href="{{ path('object_delete', {'object': object.id}) }}" class="btn-sm btn btn-danger">Удалить</a></td>
+                                <td>
+                                    {% if is_granted('ROLE_MANAGER') %}
+                                        <a href="{{ path('object_delete', {'object': object.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -130,7 +136,11 @@
                                 <td>{{ contact.mobilePhone }}</td>
                                 <td>{{ contact.email }}</td>
                                 <td>{{ contact.comment }}</td>
-                                <td><a href="{{ path('contact_delete', {'contact': contact.id}) }}" class="btn-sm btn btn-danger">Удалить</a></td>
+                                <td>
+                                    {% if is_granted('ROLE_MANAGER') %}
+                                        <a href="{{ path('contact_delete', {'contact': contact.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -165,7 +175,11 @@
                                 <td>{{ payment.date|date('d.m.Y') }}</td>
                                 <td>{{ payment.amount }}</td>
                                 <td>{{ payment.comment }}</td>
-                                <td><a href="{{ path('payment_delete', {'payment': payment.id}) }}" class="btn-sm btn btn-danger">Удалить</a></td>
+                                <td>
+                                    {% if is_granted('ROLE_MANAGER') %}
+                                        <a href="{{ path('payment_delete', {'payment': payment.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

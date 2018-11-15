@@ -25,7 +25,7 @@ class ObjectController extends Controller
      */
     public function createAction(Request $request, Contractor $contractor)
     {
-        $this->denyAccessUnlessGranted(ContractorVoter::EDIT, $contractor);
+        $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
 
         $object = new Object();
         $object->setContractor($contractor);
