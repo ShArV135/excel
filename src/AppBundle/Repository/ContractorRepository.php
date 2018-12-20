@@ -60,4 +60,35 @@ class ContractorRepository extends EntityRepository
 
         return $result;
     }
+
+    public function search($criteria)
+    {
+        $qb = $this
+            ->createQueryBuilder('contractor')
+            ->addOrderBy('contractor.name', 'ASC')
+        ;
+
+        if (!empty($criteria['type'])) {
+            $qb
+                ->where($qb->expr()->eq('contractor.type', ':type'))
+                ->setParameter('type', $criteria['type'])
+            ;
+        }
+
+        if (!empty($criteria['manager'])) {
+            $qb
+                ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
+                ->setParameter('manager', $criteria['manager'])
+            ;
+        }
+
+        if (isset($criteria['organisation'])) {
+            $qb
+                ->andWhere($qb->expr()->eq('contractor.organisation', ':organisation'))
+                ->setParameter('organisation', $criteria['organisation'])
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

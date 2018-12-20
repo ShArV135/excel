@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Contractor;
+use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -42,33 +43,26 @@ class TimetableRowType extends AbstractType
                 ]
             )
             ->add(
+                'organization',
+                EntityType::class,
+                [
+                    'label' => 'Работаем с зак-м от...',
+                    'required' => false,
+                    'class' => Organisation::class,
+                    'choice_label' => 'name',
+                    'attr' => ['class' => 'select2me'],
+                ]
+            )
+            ->add(
                 'customer',
                 EntityType::class,
                 [
+                    'required' => false,
                     'label' => 'Заказчик',
+                    'attr' => ['class' => 'timetable-row-contractor customer'],
+                    'choices' => $options['customers'],
                     'class' => Contractor::class,
-                    'attr' => ['class' => 'select2me'],
                     'choice_label' => 'name',
-                    'query_builder' => function(EntityRepository $repository) use ($options) {
-                        $qb = $repository
-                            ->createQueryBuilder('e')
-                            ->addOrderBy('e.name', 'ASC')
-                        ;
-
-                        $qb
-                            ->where($qb->expr()->eq('e.type', ':type'))
-                            ->setParameter('type', Contractor::CUSTOMER)
-                        ;
-
-                        if (!empty($options['customer_choice_criteria']['manager'])) {
-                            $qb
-                                ->andWhere($qb->expr()->eq('e.manager', ':manager'))
-                                ->setParameter('manager', $options['customer_choice_criteria']['manager'])
-                            ;
-                        }
-
-                        return $qb;
-                    },
                 ]
             )
             ->add('save', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn-primary']])
@@ -127,27 +121,24 @@ class TimetableRowType extends AbstractType
                     'provider',
                     EntityType::class,
                     [
+                        'required' => false,
                         'label' => 'Поставщик',
+                        'attr' => ['class' => 'timetable-row-contractor provider'],
+                        'choices' => $options['providers'],
                         'class' => Contractor::class,
-                        'attr' => ['class' => 'select2me'],
                         'choice_label' => 'name',
-                        'query_builder' => function(EntityRepository $repository) use ($options) {
-                            $qb = $repository
-                                ->createQueryBuilder('e')
-                                ->addOrderBy('e.name', 'ASC')
-                            ;
-
-                            $qb
-                                ->where($qb->expr()->eq('e.type', ':type'))
-                                ->setParameter('type', Contractor::PROVIDER)
-                            ;
-
-                            return $qb;
-                        },
                     ]
                 )
             ;
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBlockPrefix()
+    {
+        return null;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -156,6 +147,8 @@ class TimetableRowType extends AbstractType
             'choice_manager' => false,
             'customer_choice_criteria' => [],
             'choice_provider' => false,
+            'customers' => [],
+            'providers' => [],
         ]);
     }
 }

@@ -27,6 +27,7 @@ class ContractorType extends AbstractType
                 'organisation',
                 EntityType::class,
                 [
+                    'required' => false,
                     'class' => Organisation::class,
                     'choice_label' => 'name',
                     'label' => 'Организация',
@@ -41,6 +42,7 @@ class ContractorType extends AbstractType
                     'manager',
                     EntityType::class,
                     [
+                        'required' => false,
                         'label' => 'Менеджер по продажам',
                         'attr' => ['class' => 'select2me'],
                         'class' => User::class,

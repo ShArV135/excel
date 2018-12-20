@@ -11,6 +11,7 @@
                     <div class="col-md-6">
                         {{ form_row(form.object) }}
                         {{ form_row(form.mechanism) }}
+                        {{ form_row(form.organization) }}
                     </div>
                     <div class="col-md-6">
                         {{ form_row(form.comment) }}
@@ -51,4 +52,27 @@
         </div>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block javascripts %} {{ parent() }}
+    <script>
+        $(function() {
+            $('#organization').change(function() {
+                var organization = $(this).val();
+                $('.timetable-row-contractor').each(function() {
+                    var data = {
+                        organization: organization,
+                        type: $(this).hasClass('provider') ? 'provider' : 'customer',
+                    };
+                    $(this).select2({
+                        ajax: {
+                            url: Routing.generate('contractor_ajax_search'),
+                            data: data
+                        }
+                    });
+                });
+            });
+            $('#organization').change();
+        });
+    </script>
 {% endblock %}

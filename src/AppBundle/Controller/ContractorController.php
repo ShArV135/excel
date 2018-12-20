@@ -7,6 +7,7 @@ use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
 use AppBundle\Form\ContractorType;
 use AppBundle\Security\ContractorVoter;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -346,5 +348,37 @@ class ContractorController extends Controller
         }
 
         return $this->redirectToRoute('contractor_list');
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @Route("/contractors-ajax", name="contractor_ajax_search", options={"expose"=true})
+     */
+    public function ajaxSearchAction(Request $request)
+    {
+        $repository = $this->getDoctrine()->getRepository(Contractor::class);
+
+        $criteria = [
+            'type' => $request->get('type', Contractor::CUSTOMER),
+            'organisation' => $request->get('organization'),
+        ];
+
+        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+            $criteria['manager'] = $this->getUser();
+        }
+
+        $contractors = $repository->search($criteria);
+
+        $result = [];
+        /** @var Contractor $contractor */
+        foreach ($contractors as $contractor) {
+            $result[] = [
+                'id' => $contractor->getId(),
+                'text' => $contractor->getName(),
+            ];
+        }
+
+        return new JsonResponse(['results' => $result]);
     }
 }

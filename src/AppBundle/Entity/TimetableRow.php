@@ -33,6 +33,15 @@ class TimetableRow
     private $timetable;
 
     /**
+     * @var Organisation
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organisation")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Assert\NotBlank()
+     */
+    private $organization;
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
@@ -330,7 +339,24 @@ class TimetableRow
     }
 
     /**
+     * @return Organisation
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param Organisation $organization
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+    }
+
+    /**
      * @ORM\PreFlush()
+     * @throws \Exception
      */
     public function preFlush()
     {
