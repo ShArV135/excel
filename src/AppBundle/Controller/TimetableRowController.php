@@ -160,7 +160,6 @@ class TimetableRowController extends Controller
             $choiceProvider = true;
             $providers = $contractorRepository->search([
                 'type' => Contractor::PROVIDER,
-                'organisation' => $organization,
             ]);
             $customers = $contractorRepository->search([
                 'type' => Contractor::CUSTOMER,

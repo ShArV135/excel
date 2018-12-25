@@ -122,6 +122,13 @@ class TimetableRow
     private $hasAct = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="show_all_providers", type="boolean", options={"default": false})
+     */
+    private $showAllProviders = false;
+
+    /**
      * @return int
      */
     public function getId()
@@ -352,6 +359,22 @@ class TimetableRow
     public function setOrganization($organization)
     {
         $this->organization = $organization;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowAllProviders()
+    {
+        return $this->showAllProviders;
+    }
+
+    /**
+     * @param bool $showAllProviders
+     */
+    public function setShowAllProviders($showAllProviders)
+    {
+        $this->showAllProviders = $showAllProviders;
     }
 
     /**

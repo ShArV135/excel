@@ -11,10 +11,19 @@
                     <div class="col-md-6">
                         {{ form_row(form.object) }}
                         {{ form_row(form.mechanism) }}
-                        {{ form_row(form.organization) }}
                     </div>
                     <div class="col-md-6">
                         {{ form_row(form.comment) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.organization) }}
+                    </div>
+                    <div class="col-md-6">
+                        {% if form.showAllProviders is defined %}
+                            {{ form_row(form.showAllProviders, {'attr': {'style': 'margin-top: 30px;'}}) }}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">
@@ -57,13 +66,16 @@
 {% block javascripts %} {{ parent() }}
     <script>
         $(function() {
-            $('#organization').change(function() {
-                var organization = $(this).val();
+            var select2Init = function() {
                 $('.timetable-row-contractor').each(function() {
                     var data = {
-                        organization: organization,
-                        type: $(this).hasClass('provider') ? 'provider' : 'customer',
+                        type: $(this).hasClass('provider') ? 'provider' : 'customer'
                     };
+
+                    if ($(this).hasClass('customer') || $('#showAllProviders').is(':not(:checked)')) {
+                        data.organization = $('#organization').val();
+                    }
+
                     $(this).select2({
                         ajax: {
                             url: Routing.generate('contractor_ajax_search'),
@@ -71,8 +83,11 @@
                         }
                     });
                 });
-            });
-            $('#organization').change();
+            };
+
+            $('#organization').change(select2Init);
+            $('#showAllProviders').change(select2Init);
+            select2Init();
         });
     </script>
 {% endblock %}
