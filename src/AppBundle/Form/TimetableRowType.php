@@ -134,6 +134,7 @@ class TimetableRowType extends AbstractType
                     'showAllProviders',
                     CheckboxType::class,
                     [
+                        'required' => false,
                         'label' => 'Показать всех поставщиков',
                     ]
                 )
