@@ -364,6 +364,10 @@ class ContractorController extends Controller
             'organisation' => $request->get('organization'),
         ];
 
+        if ($name = $request->get('name')) {
+            $criteria['name'] = $name;
+        }
+
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
             $criteria['manager'] = $this->getUser();
         }

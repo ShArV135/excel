@@ -79,7 +79,13 @@
                     $(this).select2({
                         ajax: {
                             url: Routing.generate('contractor_ajax_search'),
-                            data: data
+                            data: function(params) {
+                                if (params.hasOwnProperty('term')) {
+                                    data.name = params.term;
+                                }
+
+                                return data;
+                            }
                         }
                     });
                 });

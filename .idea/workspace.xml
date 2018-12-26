@@ -2,19 +2,14 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php" line="329" mnemonic="3" />
-    <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php" line="201" mnemonic="2" />
-    <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php" line="29" mnemonic="1" />
+    <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php" line="47" mnemonic="1" />
+    <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" line="119" mnemonic="2" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="fixes">
+    <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="organization in timetable row">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b4bf153f-0306-4fbe-a9d6-54c9efeb4786.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/b4bf153f-0306-4fbe-a9d6-54c9efeb4786.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" afterDir="false" />
     </list>
@@ -60,11 +55,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="359" column="26" selection-start-line="359" selection-start-column="26" selection-end-line="359" selection-end-column="26" />
+            <state relative-caret-position="408">
+              <caret line="374" column="40" selection-start-line="374" selection-start-column="40" selection-end-line="374" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="604">
+              <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="80" column="73" selection-start-line="80" selection-start-column="51" selection-end-line="80" selection-end-column="73" />
+              <folding>
+                <element signature="e#12#26#0#Twig" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -73,9 +89,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Маржа, %</find>
-      <find>list_mode</find>
-      <find>timetableRowFormat</find>
       <find>calculateRowData</find>
       <find>app</find>
       <find>RewriteEngine</find>
@@ -98,11 +111,14 @@
       <find>customer_choice_criteria</find>
       <find>rou</find>
       <find>expose</find>
-      <find>createac</find>
       <find>InputCompat</find>
       <find>choices</find>
       <find>select2</find>
       <find>getForm</find>
+      <find>createac</find>
+      <find>checkbo</find>
+      <find>organization</find>
+      <find>contractor_ajax_search</find>
     </findStrings>
     <replaceStrings>
       <replace>ROLE_PROVIDER_MANAGER</replace>
@@ -156,7 +172,6 @@
         <option value="$PROJECT_DIR$/.htaccess" />
         <option value="$PROJECT_DIR$/web/css/timetable.css" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRepository.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php" />
         <option value="$PROJECT_DIR$/app/config/security.yml" />
         <option value="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/Contact.php" />
@@ -180,12 +195,13 @@
         <option value="$PROJECT_DIR$/../evo.local/src/AppBundle/Resources/views/employee/save.html.twig" />
         <option value="$PROJECT_DIR$/../evo.local/src/AppBundle/Form/CompetenceGraphType.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/security/login.html.twig" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" />
       </list>
     </option>
   </component>
@@ -466,28 +482,7 @@
       <workItem from="1542827004567" duration="677000" />
       <workItem from="1544560527911" duration="805000" />
       <workItem from="1544681578547" duration="728000" />
-      <workItem from="1545338446689" duration="5701000" />
-    </task>
-    <task id="LOCAL-00031" summary="fix remove">
-      <created>1518285917139</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1518285917139</updated>
-    </task>
-    <task id="LOCAL-00032" summary="migrations, rows by timetable">
-      <created>1518473601818</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1518473601818</updated>
-    </task>
-    <task id="LOCAL-00033" summary="auto timetable create">
-      <created>1518546619569</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1518546619569</updated>
+      <workItem from="1545338446689" duration="10487000" />
     </task>
     <task id="LOCAL-00034" summary="fix bug with time">
       <created>1518547527735</created>
@@ -811,11 +806,32 @@
       <option name="project" value="LOCAL" />
       <updated>1544681673421</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="organization in timetable row">
+      <created>1545344281688</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1545344281688</updated>
+    </task>
+    <task id="LOCAL-00081" summary="organization in timetable row">
+      <created>1545720690209</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1545720690209</updated>
+    </task>
+    <task id="LOCAL-00082" summary="organization in timetable row">
+      <created>1545723518863</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1545723518863</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="413402000" />
+    <option name="totallyTimeSpent" value="418188000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -836,13 +852,13 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.28004178" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3291536" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49806523" visible="true" weight="0.38557994" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49806523" weight="0.38557994" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32984293" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5002764" side_tool="true" weight="0.32740587" />
       <window_info anchor="bottom" id="Database Changes" order="8" sideWeight="0.49806523" weight="0.32845187" />
-      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49695966" weight="0.26123303" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="9" sideWeight="0.49695966" visible="true" weight="0.26123303" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="10" weight="0.32984293" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4997236" weight="0.32706374" />
       <window_info anchor="bottom" id="SQL Generator" order="12" weight="0.32984293" />
@@ -852,7 +868,7 @@
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="Database" order="3" visible="true" weight="0.20287451" />
+      <window_info anchor="right" id="Database" order="3" visible="true" weight="0.20287451" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -909,7 +925,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="export" />
     <MESSAGE value="test phpinfo" />
     <MESSAGE value="fix remove" />
     <MESSAGE value="migrations, rows by timetable" />
@@ -934,7 +949,8 @@
     <MESSAGE value="add balance checker" />
     <MESSAGE value="deny edit data contractor" />
     <MESSAGE value="change name" />
-    <option name="LAST_COMMIT_MESSAGE" value="change name" />
+    <MESSAGE value="organization in timetable row" />
+    <option name="LAST_COMMIT_MESSAGE" value="organization in timetable row" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1117,13 +1133,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/DataFixtures/UserFixtures.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -1291,13 +1300,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5521">
-          <caret line="338" column="5" lean-forward="true" selection-start-line="338" selection-start-column="5" selection-end-line="338" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="222">
@@ -1338,48 +1340,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="59" column="50" lean-forward="true" selection-start-line="59" selection-start-column="50" selection-end-line="59" selection-end-column="50" />
-          <folding>
-            <element signature="e#12#26#0#Twig" expanded="true" />
-          </folding>
+        <state relative-caret-position="272">
+          <caret line="36" column="9" lean-forward="true" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="123" column="44" selection-start-line="123" selection-start-column="44" selection-end-line="123" selection-end-column="44" />
+        <state relative-caret-position="99">
+          <caret line="46" column="29" selection-start-line="46" selection-start-column="17" selection-end-line="46" selection-end-column="29" />
           <folding>
             <element signature="e#34#66#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="142" column="55" lean-forward="true" selection-start-line="142" selection-start-column="55" selection-end-line="142" selection-end-column="55" />
+        <state relative-caret-position="238">
+          <caret line="38" column="43" selection-start-line="38" selection-start-column="43" selection-end-line="38" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="80" column="73" selection-start-line="80" selection-start-column="51" selection-end-line="80" selection-end-column="73" />
           <folding>
-            <element signature="e#40#72#0#PHP" expanded="true" />
-            <element signature="e#1593#1628#0#PHP" expanded="true" />
+            <element signature="e#12#26#0#Twig" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="64" column="5" lean-forward="true" selection-start-line="64" selection-start-column="5" selection-end-line="64" selection-end-column="5" />
+        <state relative-caret-position="199">
+          <caret line="82" column="9" lean-forward="true" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
+          <folding>
+            <element signature="e#40#72#0#PHP" expanded="true" />
+            <element signature="e#1636#1671#0#PHP" expanded="true" />
+            <element signature="e#2858#2893#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="359" column="26" selection-start-line="359" selection-start-column="26" selection-end-line="359" selection-end-column="26" />
+        <state relative-caret-position="408">
+          <caret line="374" column="40" selection-start-line="374" selection-start-column="40" selection-end-line="374" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Repository/ContractorRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="604">
+          <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
         </state>
       </provider>
     </entry>

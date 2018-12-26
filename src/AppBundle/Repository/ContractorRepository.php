@@ -89,6 +89,13 @@ class ContractorRepository extends EntityRepository
             ;
         }
 
+        if (isset($criteria['name'])) {
+            $qb
+                ->andWhere($qb->expr()->like('contractor.name', ':name'))
+                ->setParameter('name', '%'.$criteria['name'].'%')
+            ;
+        }
+
         return $qb->getQuery()->getResult();
     }
 }
