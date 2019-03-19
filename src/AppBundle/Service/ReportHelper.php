@@ -93,7 +93,7 @@ class ReportHelper
         $providerSummaryData = [
             'salary' => array_sum(array_column($providerManagerData, 'salary')),
             'margin_sum' => array_sum(array_column($providerManagerData, 'margin_sum')),
-            'bonus' => array_sum(array_column($customerManagerData, 'bonus')),
+            'bonus' => array_sum(array_column($providerManagerData, 'bonus')),
             'margin_percent' => 0,
         ];
         if ($count = count(array_filter(array_column($providerManagerData, 'margin_percent')))) {
@@ -366,7 +366,12 @@ class ReportHelper
 
             $rowData = $this->timetableHelper->calculateRowData($timetableRow);
 
-            $row['salary'] += $rowData['customer_salary'];
+            if ($isCustomer) {
+                $row['salary'] += $rowData['customer_salary'];
+            } else {
+                $row['salary'] += $rowData['provider_salary'];
+            }
+
             $row['margin_sum'] += $rowData['margin_sum'];
             $row['margin_percent'] += $rowData['margin_percent'];
         }
