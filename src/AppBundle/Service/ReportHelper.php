@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
 class ReportHelper
 {
@@ -34,8 +35,7 @@ class ReportHelper
         AuthorizationChecker $authorizationChecker,
         TokenStorage $tokenStorage,
         Router $router
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->timetableHelper = $timetableHelper;
         $this->authorizationChecker = $authorizationChecker;
@@ -208,7 +208,7 @@ class ReportHelper
                 $salesData[$i]['margin_percent'] = $data['margin_percent'] / $data['counter'];
             }
 
-            if ($bonus = $this->getBonus(Bonus::MANAGER_TYPE_CUSTOMER)) {
+            if ($bonus = $this->getBonus($this->isTop($manager) ? Bonus::MANAGER_TYPE_TOP_CUSTOMER : Bonus::MANAGER_TYPE_CUSTOMER)) {
                 switch ($bonus->getType()) {
                     case Bonus::TYPE_FROM_SALARY:
                         $salesData[$i]['bonus'] = $data['salary'] * $bonus->getValue() / 100;
@@ -328,7 +328,7 @@ class ReportHelper
      */
     private function getManagerRowData(Timetable $timetable, User $user, Organisation $organisation = null)
     {
-        $isCustomer = in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles());
+        $isCustomer = $this->isCustomer($user);
 
         if ($isCustomer) {
             $timetableRows = $this->entityManager->getRepository('AppBundle:TimetableRow')->findBy([
@@ -406,7 +406,20 @@ class ReportHelper
             $row['plan_completed_percent'] = $planData['plan_completed_percent'];
         }
 
-        if ($bonus = $this->getBonus($isCustomer ? Bonus::MANAGER_TYPE_CUSTOMER : Bonus::MANAGER_TYPE_PROVIDER)) {
+        $isTop = $this->isTop($user);
+        if ($isCustomer) {
+            if ($isTop) {
+                $bonusType = Bonus::MANAGER_TYPE_TOP_CUSTOMER;
+            } else {
+                $bonusType = Bonus::MANAGER_TYPE_CUSTOMER;
+            }
+        } elseif ($isTop) {
+            $bonusType = Bonus::MANAGER_TYPE_TOP_PROVIDER;
+        } else {
+            $bonusType = Bonus::MANAGER_TYPE_PROVIDER;
+        }
+
+        if ($bonus = $this->getBonus($bonusType)) {
             switch ($bonus->getType()) {
                 case Bonus::TYPE_FROM_SALARY:
                     $row['bonus'] = $row['salary'] * $bonus->getValue() / 100;
@@ -437,5 +450,15 @@ class ReportHelper
         }
 
         return $bonuses[$type];
+    }
+
+    private function isCustomer(User $user)
+    {
+        return  (bool) array_intersect(['ROLE_CUSTOMER_MANAGER', 'ROLE_TOP_CUSTOMER_MANAGER'], $user->getRoles());
+    }
+
+    private function isTop(User $user)
+    {
+        return  (bool) array_intersect(['ROLE_TOP_PROVIDER_MANAGER', 'ROLE_TOP_CUSTOMER_MANAGER'], $user->getRoles());
     }
 }

@@ -81,7 +81,9 @@
                     {% if column in fixed_columns %}
                         {% set class = class ~ ' timetable-fixed-cell' %}
                     {% endif %}
-                    {% if column == 'manager' %}
+                    {% if column == 'month' %}
+                        <th data-field="month" data-formatter="cellFormatter" class="{{ class }}">Месяц</th>
+                    {% elseif column == 'manager' %}
                         <th data-field="manager" data-formatter="cellFormatter" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МП</th>
                     {% elseif column == 'provider_manager' %}
                         <th data-field="provider_manager" data-formatter="cellFormatter" data-filter-data="json:{{ provider_managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МС</th>
@@ -182,6 +184,7 @@
                             '<a class="delete-confirm" onclick="deleteConfirm(\''+ value.delete +'\')" href="javascript: void(0)">' +
                                 '<span class="glyphicon glyphicon-remove"></span>' +
                             '</a>';
+                    case 'month':
                     case 'object':
                     case 'mechanism':
                     case 'comment':

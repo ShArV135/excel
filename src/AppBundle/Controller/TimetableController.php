@@ -75,6 +75,9 @@ class TimetableController extends Controller
         $row = [];
         foreach ($columns as $index => $column) {
             switch ($column) {
+                case 'month':
+                    $row[] = 'Месяц';
+                    break;
                 case 'manager':
                     $row[] = 'Менеджер';
                     break;
@@ -171,6 +174,9 @@ class TimetableController extends Controller
             $row = [];
             foreach ($columns as $index => $column) {
                 switch ($column) {
+                    case 'month':
+                        $value = $timetableRow->getTimetable()->getName();
+                        break;
                     case 'manager':
                         $value = $managersById[$manager->getId()];
                         break;

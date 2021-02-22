@@ -25,7 +25,9 @@ class BonusController extends Controller
         $bonuses = $em->getRepository('AppBundle:Bonus')->findAll();
         $bonusesByManager = [
             Bonus::MANAGER_TYPE_CUSTOMER => new Bonus(),
+            Bonus::MANAGER_TYPE_TOP_CUSTOMER => new Bonus(),
             Bonus::MANAGER_TYPE_PROVIDER => new Bonus(),
+            Bonus::MANAGER_TYPE_TOP_PROVIDER => new Bonus(),
         ];
         $data = [];
         foreach ($bonuses as $bonus) {

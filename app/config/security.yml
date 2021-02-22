@@ -25,6 +25,8 @@ security:
         ROLE_MANAGER: ROLE_USER
         ROLE_DISPATCHER: ROLE_USER
         ROLE_GENERAL_MANAGER: ROLE_MANAGER
+        ROLE_TOP_CUSTOMER_MANAGER: ROLE_CUSTOMER_MANAGER
+        ROLE_TOP_PROVIDER_MANAGER: ROLE_PROVIDER_MANAGER
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users, roles: ROLE_MANAGER }

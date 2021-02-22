@@ -150,6 +150,7 @@ class TimetableHelper
         switch ($show) {
             case 'customer_manager':
                 $columns = [
+                    'month',
                     'customer',
                     'object',
                     'mechanism',
@@ -164,6 +165,7 @@ class TimetableHelper
                 break;
             case 'dispatcher':
                 $columns = [
+                    'month',
                     'manager',
                     'provider_manager',
                     'customer',
@@ -182,6 +184,7 @@ class TimetableHelper
                 break;
             case 'provider_manager':
                 $columns = [
+                    'month',
                     'manager',
                     'provider_manager',
                     'object',
@@ -201,6 +204,7 @@ class TimetableHelper
                 break;
             case 'general_manager':
                 $columns = [
+                    'month',
                     'manager',
                     'provider_manager',
                     'customer',
@@ -220,6 +224,7 @@ class TimetableHelper
                 break;
             default:
                 $columns = [
+                    'month',
                     'manager',
                     'provider_manager',
                     'customer',
@@ -296,6 +301,9 @@ class TimetableHelper
 
         foreach ($columns as $column) {
             switch ($column) {
+                case 'month':
+                    $value = $timetableRow->getTimetable()->getName();
+                    break;
                 case 'manager':
                     if ($manager) {
                         $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById();

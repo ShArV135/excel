@@ -33,6 +33,7 @@ class DefaultController extends Controller
         }
 
         $fixedColumns = [
+            'month',
             'manager',
             'provider_manager',
             'customer',

@@ -14,7 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Bonus
 {
     const MANAGER_TYPE_CUSTOMER = 'customer';
+    const MANAGER_TYPE_TOP_CUSTOMER = 'top_customer';
     const MANAGER_TYPE_PROVIDER = 'provider';
+    const MANAGER_TYPE_TOP_PROVIDER = 'top_provider';
 
     const TYPE_FROM_SALARY = 'FROM_SALARY';
     const TYPE_FROM_MARGIN = 'FROM_MARGIN';

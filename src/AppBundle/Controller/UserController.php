@@ -64,7 +64,9 @@ class UserController extends Controller
         if ($this->isGranted('ROLE_GENERAL_MANAGER')) {
             $roles = [
                 'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
+                'Старший менеджер по продажам' => 'ROLE_TOP_CUSTOMER_MANAGER',
                 'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
+                'Старший менеджер по снабжению' => 'ROLE_TOP_PROVIDER_MANAGER',
                 'Диспетчер' => 'ROLE_DISPATCHER',
                 'Генеральный менеджер' => 'ROLE_GENERAL_MANAGER',
                 'Управляющий' => 'ROLE_MANAGER',
@@ -72,7 +74,9 @@ class UserController extends Controller
         } else {
             $roles = [
                 'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
+                'Старший менеджер по продажам' => 'ROLE_TOP_CUSTOMER_MANAGER',
                 'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
+                'Старший менеджер по снабжению' => 'ROLE_TOP_PROVIDER_MANAGER',
                 'Диспетчер' => 'ROLE_DISPATCHER',
             ];
         }
@@ -130,7 +134,9 @@ class UserController extends Controller
         if ($this->isGranted('ROLE_GENERAL_MANAGER')) {
             $roles = [
                 'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
+                'Старший менеджер по продажам' => 'ROLE_TOP_CUSTOMER_MANAGER',
                 'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
+                'Старший менеджер по снабжению' => 'ROLE_TOP_PROVIDER_MANAGER',
                 'Диспетчер' => 'ROLE_DISPATCHER',
                 'Генеральный менеджер' => 'ROLE_GENERAL_MANAGER',
                 'Управляющий' => 'ROLE_MANAGER',
@@ -138,7 +144,9 @@ class UserController extends Controller
         } else {
             $roles = [
                 'Менеджер по продажам' => 'ROLE_CUSTOMER_MANAGER',
+                'Старший менеджер по продажам' => 'ROLE_TOP_CUSTOMER_MANAGER',
                 'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
+                'Старший менеджер по снабжению' => 'ROLE_TOP_PROVIDER_MANAGER',
                 'Диспетчер' => 'ROLE_DISPATCHER',
             ];
         }

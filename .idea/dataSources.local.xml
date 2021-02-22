@@ -9,7 +9,11 @@
       <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>optimum</user-name>
-      <introspection-schemas>*:excel</introspection-schemas>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" qname="excel" />
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
   </component>
 </project>

@@ -18,6 +18,7 @@ services:
                 - '@security.authorization_checker'
                 - '@security.token_storage'
                 - '@router'
+                - '@security.role_hierarchy'
     acme.twig.acme_extension:
         class: AppBundle\Twig\TimetableExtension
         public: false
