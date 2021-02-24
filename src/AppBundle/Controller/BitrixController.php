@@ -19,7 +19,7 @@ class BitrixController extends Controller
     public function apiAction(LoggerInterface $logger, Request $request): Response
     {
         $message = var_export($request->query->all() + $request->request->all(), true);
-        $logger->info($message);
+        $logger->error($message);
 
         return new Response($message);
     }
