@@ -52,10 +52,23 @@
                     "type": "file"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "bitrix-tools/crest",
+                "version": "1.36",
+                "source": {
+                    "url": "https://github.com/bitrix-tools/crest.git",
+                    "type": "git",
+                    "reference":"master"
+                }
+            }
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0",
+        "bitrix-tools/crest": "^1.36",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-migrations-bundle": "^1.3",
         "doctrine/orm": "^2.5",
