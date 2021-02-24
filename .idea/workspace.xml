@@ -6,15 +6,7 @@
     <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" line="119" mnemonic="2" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="fixes">
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Controller/BitrixController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/excel.local.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/excel.local.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/security.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/security.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-    </list>
+    <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="bitrix-api" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -476,14 +468,7 @@
       <workItem from="1553027451032" duration="1475000" />
       <workItem from="1558371632599" duration="52000" />
       <workItem from="1614020395177" duration="6088000" />
-      <workItem from="1614197864047" duration="2800000" />
-    </task>
-    <task id="LOCAL-00037" summary="gitignore">
-      <created>1518730386964</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1518730386964</updated>
+      <workItem from="1614197864047" duration="3103000" />
     </task>
     <task id="LOCAL-00038" summary="fixes">
       <created>1518817886067</created>
@@ -821,7 +806,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614025128096</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="bitrix-api">
+      <created>1614202051539</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1614202051540</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -904,7 +896,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix remove" />
     <MESSAGE value="migrations, rows by timetable" />
     <MESSAGE value="auto timetable create" />
     <MESSAGE value="fix bug with time" />
@@ -929,7 +920,8 @@
     <MESSAGE value="organization in timetable row" />
     <MESSAGE value="fix report salary" />
     <MESSAGE value="fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
+    <MESSAGE value="bitrix-api" />
+    <option name="LAST_COMMIT_MESSAGE" value="bitrix-api" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -332,7 +332,7 @@ class TimetableController extends Controller
      * @param Timetable $timetable
      * @param           $time
      * @return JsonResponse
-     * @Route("/timetable/{timetable}/check-update/{time}", name="timetable_check_update", options={"expose"=true})
+     * @Route("/timetable/{timetable}/check-update/{time}", name="timetable_check_update", options={"expose"=true}, defaults={time=0})
      */
     public function checkUpdateAction(Timetable $timetable, $time)
     {
