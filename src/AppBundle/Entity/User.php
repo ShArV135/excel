@@ -14,8 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @UniqueEntity(fields={"username"}, errorPath="username", message="Контрагент с таким никнеймом уже существует")
  */
-class User implements UserInterface
+class User implements UserInterface, Bitrix24AwareInterface
 {
+    use Bitrix24AwareTrait;
+
     /**
      * @var int
      *

@@ -67,5 +67,5 @@
       <path value="$PROJECT_DIR$/vendor/bitrix-tools/crest" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
 </project>

@@ -21,7 +21,7 @@ class TimetableRowTimesRepository extends EntityRepository
      * @return TimetableRowTimes
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function getTimesOrCreate(TimetableRow $timetableRow)
+    public function getTimesOrCreate(TimetableRow $timetableRow): TimetableRowTimes
     {
         $times = $this->findOneBy([
             'timetableRow' => $timetableRow,
@@ -34,7 +34,7 @@ class TimetableRowTimesRepository extends EntityRepository
             $times->setTimetableRow($timetableRow);
 
             $em->persist($times);
-            $em->flush();
+            $em->flush($times);
         }
 
         return $times;

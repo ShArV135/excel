@@ -23,6 +23,7 @@ class ContractorType extends AbstractType
             ->add('businessAddress', TextType::class, ['label' => 'Юридический адрес', 'required' => false])
             ->add('physicalAddress', TextType::class, ['label' => 'Фактический адрес офиса', 'required' => false])
             ->add('site', TextType::class, ['label' => 'Сайт', 'required' => false])
+            ->add('bitrix24Id', TextType::class, ['label' => 'ID Bitrix24', 'required' => false])
             ->add(
                 'organisation',
                 EntityType::class,

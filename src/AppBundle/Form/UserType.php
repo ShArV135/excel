@@ -45,6 +45,7 @@ class UserType extends AbstractType
             ->add('firstname', TextType::class, ['label' => 'Имя'])
             ->add('lastname', TextType::class, ['label' => 'Фамилия'])
             ->add('surname', TextType::class, ['label' => 'Отчество'])
+            ->add('bitrix24Id', TextType::class, ['label' => 'ID Bitrix24', 'required' => false])
             ->add(
                 'roles',
                 ChoiceType::class,

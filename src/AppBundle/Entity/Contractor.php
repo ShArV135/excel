@@ -15,8 +15,10 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ContractorRepository")
  * @UniqueEntity(fields={"inn"}, errorPath="inn", message="Контрагент с таким ИНН уже существует")
  */
-class Contractor
+class Contractor implements Bitrix24AwareInterface
 {
+    use Bitrix24AwareTrait;
+
     const CUSTOMER = 'customer';
     const PROVIDER = 'provider';
 

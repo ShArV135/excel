@@ -12,8 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class TimetableRow
+class TimetableRow implements Bitrix24AwareInterface
 {
+    use Bitrix24AwareTrait;
+
     /**
      * @var int
      *

@@ -23,6 +23,7 @@ class TimetableRowType extends AbstractType
         $builder
             ->add('object', TextType::class, ['label' => 'Объект'])
             ->add('mechanism', TextType::class, ['label' => 'Механизм'])
+            ->add('bitrix24Id', TextType::class, ['label' => 'ID Bitrix24', 'required' => false])
             ->add(
                 'price_for_customer',
                 MoneyType::class,
