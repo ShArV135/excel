@@ -20,6 +20,15 @@ class CRestProvider
         return $result['result'];
     }
 
+    public function updateCompany(int $id, array $fields, array $params = []): void
+    {
+        CRest::call('crm.company.update', [
+            'id' => $id,
+            'fields' => $fields,
+            'params' => $params,
+        ]);
+    }
+
     public function getCompanyRequisiteList(int $id): array
     {
         $result = CRest::call('crm.requisite.list', [

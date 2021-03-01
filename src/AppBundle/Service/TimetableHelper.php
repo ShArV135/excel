@@ -9,11 +9,11 @@ use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\TimetableRowTimes;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\NotImplementedException;
-use Symfony\Component\Routing\Router;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class TimetableHelper
 {
@@ -24,12 +24,12 @@ class TimetableHelper
 
     /**
      * TimetableHelper constructor.
-     * @param EntityManager        $entityManager
-     * @param AuthorizationChecker $authorizationChecker
-     * @param RequestStack         $requestStack
-     * @param Router               $router
+     * @param EntityManagerInterface        $entityManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param RequestStack                  $requestStack
+     * @param RouterInterface               $router
      */
-    public function __construct(EntityManager $entityManager, AuthorizationChecker $authorizationChecker, RequestStack $requestStack, Router $router)
+    public function __construct(EntityManagerInterface $entityManager, AuthorizationCheckerInterface $authorizationChecker, RequestStack $requestStack, RouterInterface $router)
     {
         $this->entityManager = $entityManager;
         $this->authorizationChecker = $authorizationChecker;
@@ -58,7 +58,12 @@ class TimetableHelper
         $customerSalary = $timetableRow->getPriceForCustomer() * $sumTimes;
         $providerSalary = $timetableRow->getPriceForProvider() * $sumTimes;
         $marginSum = $customerSalary - $providerSalary;
-        $customerBalance = $this->contractorBalance($customer, $timetable);
+
+        if ($customer) {
+            $customerBalance = $this->contractorBalance($customer, $timetable);
+        } else {
+            $customerBalance = 0;
+        }
 
         if ($provider) {
             $providerBalance = $this->contractorBalance($provider, $timetable);
@@ -81,7 +86,7 @@ class TimetableHelper
             'provider_balance' => $providerBalance,
             'margin_sum' => $marginSum,
             'margin_percent' => $marginPercent,
-            'customer_id' => $customer->getId(),
+            'customer_id' => $customer ? $customer->getId() : null,
             'provider_id' => $provider ? $provider->getId() : null,
         ];
     }
@@ -287,8 +292,11 @@ class TimetableHelper
 
         $row = [
             'id' => $timetableRow->getId(),
-            'customer_id' => $customer->getId(),
         ];
+
+        if ($customer) {
+            $row['customer_id'] = $customer->getId();
+        }
 
         if ($provider) {
             $row['provider_id'] = $provider->getId();
@@ -322,10 +330,14 @@ class TimetableHelper
                     }
                     break;
                 case 'customer':
-                    $value = [
-                        'url' => $this->router->generate('contractor_view', ['contractor' => $customer->getId()]),
-                        'name' => $customer->getName(),
-                    ];
+                    if ($customer) {
+                        $value = [
+                            'url' => $this->router->generate('contractor_view', ['contractor' => $customer->getId()]),
+                            'name' => $customer->getName(),
+                        ];
+                    } else {
+                        $customer = null;
+                    }
                     break;
                 case 'provider':
                     if ($provider) {
@@ -425,7 +437,7 @@ class TimetableHelper
                     $value = number_format($marginPercent, 2, '.', ' ');
                     break;
                 case 'customer_organisation':
-                    $value = $customer->getOrganisation() ? $customer->getOrganisation()->getName() : '';
+                    $value = $customer && $customer->getOrganisation() ? $customer->getOrganisation()->getName() : '';
                     break;
                 case 'provider_organisation':
                     $value = ($provider && $provider->getOrganisation()) ? $provider->getOrganisation()->getName() : '';

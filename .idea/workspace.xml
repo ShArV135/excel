@@ -6,31 +6,12 @@
     <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" line="119" mnemonic="2" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="fixes">
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Bitrix24AwareInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Bitrix24AwareTrait.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/BitrixEventFactory.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CRest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CRestProvider.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CompanyAddService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/EventServiceInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="bitrix events">
+      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/BalanceUpdateService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/parameters.yml.dist" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/parameters.yml.dist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/services.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/services.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/BitrixController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/BitrixController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Form/UserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Form/UserType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRowTimesRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRowTimesRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/save.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/contractor/save.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/timetable_row/save.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/users/save.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/users/save.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowTimesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowTimesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CRestProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CRestProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,6 +139,7 @@
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Resources/config/services.yml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Entity/Bitrix24AwareTrait.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowTimesController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Controller/BonusController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Form/UserType.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Controller/ContractorController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
@@ -165,8 +147,10 @@
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Form/ContractorType.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Entity/TimetableRow.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/BalanceUpdateService.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Entity/Contractor.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppBundle/Entity/Bonus.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
   </component>
@@ -511,14 +495,7 @@
       <workItem from="1553027451032" duration="1475000" />
       <workItem from="1558371632599" duration="52000" />
       <workItem from="1614020395177" duration="6088000" />
-      <workItem from="1614197864047" duration="20838000" />
-    </task>
-    <task id="LOCAL-00042" summary="fixes">
-      <created>1519145493886</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1519145493886</updated>
+      <workItem from="1614197864047" duration="22666000" />
     </task>
     <task id="LOCAL-00043" summary="fixes">
       <created>1520028641184</created>
@@ -856,7 +833,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614203228800</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="bitrix events">
+      <created>1614632424368</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1614632424369</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -939,7 +923,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="migrations, rows by timetable" />
     <MESSAGE value="auto timetable create" />
     <MESSAGE value="fix bug with time" />
     <MESSAGE value="number format, update timetable process" />
@@ -964,7 +947,8 @@
     <MESSAGE value="fix report salary" />
     <MESSAGE value="bitrix-api" />
     <MESSAGE value="fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
+    <MESSAGE value="bitrix events" />
+    <option name="LAST_COMMIT_MESSAGE" value="bitrix events" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -988,6 +972,11 @@
           <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php</url>
           <line>102</line>
           <option name="timeStamp" value="86" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/BalanceUpdateService.php</url>
+          <line>22</line>
+          <option name="timeStamp" value="87" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

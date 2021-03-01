@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\TimetableRowTimes;
 use AppBundle\Security\TimetableRowVoter;
+use AppBundle\Service\Bitrix\BalanceUpdateService;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,13 +18,13 @@ class TimetableRowTimesController extends Controller
 {
     /**
      * @Route("/timetable-row-times/{timetableRowTimes}/update", name="timetable_row_times_update", options={"expose"=true})
-     * @param TimetableRowTimes $timetableRowTimes
-     * @param Request           $request
+     * @param TimetableRowTimes    $timetableRowTimes
+     * @param Request              $request
+     * @param BalanceUpdateService $balanceUpdateService
      * @return Response
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Exception
      */
-    public function updateAction(TimetableRowTimes $timetableRowTimes, Request $request)
+    public function updateAction(TimetableRowTimes $timetableRowTimes, Request $request, BalanceUpdateService $balanceUpdateService): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw new AccessDeniedHttpException();
@@ -50,6 +51,8 @@ class TimetableRowTimesController extends Controller
 
         $timetableRowTimes->setTimes($times);
         $this->getDoctrine()->getManager()->flush();
+
+        $balanceUpdateService->onTimesUpdate($timetableRowTimes->getTimetableRow());
 
         $timetableHelper = $this->get('timetable.helper');
         $show = $timetableHelper->getShowMode();
