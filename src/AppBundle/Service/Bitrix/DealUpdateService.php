@@ -68,8 +68,6 @@ class DealUpdateService implements EventServiceInterface
             $this->setCustomer($timetableRow, $dealData['COMPANY_ID']);
         }
 
-        $this->entityManager->persist($timetableRow);
-
         $this->setProductData($timetableRow, $dealData['ID']);
 
         $this->entityManager->flush();
@@ -95,7 +93,7 @@ class DealUpdateService implements EventServiceInterface
             'bitrix24Id' => $bitrix24Id
         ]);
 
-        $timetableRow->setManager($contractor);
+        $timetableRow->setCustomer($contractor);
     }
 
     private function setProductData(TimetableRow $timetableRow, $bitrix24Id): void
@@ -103,10 +101,13 @@ class DealUpdateService implements EventServiceInterface
         $products = $this->provider->getDealProducts($bitrix24Id);
 
         foreach ($products as $product) {
-            $timetableRow->setMechanism($product['PRODUCT_NAME']);
-            $timetableRow->setPriceForCustomer($product['PRICE']);
+            $timetableRowByProduct = clone $timetableRow;
+            $timetableRowByProduct->setMechanism($product['PRODUCT_NAME']);
+            $timetableRowByProduct->setPriceForCustomer($product['PRICE']);
 
-            $this->setTimes($timetableRow, $product['QUANTITY']);
+            $this->entityManager->persist($timetableRowByProduct);
+
+            $this->setTimes($timetableRowByProduct, $product['QUANTITY']);
         }
     }
 

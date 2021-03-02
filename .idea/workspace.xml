@@ -7,11 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="bitrix events">
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/BalanceUpdateService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowTimesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableRowTimesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CRestProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CRestProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -495,14 +492,7 @@
       <workItem from="1553027451032" duration="1475000" />
       <workItem from="1558371632599" duration="52000" />
       <workItem from="1614020395177" duration="6088000" />
-      <workItem from="1614197864047" duration="22666000" />
-    </task>
-    <task id="LOCAL-00043" summary="fixes">
-      <created>1520028641184</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1520028641184</updated>
+      <workItem from="1614197864047" duration="24568000" />
     </task>
     <task id="LOCAL-00044" summary="fixes">
       <created>1520194091423</created>
@@ -840,7 +830,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614632424369</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="bitrix events">
+      <created>1614634303168</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1614634303168</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -959,24 +956,19 @@
           <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/AppBundle/Controller/BitrixController.php</url>
-          <line>22</line>
-          <option name="timeStamp" value="80" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php</url>
-          <line>115</line>
-          <option name="timeStamp" value="85" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php</url>
-          <line>102</line>
-          <option name="timeStamp" value="86" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/BalanceUpdateService.php</url>
           <line>22</line>
           <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php</url>
+          <line>62</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php</url>
+          <line>100</line>
+          <option name="timeStamp" value="90" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
