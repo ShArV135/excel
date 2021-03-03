@@ -5,7 +5,6 @@ namespace AppBundle\Service\Bitrix;
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
-use AppBundle\Entity\TimetableRowTimes;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -106,21 +105,6 @@ class DealUpdateService implements EventServiceInterface
             $timetableRowByProduct->setPriceForCustomer($product['PRICE']);
 
             $this->entityManager->persist($timetableRowByProduct);
-
-            $this->setTimes($timetableRowByProduct, $product['QUANTITY']);
         }
     }
-
-    private function setTimes(TimetableRow $timetableRow, int $quantity): void
-    {
-        /** @var TimetableRowTimes $times */
-        $times = $this->entityManager->getRepository(TimetableRowTimes::class)->getTimesOrCreate($timetableRow);
-
-        $timesArray = $times->getTimes();
-        $today = date('j');
-        $timesArray[$today] = $quantity;
-
-        $times->setTimes($timesArray);
-    }
-
 }
