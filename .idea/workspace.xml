@@ -8,7 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CompanyAddService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CompanyAddService.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,6 +209,7 @@
       </list>
     </option>
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpServers">
     <servers>
       <server host="excel.local" id="235398c8-3675-42ea-bb0b-cb3b1b921ef2" name="excel.local" />
@@ -391,7 +392,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/AppBundle/Service/Bitrix" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -493,21 +494,10 @@
       <workItem from="1553027451032" duration="1475000" />
       <workItem from="1558371632599" duration="52000" />
       <workItem from="1614020395177" duration="6088000" />
-      <workItem from="1614197864047" duration="25568000" />
-    </task>
-    <task id="LOCAL-00045" summary="fixes">
-      <created>1520280740860</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1520280740860</updated>
-    </task>
-    <task id="LOCAL-00046" summary="scroll to">
-      <created>1520282768945</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1520282768945</updated>
+      <workItem from="1614197864047" duration="27015000" />
+      <workItem from="1615310500781" duration="39000" />
+      <workItem from="1615401649666" duration="592000" />
+      <workItem from="1615402314176" duration="681000" />
     </task>
     <task id="LOCAL-00047" summary="fixes">
       <created>1520334731756</created>
@@ -838,7 +828,21 @@
       <option name="project" value="LOCAL" />
       <updated>1614705823587</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="fixes">
+      <created>1614706848042</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1614706848042</updated>
+    </task>
+    <task id="LOCAL-00095" summary="fixes">
+      <created>1614798252329</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1614798252329</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -963,13 +967,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php</url>
-          <line>62</line>
+          <line>61</line>
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php</url>
-          <line>100</line>
+          <line>99</line>
           <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/DealUpdateService.php</url>
+          <line>23</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CompanyAddService.php</url>
+          <line>24</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/AppBundle/Service/Bitrix/CompanyAddService.php</url>
+          <line>72</line>
+          <option name="timeStamp" value="94" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

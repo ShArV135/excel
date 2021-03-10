@@ -55,7 +55,7 @@ class CompanyAddService implements EventServiceInterface
         $contractor->setSite($companyData['WEB'][0]['VALUE'] ?? null);
 
         $this->setINN($contractor);
-        $this->setAddresses($contractor);
+        $this->setAddresses($contractor, $contractor->getBitrix24Id());
 
         if (!empty($companyData['ASSIGNED_BY_ID'])) {
             $this->setManager($contractor, $companyData['ASSIGNED_BY_ID']);
@@ -72,15 +72,16 @@ class CompanyAddService implements EventServiceInterface
         foreach ($requisites as $requisite) {
             if (!empty($requisite['RQ_INN'])) {
                 $contractor->setInn($requisite['RQ_INN']);
+                $this->setAddresses($contractor, $requisite['ID']);
 
                 return;
             }
         }
     }
 
-    private function setAddresses(Contractor $contractor): void
+    private function setAddresses(Contractor $contractor, int $bitrix24Id): void
     {
-        $addresses = $this->provider->getCompanyAddressList($contractor->getBitrix24Id());
+        $addresses = $this->provider->getCompanyAddressList($bitrix24Id);
 
         foreach ($addresses as $address) {
             $fullAddress = array_filter([$address['ADDRESS_1'], $address['ADDRESS_2'], $address['CITY'], $address['COUNTRY'], $address['POSTAL_CODE']]);
