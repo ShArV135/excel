@@ -7,21 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="fixes">
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Form/ReportSaleFilterType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Repository/BonusRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleObject.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleSummary.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/ReportSaleConfig.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/ReportSaleService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Utils.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Entity/Bonus.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Bonus.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/UserRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager_detail.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/manager_detail.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/ReportHelper.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -511,21 +498,7 @@
       <workItem from="1614197864047" duration="27015000" />
       <workItem from="1615310500781" duration="39000" />
       <workItem from="1615401649666" duration="592000" />
-      <workItem from="1615402314176" duration="12068000" />
-    </task>
-    <task id="LOCAL-00048" summary="has act">
-      <created>1520449223639</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1520449223639</updated>
-    </task>
-    <task id="LOCAL-00049" summary="plan">
-      <created>1521143520633</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1521143520633</updated>
+      <workItem from="1615402314176" duration="12464000" />
     </task>
     <task id="LOCAL-00050" summary="features">
       <created>1521145837530</created>
@@ -856,7 +829,21 @@
       <option name="project" value="LOCAL" />
       <updated>1615403112672</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="fixes">
+      <created>1615499087343</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1615499087343</updated>
+    </task>
+    <task id="LOCAL-00098" summary="fixes">
+      <created>1615499293313</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1615499293313</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TimeTrackingManager">

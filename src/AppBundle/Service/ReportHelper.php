@@ -18,9 +18,9 @@ class ReportHelper
 
     /**
      * ReportHelper constructor.
-     * @param EntityManager        $entityManager
-     * @param TimetableHelper      $timetableHelper
-     * @param Router               $router
+     * @param EntityManager   $entityManager
+     * @param TimetableHelper $timetableHelper
+     * @param Router          $router
      */
     public function __construct(
         EntityManager $entityManager,
