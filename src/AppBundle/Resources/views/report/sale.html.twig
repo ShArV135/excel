@@ -45,7 +45,7 @@
                     {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                         <td>{{ report_object.contractor.manager.fullName|default }}</td>
                     {% endif %}
-                    <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ report_object.contractor.name }}</a></td>
+                    <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': report_object.contractor.id}) }}">{{ report_object.contractor.name }}</a></td>
                     <td>{{ report_object.salary|number_format(2, '.', ' ') }}</td>
                     <td class="{{ report_object.balance < 0 ? 'bg-red text-white' : '' }}">
                         {{ report_object.balance|number_format(2, '.', ' ') }}

@@ -52,7 +52,7 @@
                     <tbody>
                     {% for id, data in sales_data.reports %}
                         <tr class="{{ data.balance < 0 ? 'is-debt' : '' }}">
-                            <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.contractor.name }}</a></td>
+                            <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': data.contractor.id}) }}">{{ data.contractor.name }}</a></td>
                             <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
                             <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
                                 {{ data.balance|number_format(2, '.', ' ') }}
