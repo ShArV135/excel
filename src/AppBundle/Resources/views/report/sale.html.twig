@@ -4,12 +4,11 @@
 {% set page_title = 'Отчет по продажам' %}
 
 {% macro sale_report(report) %}
-    {% set sales_data = report.sales_data %}
-    {% set summary_data = report.summary_data %}
     <div class="row" style="margin-top: 10px;">
         <table class="table table-striped table-bordered table-report">
             <thead>
             <tr>
+                <th>Месяц</th>
                 {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                     <th>Менеджер</th>
                 {% endif %}
@@ -23,40 +22,39 @@
                     <th class="margin-col" style="display: none;">Маржа, %</th>
                 {% endif %}
             </tr>
-            {% if summary_data %}
-                <tr>
-                    {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
-                        <th colspan="2" style="text-align: right">Всего:</th>
-                    {% else %}
-                        <th style="text-align: right">Всего:</th>
+            <tr>
+                {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                    <th colspan="3" style="text-align: right">Всего:</th>
+                {% else %}
+                    <th colspan="2" style="text-align: right">Всего:</th>
+                {% endif %}
+                <th>{{ report.salary|number_format(2, '.', ' ') }}</th>
+                <th>{{ report.balance|number_format(2, '.', ' ') }}</th>
+                {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                    {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                        <th class="margin-col" style="display: none;">{{ report.marginSum|number_format(2, '.', ' ') }}</th>
                     {% endif %}
-                    <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
-                    <th>{{ summary_data.balance|number_format(2, '.', ' ') }}</th>
-                    {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
-                        {% if is_granted('ROLE_GENERAL_MANAGER') %}
-                            <th class="margin-col" style="display: none;">{{ summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
-                        {% endif %}
-                        <th class="margin-col" style="display: none;">{{ summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
-                    {% endif %}
-                </tr>
-            {% endif %}
+                    <th class="margin-col" style="display: none;">{{ report.marginPercent|number_format(2, '.', ' ') }}</th>
+                {% endif %}
+            </tr>
             </thead>
             <tbody>
-            {% for id, data in sales_data %}
-                <tr class="{{ data.balance < 0 ? 'is-debt' : '' }}">
+            {% for id, report_object in report.reports %}
+                <tr class="{{ report_object.balance < 0 ? 'is-debt' : '' }}">
+                    <td>{{ report_object.timetable.name }}</td>
                     {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
-                        <td>{{ data.manager }}</td>
+                        <td>{{ report_object.contractor.manager.fullName|default }}</td>
                     {% endif %}
-                    <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.name }}</a></td>
-                    <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
-                    <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
-                        {{ data.balance|number_format(2, '.', ' ') }}
+                    <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ report_object.contractor.name }}</a></td>
+                    <td>{{ report_object.salary|number_format(2, '.', ' ') }}</td>
+                    <td class="{{ report_object.balance < 0 ? 'bg-red text-white' : '' }}">
+                        {{ report_object.balance|number_format(2, '.', ' ') }}
                     </td>
                     {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                         {% if is_granted('ROLE_GENERAL_MANAGER') %}
-                            <td class="margin-col" style="display: none;">{{ data.margin_sum|number_format(2, '.', ' ') }}</td>
+                            <td class="margin-col" style="display: none;">{{ report_object.marginSum|number_format(2, '.', ' ') }}</td>
                         {% endif %}
-                        <td class="margin-col" style="display: none;">{{ data.margin_percent|number_format(2, '.', ' ') }}</td>
+                        <td class="margin-col" style="display: none;">{{ report_object.marginPercent|number_format(2, '.', ' ') }}</td>
                     {% endif %}
                 </tr>
             {% endfor %}
@@ -73,11 +71,12 @@
         <div class="row">
             {{ form_start(timetable_filter) }}
             <div class="row">
-                <div class="col-md-4">{{ form_row(timetable_filter.timetable) }}</div>
+                <div class="col-md-3">{{ form_row(timetable_filter.timetable_from) }}</div>
+                <div class="col-md-3">{{ form_row(timetable_filter.timetable_to) }}</div>
                 {% if timetable_filter.manager is defined %}
-                    <div class="col-md-4">{{ form_row(timetable_filter.manager) }}</div>
+                    <div class="col-md-3">{{ form_row(timetable_filter.manager) }}</div>
                 {% endif %}
-                <div class="col-md-4">{{ form_row(timetable_filter.customer) }}</div>
+                <div class="col-md-3">{{ form_row(timetable_filter.customer) }}</div>
             </div>
             <div class="row">
                 <div class="col-md-4">{{ form_row(timetable_filter.by_organisations) }}</div>
@@ -104,15 +103,13 @@
                 </button>
             </div>
         </div>
-        {% if report %}
+        {% for report in reports %}
+            {% if report.organisation %}
+                <h3>{{ report.organisation.name }}</h3>
+            {% endif %}
+
             {{ macros.sale_report(report) }}
-        {% endif %}
-        {% if report_by_organisations %}
-            {% for report_by_organisation in report_by_organisations %}
-                <h3>{{ report_by_organisation.organisation.name }}</h3>
-                {{ macros.sale_report(report_by_organisation.report) }}
-            {% endfor %}
-        {% endif %}
+        {% endfor %}
         </div>
 {% endblock %}
 

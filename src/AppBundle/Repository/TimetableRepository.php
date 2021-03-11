@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use Doctrine\ORM\EntityRepository;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * TimetableRepository
@@ -114,5 +115,26 @@ class TimetableRepository extends EntityRepository
         $em->flush();
 
         return $timetable;
+    }
+
+    public function getRange(Timetable $from = null,Timetable $to = null): array
+    {
+        $qb = $this->createQueryBuilder('entity');
+
+        if ($from) {
+            $qb
+                ->andWhere($qb->expr()->gte('entity.id', ':id_from'))
+                ->setParameter('id_from', $from->getId())
+            ;
+        }
+
+        if ($to) {
+            $qb
+                ->andWhere($qb->expr()->lte('entity.id', ':id_to'))
+                ->setParameter('id_to', $to->getId())
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

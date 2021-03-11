@@ -36,34 +36,32 @@
                         {% endif %}
                         <th>Бонус</th>
                     </tr>
-                    {% if sales_data.summary_data %}
-                        <tr>
-                            <th style="text-align: right">Всего:</th>
-                            <th>{{ sales_data.summary_data.salary|number_format(2, '.', ' ') }}</th>
-                            <th>{{ sales_data.summary_data.balance|number_format(2, '.', ' ') }}</th>
-                            {% if is_granted('ROLE_GENERAL_MANAGER') %}
-                                <th>{{ sales_data.summary_data.margin_sum|number_format(2, '.', ' ') }}</th>
-                            {% endif %}
-                            {% if is_granted('ROLE_MANAGER') %}
-                                <th>{{ sales_data.summary_data.margin_percent|number_format(2, '.', ' ') }}</th>
-                            {% endif %}
-                            <th>{{ sales_data.summary_data.bonus|number_format(2, '.', ' ') }}</th>
-                        </tr>
-                    {% endif %}
+                    <tr>
+                        <th style="text-align: right">Всего:</th>
+                        <th>{{ sales_data.salary|number_format(2, '.', ' ') }}</th>
+                        <th>{{ sales_data.balance|number_format(2, '.', ' ') }}</th>
+                        {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                            <th>{{ sales_data.marginSum|number_format(2, '.', ' ') }}</th>
+                        {% endif %}
+                        {% if is_granted('ROLE_MANAGER') %}
+                            <th>{{ sales_data.marginPercent|number_format(2, '.', ' ') }}</th>
+                        {% endif %}
+                        <th>{{ sales_data.bonus|number_format(2, '.', ' ') }}</th>
+                    </tr>
                     </thead>
                     <tbody>
-                    {% for id, data in sales_data.sales_data %}
+                    {% for id, data in sales_data.reports %}
                         <tr class="{{ data.balance < 0 ? 'is-debt' : '' }}">
-                            <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.name }}</a></td>
+                            <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.contractor.name }}</a></td>
                             <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
                             <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
                                 {{ data.balance|number_format(2, '.', ' ') }}
                             </td>
                             {% if is_granted('ROLE_GENERAL_MANAGER') %}
-                                <td>{{ data.margin_sum|number_format(2, '.', ' ') }}</td>
+                                <td>{{ data.marginSum|number_format(2, '.', ' ') }}</td>
                             {% endif %}
                             {% if is_granted('ROLE_MANAGER') %}
-                                <td>{{ data.margin_percent|number_format(2, '.', ' ') }}</td>
+                                <td>{{ data.marginPercent|number_format(2, '.', ' ') }}</td>
                             {% endif %}
                             <td>{{ data.bonus|number_format(2, '.', ' ') }}</td>
                         </tr>

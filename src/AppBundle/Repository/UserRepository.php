@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * ContractorRepository
@@ -87,16 +88,22 @@ class UserRepository extends EntityRepository
      */
     public function getManagers($role = 'ROLE_CUSTOMER_MANAGER')
     {
-        $qb = $this->createQueryBuilder('user');
-        $qb = $qb
-            ->where($qb->expr()->like('user.roles', ':roles'))
-            ->setParameter('roles', '%'.$role.'%')
-        ;
-
-        return $qb
-            ->addOrderBy('user.lastname', 'ASC')
+        return
+            $this->getManagerQueryBuilder($role)
+            ->addOrderBy('entity.lastname', 'ASC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function getManagerQueryBuilder($role = 'ROLE_CUSTOMER_MANAGER'): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('entity');
+
+        return
+            $qb
+            ->where($qb->expr()->like('entity.roles', ':roles'))
+            ->setParameter('roles', '%'.$role.'%')
         ;
     }
 }

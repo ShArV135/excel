@@ -9,37 +9,26 @@ use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
 class ReportHelper
 {
     private $entityManager;
     private $timetableHelper;
-    private $authorizationChecker;
-    private $tokenStorage;
     private $router;
 
     /**
      * ReportHelper constructor.
      * @param EntityManager        $entityManager
      * @param TimetableHelper      $timetableHelper
-     * @param AuthorizationChecker $authorizationChecker
-     * @param TokenStorage         $tokenStorage
      * @param Router               $router
      */
     public function __construct(
         EntityManager $entityManager,
         TimetableHelper $timetableHelper,
-        AuthorizationChecker $authorizationChecker,
-        TokenStorage $tokenStorage,
         Router $router
     ) {
         $this->entityManager = $entityManager;
         $this->timetableHelper = $timetableHelper;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
         $this->router = $router;
     }
 
@@ -105,139 +94,6 @@ class ReportHelper
             'provider_summary_data' => $providerSummaryData,
             'customer_manager_data' => $customerManagerData,
             'provider_manager_data' => $providerManagerData,
-        ];
-    }
-
-    /**
-     * @param array             $filter
-     * @param Organisation|null $organisation
-     * @return array
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function getSalesData(array $filter, Organisation $organisation = null)
-    {
-        $user = $this->tokenStorage->getToken()->getUser();
-        $salesData = [];
-        if (!empty($filter['timetable'])) {
-            $timetables = $filter['timetable'];
-        } else {
-            $timetables = $this->entityManager->getRepository('AppBundle:Timetable')->findAll();
-
-            if (empty($filter['customer'])) {
-                $criteria = [
-                    'type' => Contractor::CUSTOMER,
-                ];
-
-                if ($this->authorizationChecker->isGranted('ROLE_CUSTOMER_MANAGER')) {
-                    $criteria['manager'] = $user;
-                } else {
-                    if (!empty($filter['manager'])) {
-                        $criteria['manager'] = $filter['manager'];
-                    }
-                }
-
-                if ($organisation) {
-                    $criteria['organisation'] = $organisation;
-                }
-
-                $customers = $this->entityManager->getRepository('AppBundle:Contractor')->findBy($criteria, ['name' => 'ASC']);
-                foreach ($customers as $customer) {
-                    $manager = $customer->getManager();
-
-                    $salesData[$customer->getId()] = [
-                        'name' => $customer->getName(),
-                        'balance' => $this->timetableHelper->contractorBalance($customer),
-                        'manager' => $manager ? $manager->getFullName() : '',
-                        'salary' => 0,
-                        'margin_sum' => 0,
-                        'margin_percent' => 0,
-                        'counter' => 0,
-                    ];
-                }
-            }
-        }
-
-        $criteria = [
-            'timetable' => $timetables,
-        ];
-        if ($this->authorizationChecker->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $criteria['manager'] = $user;
-        } else {
-            if (!empty($filter['manager'])) {
-                $criteria['manager'] = $filter['manager'];
-            }
-        }
-
-        if (!empty($filter['customer'])) {
-            $criteria['customer'] = $filter['customer'];
-        }
-        $timetableRows = $this->entityManager->getRepository('AppBundle:TimetableRow')->findBy($criteria);
-
-        foreach ($timetableRows as $timetableRow) {
-            $customer = $timetableRow->getCustomer();
-            $manager = $timetableRow->getManager();
-
-            if ($organisation && $customer->getOrganisation() !== $organisation) {
-                continue;
-            }
-
-            if (!isset($salesData[$customer->getId()])) {
-                $salesData[$customer->getId()] = [
-                    'manager' => $manager ? $manager->getFullName() : null,
-                    'name' => $customer->getName(),
-                    'salary' => 0,
-                    'balance' => $this->timetableHelper->contractorBalance($customer),
-                    'margin_sum' => 0,
-                    'margin_percent' => 0,
-                    'counter' => 0,
-                ];
-            }
-
-            $rowData = $this->timetableHelper->calculateRowData($timetableRow);
-
-            $salesData[$customer->getId()]['salary'] += $rowData['customer_salary'];
-            $salesData[$customer->getId()]['margin_sum'] += $rowData['margin_sum'];
-            $salesData[$customer->getId()]['margin_percent'] += $rowData['margin_percent'];
-            $salesData[$customer->getId()]['counter']++;
-        }
-
-        foreach ($salesData as $i => $data) {
-            if ($data['counter'] > 0) {
-                $salesData[$i]['margin_percent'] = $data['margin_percent'] / $data['counter'];
-            }
-
-            if ($bonus = $this->getBonus($this->isTop($manager) ? Bonus::MANAGER_TYPE_TOP_CUSTOMER : Bonus::MANAGER_TYPE_CUSTOMER)) {
-                switch ($bonus->getType()) {
-                    case Bonus::TYPE_FROM_SALARY:
-                        $salesData[$i]['bonus'] = $data['salary'] * $bonus->getValue() / 100;
-                        break;
-                    case Bonus::TYPE_FROM_MARGIN:
-                        $salesData[$i]['bonus'] = $data['margin_sum'] * $bonus->getValue() / 100;
-                        break;
-                    default:
-                        $salesData[$i]['bonus'] = 0;
-                }
-            } else {
-                $salesData[$i]['bonus'] = 0;
-            }
-        }
-
-        $summaryData = [
-            'salary' => array_sum(array_column($salesData, 'salary')),
-            'balance' => array_sum(array_column($salesData, 'balance')),
-            'margin_sum' => array_sum(array_column($salesData, 'margin_sum')),
-            'bonus' => array_sum(array_column($salesData, 'bonus')),
-            'margin_percent' => 0,
-        ];
-        if ($count = count(array_filter(array_column($salesData, 'margin_percent')))) {
-            $summaryData['margin_percent'] = array_sum(array_column($salesData, 'margin_percent')) / $count;
-        }
-
-        return [
-            'sales_data' => $salesData,
-            'summary_data' => $summaryData,
         ];
     }
 
