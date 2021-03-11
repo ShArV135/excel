@@ -9,11 +9,12 @@ class ReportSaleSummary
     private $organisation;
     /** @var ReportSaleObject[] */
     private $reports;
-    private $salary;
-    private $balance;
-    private $marginSum;
-    private $bonus;
-    private $marginPercent;
+
+    private $salary = 0;
+    private $balance = 0;
+    private $marginSum = 0;
+    private $bonus = 0;
+    private $marginPercent = 0;
 
     public function __construct(array $reports, Organisation $organisation = null)
     {
