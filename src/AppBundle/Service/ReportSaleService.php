@@ -8,19 +8,23 @@ use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\User;
+use AppBundle\Service\Report\ReportSaleExportService;
 use AppBundle\Service\Report\ReportSaleObject;
 use AppBundle\Service\Report\ReportSaleSummary;
+use AppBundle\Service\Report\SaleExportConfig;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ReportSaleService
 {
     private $entityManager;
     private $timetableHelper;
+    private $exportService;
 
-    public function __construct(EntityManagerInterface $entityManager, TimetableHelper $timetableHelper)
+    public function __construct(EntityManagerInterface $entityManager, TimetableHelper $timetableHelper, ReportSaleExportService $exportService)
     {
         $this->entityManager = $entityManager;
         $this->timetableHelper = $timetableHelper;
+        $this->exportService = $exportService;
     }
 
     public function getReports(ReportSaleConfig $config): array
@@ -37,6 +41,11 @@ class ReportSaleService
         $reports = $this->doGetReports($config);
 
         return new ReportSaleSummary($reports);
+    }
+
+    public function export(array $reports, SaleExportConfig $config): void
+    {
+        $this->exportService->export($reports, $config);
     }
 
     private function getReportsByOrganisations(ReportSaleConfig $config): array

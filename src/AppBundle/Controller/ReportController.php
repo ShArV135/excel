@@ -8,6 +8,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\ReportManagerFilterType;
 use AppBundle\Form\ReportSaleFilterType;
 use AppBundle\Security\UserVoter;
+use AppBundle\Service\Report\SaleExportConfig;
 use AppBundle\Service\ReportSaleConfig;
 use AppBundle\Service\ReportSaleService;
 use AppBundle\Service\Utils;
@@ -147,6 +148,21 @@ class ReportController extends Controller
             }
 
             $reports = $reportSaleService->getReports($config);
+
+            if ($request->get('_format') === 'xls') {
+                $saleExportConfig = SaleExportConfig::fromRequest($request);
+
+                if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
+                    $saleExportConfig->setMode(SaleExportConfig::MODE_MANAGER);
+                }
+
+                if ($this->isGranted('ROLE_GENERAL_MANAGER')) {
+                    $saleExportConfig->setMode(SaleExportConfig::MODE_GENERAL_MANAGER);
+                }
+
+                $reportSaleService->export($reports, $saleExportConfig);
+                return new Response();
+            }
         }
 
         return $this->render(

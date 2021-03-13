@@ -79,8 +79,8 @@
                 <div class="col-md-3">{{ form_row(timetable_filter.customer) }}</div>
             </div>
             <div class="row">
-                <div class="col-md-4">{{ form_row(timetable_filter.by_organisations) }}</div>
-                <div class="col-md-4">
+                <div class="col-md-3">{{ form_row(timetable_filter.by_organisations) }}</div>
+                <div class="col-md-3">
                     <div class="form-group">
                         <button class="btn btn-primary form-control" type="submit">Показать</button>
                     </div>
@@ -90,16 +90,23 @@
             {{ form_end(timetable_filter) }}
         </div>
         <div class="row">
-            <div class="btn-group" role="group">
-                {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
-                    <button class="btn btn-success margin-checker">
+            <div class="col-md-6">
+                <div class="btn-group" role="group">
+                    {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                        <button class="btn btn-success margin-checker">
+                            <i class="state-icon glyphicon glyphicon-unchecked"></i>
+                            Показать маржу
+                        </button>
+                    {% endif %}
+                    <button class="btn btn-warning debt-checker">
                         <i class="state-icon glyphicon glyphicon-unchecked"></i>
-                        Показать маржу
+                        Только с долгом
                     </button>
-                {% endif %}
-                <button class="btn btn-warning debt-checker">
-                    <i class="state-icon glyphicon glyphicon-unchecked"></i>
-                    Только с долгом
+                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                <button class="btn btn-primary export-button">
+                    Экспорт
                 </button>
             </div>
         </div>
@@ -137,6 +144,22 @@
                 $('i', $(this)).removeClass('glyphicon-unchecked').addClass('glyphicon-check');
                 $('.table-report tbody tr:not(.is-debt)').hide()
             }
-        })
+        });
+
+        $('.export-button').click(function () {
+            let formData = $('form[name=report_sale_filter]').serialize();
+
+            formData += '&_format=xls';
+
+            if ($('.margin-checker i').hasClass('glyphicon-check')) {
+                formData += '&margin_col=1';
+            }
+
+            if ($('.debt-checker i').hasClass('glyphicon-check')) {
+                formData += '&debt_col=1';
+            }
+
+            location.href = '{{ path('report_sale') }}?' + formData;
+        });
     </script>
 {% endblock %}
