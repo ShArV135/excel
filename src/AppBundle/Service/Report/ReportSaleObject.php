@@ -6,7 +6,7 @@ use AppBundle\Entity\Bonus;
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
 
-class ReportSaleObject
+class ReportSaleObject implements ReportObjectInterface
 {
     private $timetable;
     private $contractor;
@@ -15,7 +15,6 @@ class ReportSaleObject
     private $marginSum = 0;
     private $marginPercent = 0;
     private $bonus = 0;
-    private $counter = 0;
 
     public function __construct(Timetable $timetable, Contractor $contractor, float $balance)
     {
@@ -67,11 +66,6 @@ class ReportSaleObject
     public function getMarginPercent(): float
     {
         return $this->marginPercent;
-    }
-
-    public function incCounter(): void
-    {
-        $this->counter++;
     }
 
     public function calculateBonus(Bonus $bonus): void

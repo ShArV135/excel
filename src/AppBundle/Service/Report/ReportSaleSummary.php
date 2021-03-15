@@ -4,7 +4,7 @@ namespace AppBundle\Service\Report;
 
 use AppBundle\Entity\Organisation;
 
-class ReportSaleSummary
+class ReportSaleSummary implements SummaryInterface
 {
     private $organisation;
     /** @var ReportSaleObject[] */

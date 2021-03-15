@@ -2,22 +2,21 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 use AppBundle\Form\ReportManagerFilterType;
+use AppBundle\Form\ReportProvideFilterType;
 use AppBundle\Form\ReportSaleFilterType;
 use AppBundle\Security\UserVoter;
+use AppBundle\Service\Report\ProvideService;
+use AppBundle\Service\Report\ReportConfig;
+use AppBundle\Service\Report\ReportSaleService;
+use AppBundle\Service\Report\SaleConfig;
 use AppBundle\Service\Report\SaleExportConfig;
-use AppBundle\Service\ReportSaleConfig;
-use AppBundle\Service\ReportSaleService;
 use AppBundle\Service\Utils;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -77,9 +76,14 @@ class ReportController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param User    $user
+     * @param Request           $request
+     * @param User              $user
+     * @param ReportSaleService $reportSaleService
      * @return Response
+     * @throws EntityNotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      * @Route("/report-manager/{user}", name="report_manager_detail")
      */
     public function managerDetailAction(Request $request, User $user, ReportSaleService $reportSaleService): Response
@@ -103,7 +107,7 @@ class ReportController extends Controller
             $report = $reportHelper->getManagerData($timetable, null, $user);
 
             if (Utils::isCustomerManager($user)) {
-                $config = new ReportSaleConfig();
+                $config = new SaleConfig();
                 $config->setTimetableFrom($timetable);
                 $config->setTimetableTo($timetable);
                 $config->setManager($user);
@@ -141,7 +145,7 @@ class ReportController extends Controller
 
         $reports = [];
         if ($timetableFilter->isValid()) {
-            $config = ReportSaleConfig::fromArray($timetableFilter->getData());
+            $config = SaleConfig::fromArray($timetableFilter->getData());
 
             if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
                 $config->setManager($this->getUser());
@@ -160,7 +164,10 @@ class ReportController extends Controller
                     $saleExportConfig->setMode(SaleExportConfig::MODE_GENERAL_MANAGER);
                 }
 
-                $reportSaleService->export($reports, $saleExportConfig);
+                $exportService = $reportSaleService->getExportService();
+                $exportService->setConfig($saleExportConfig);
+                $exportService->export($reports);
+
                 return new Response();
             }
         }
@@ -176,83 +183,24 @@ class ReportController extends Controller
 
     /**
      * @Route("/report-provide", name="report_provide")
-     * @param Request $request
+     * @param Request        $request
+     * @param ProvideService $provideService
      * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function provideAction(Request $request)
+    public function provideAction(Request $request, ProvideService $provideService): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $timetableFilter = $this
-            ->createFormBuilder(null, ['method' => 'GET', 'csrf_protection' => false])
-            ->add(
-                'timetable',
-                EntityType::class,
-                [
-                    'placeholder' => 'За всё время',
-                    'required' => false,
-                    'class' => 'AppBundle\Entity\Timetable',
-                    'choice_label' => 'name',
-                    'label' => 'Табель',
-                    'choices' => $em->getRepository('AppBundle:Timetable')->findBy([], ['id' => 'DESC']),
-                ]
-            )
-            ->add(
-                'provider',
-                EntityType::class,
-                [
-                    'required' => false,
-                    'attr' => ['class' => 'select2me'],
-                    'class' => 'AppBundle\Entity\Contractor',
-                    'choice_label' => 'name',
-                    'label' => 'Поставщик',
-                    'query_builder' => function(EntityRepository $repository) {
-                        $qb = $repository
-                            ->createQueryBuilder('e')
-                            ->addOrderBy('e.name', 'ASC')
-                        ;
-
-                        $qb
-                            ->where($qb->expr()->eq('e.type', ':type'))
-                            ->setParameter('type', Contractor::PROVIDER)
-                        ;
-
-                        return $qb;
-                    },
-                ]
-            )
-            ->add(
-                'by_organisations',
-                CheckboxType::class,
-                [
-                    'label' => 'Группировать по организациям',
-                    'required' => false,
-                ]
-            )
-            ->getForm()
-        ;
+        $timetableFilter = $this->createForm(ReportProvideFilterType::class);
         $timetableFilter->handleRequest($request);
 
-        $report = $reportByOrganisations = null;
+        $reports = [];
         if ($timetableFilter->isValid()) {
-            $reportHelper = $this->get('report.helper');
-            $byOrganisations = $timetableFilter->get('by_organisations')->getData();
-            $filterData = $timetableFilter->getData();
+            $config = ReportConfig::fromArray($timetableFilter->getData());
 
-            if ($byOrganisations) {
-                $organisations = $em->getRepository('AppBundle:Organisation')->findBy([], ['name' => 'ASC']);
-                $reportByOrganisations = [];
-                foreach ($organisations as $organisation) {
-                    $reportByOrganisations[] = [
-                        'organisation' => $organisation,
-                        'report' => $reportHelper->getProvideData($filterData, $organisation),
-                    ];
-                }
-            } else {
-                $report = $reportHelper->getProvideData($filterData);
+            $reports = $provideService->getReports($config);
+
+            if ($request->get('_format') === 'xls') {
+                $provideService->export($reports);
+                return new Response();
             }
         }
 
@@ -260,8 +208,7 @@ class ReportController extends Controller
             '@App/report/provide.html.twig',
             [
                 'timetable_filter' => $timetableFilter->createView(),
-                'report' => $report,
-                'report_by_organisations' => $reportByOrganisations,
+                'reports' => $reports,
             ]
         );
 

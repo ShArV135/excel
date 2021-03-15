@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Service;
+namespace AppBundle\Service\Report;
 
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 
-class ReportSaleConfig
+class SaleConfig extends ReportConfig
 {
     private $timetableFrom;
     private $timetableTo;
@@ -19,23 +19,7 @@ class ReportSaleConfig
 
     public static function fromArray(array $data): self
     {
-        $self = new self();
-
-        if (!empty($data['timetable_from'])) {
-            $self->setTimetableFrom($data['timetable_from']);
-        }
-
-        if (!empty($data['timetable_to'])) {
-            $self->setTimetableTo($data['timetable_to']);
-        }
-
-        if (!empty($data['customer'])) {
-            $self->setCustomer($data['customer']);
-        }
-
-        if (!empty($data['by_organisations'])) {
-            $self->setByOrganisation($data['by_organisations']);
-        }
+        $self = parent::fromArray($data);
 
         if (!empty($data['manager'])) {
             $self->setManager($data['manager']);

@@ -2,26 +2,26 @@
 {% import _self as macros %}
 
 {% macro provide_report(report) %}
-    {% set provide_data = report.provide_data %}
-    {% set summary_data = report.summary_data %}
     <div class="row" style="margin-top: 10px;">
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
+                <th>Месяц</th>
                 <th>Поставщик</th>
                 <th>Наработка</th>
                 <th>Баланс (среднее)</th>
             </tr>
             <tr>
-                <th style="text-align: right">Всего:</th>
-                <th>{{ summary_data.salary|number_format(2, '.', ' ') }}</th>
-                <th>{{ summary_data.balance|number_format(2, '.', ' ') }}</th>
+                <th colspan="2" style="text-align: right">Всего:</th>
+                <th>{{ report.salary|number_format(2, '.', ' ') }}</th>
+                <th>{{ report.balance|number_format(2, '.', ' ') }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for id, data in provide_data %}
+            {% for data in report.reports %}
                 <tr>
-                    <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': id}) }}">{{ data.name }}</a></td>
+                    <td>{{ data.timetable.name }}</td>
+                    <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': data.contractor.id}) }}">{{ data.contractor.name }}</a></td>
                     <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
                     <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">
                         {{ data.balance|number_format(2, '.', ' ') }}
@@ -41,20 +41,45 @@
             <h2>{{ page_title }}</h2>
         </div>
         <div class="row">
-            {{ form_start(timetable_filter, {'attr': {'class': 'form-inline'}}) }}
-            {{ form_rest(timetable_filter) }}
-            <button class="btn btn-primary form-control" type="submit">Показать</button>
-            {{ form_end(timetable_filter) }}
+            {{ form_start(timetable_filter) }}
+            <div class="col-md-3">{{ form_row(timetable_filter.timetable_from) }}</div>
+            <div class="col-md-3">{{ form_row(timetable_filter.timetable_to) }}</div>
+            <div class="col-md-3">{{ form_row(timetable_filter.contractor) }}</div>
         </div>
-        {% if report %}
+        <div class="row">
+            <div class="col-md-3">{{ form_row(timetable_filter.by_organisations) }}</div>
+            <div class="col-md-3">
+                <button class="btn btn-primary form-control" type="submit">Показать</button>
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-3 text-right">
+                <button type="button" class="btn btn-primary export-button">
+                    Экспорт
+                </button>
+            </div>
+        </div>
+        {{ form_end(timetable_filter) }}
+        {% for report in reports %}
+            {% if report.organisation %}
+                <h3>{{ report.organisation.name }}</h3>
+            {% endif %}
+
             {{ macros.provide_report(report) }}
-        {% endif %}
-        {% if report_by_organisations %}
-            {% for report_by_organisation in report_by_organisations %}
-                <h3>{{ report_by_organisation.organisation.name }}</h3>
-                {{ macros.provide_report(report_by_organisation.report) }}
-            {% endfor %}
-        {% endif %}
+        {% endfor %}
 
     </div>
+{% endblock %}
+
+{% block javascripts %} {{ parent() }}
+    <script>
+        $('.export-button').click(function () {
+            let formData = $('form[name=report_provide_filter]').serialize();
+
+            formData += '&_format=xls';
+
+            console.log(formData);
+
+            location.href = '{{ path('report_provide') }}?' + formData;
+        });
+    </script>
 {% endblock %}

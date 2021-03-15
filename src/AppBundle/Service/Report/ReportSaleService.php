@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service;
+namespace AppBundle\Service\Report;
 
 use AppBundle\Entity\Bonus;
 use AppBundle\Entity\Contractor;
@@ -8,82 +8,44 @@ use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\User;
-use AppBundle\Service\Report\ReportSaleExportService;
-use AppBundle\Service\Report\ReportSaleObject;
-use AppBundle\Service\Report\ReportSaleSummary;
-use AppBundle\Service\Report\SaleExportConfig;
-use Doctrine\ORM\EntityManagerInterface;
 
-class ReportSaleService
+class ReportSaleService extends ReportService
 {
-    private $entityManager;
-    private $timetableHelper;
     private $exportService;
 
-    public function __construct(EntityManagerInterface $entityManager, TimetableHelper $timetableHelper, ReportSaleExportService $exportService)
+    /**
+     * @required
+     * @param ReportSaleExportService $exportService
+     */
+    public function setExportService(ReportSaleExportService $exportService): void
     {
-        $this->entityManager = $entityManager;
-        $this->timetableHelper = $timetableHelper;
         $this->exportService = $exportService;
     }
 
-    public function getReports(ReportSaleConfig $config): array
+    public function getExportService(): ReportSaleExportService
     {
-        if ($config->getByOrganisation()) {
-            return $this->getReportsByOrganisations($config);
+        return $this->exportService;
+    }
+
+    protected function createSummary(array $reports, Organisation $organisation = null): SummaryInterface
+    {
+        return new ReportSaleSummary($reports, $organisation);
+    }
+
+    protected function getReportsByTimetable(ReportConfig $config): array
+    {
+        if (!$config instanceof SaleConfig) {
+            throw new \LogicException('Incorrect config');
         }
 
-        return [$this->getReport($config)];
-    }
-
-    public function getReport(ReportSaleConfig $config): ReportSaleSummary
-    {
-        $reports = $this->doGetReports($config);
-
-        return new ReportSaleSummary($reports);
-    }
-
-    public function export(array $reports, SaleExportConfig $config): void
-    {
-        $this->exportService->export($reports, $config);
-    }
-
-    private function getReportsByOrganisations(ReportSaleConfig $config): array
-    {
-        $resultReports = [];
-        foreach ($this->getOrganisations() as $organisation) {
-            $newConfig = clone $config;
-            $newConfig->setOrganisation($organisation);
-
-            $reports = $this->doGetReports($config);
-
-            $resultReports[] = new ReportSaleSummary($reports, $organisation);
-        }
-
-        return $resultReports;
-    }
-
-    private function doGetReports(ReportSaleConfig $config): array
-    {
-        $timetables = $this->getTimetables($config);
-
-        $resultReports = [];
-        foreach ($timetables as $timetable) {
-            $newConfig = clone $config;
-            $newConfig->setTimetable($timetable);
-
-            $resultReports = array_merge($resultReports, $this->getReportsByTimetable($newConfig));
-        }
-
-        return $resultReports;
-    }
-
-    private function getReportsByTimetable(ReportSaleConfig $config): array
-    {
         $reports = $this->createReports($config);
 
         foreach ($this->getTimetableRows($config) as $timetableRow) {
             $customer = $timetableRow->getCustomer();
+
+            if (!$customer) {
+                continue;
+            }
 
             if (!$this->isValidOrganisation($customer, $config->getOrganisation())) {
                 continue;
@@ -99,7 +61,6 @@ class ReportSaleService
             $reportObject->addSalary($rowData['customer_salary']);
             $reportObject->addMarginSum($rowData['margin_sum']);
             $reportObject->addMarginPercent($rowData['margin_percent']);
-            $reportObject->incCounter();
         }
 
         foreach ($reports as $report) {
@@ -116,10 +77,10 @@ class ReportSaleService
     }
 
     /**
-     * @param ReportSaleConfig $config
+     * @param SaleConfig $config
      * @return TimetableRow[]
      */
-    private function getTimetableRows(ReportSaleConfig $config): array
+    private function getTimetableRows(SaleConfig $config): array
     {
         $criteria = [
             'timetable' => $config->getTimetable(),
@@ -129,16 +90,11 @@ class ReportSaleService
             $criteria['manager'] = $manager;
         }
 
-        if ($customer = $config->getCustomer()) {
+        if ($customer = $config->getContractor()) {
             $criteria['customer'] = $customer;
         }
 
         return $this->entityManager->getRepository(TimetableRow::class)->findBy($criteria);
-    }
-
-    private function getOrganisations(): array
-    {
-        return $this->entityManager->getRepository(Organisation::class)->findBy([], ['name' => 'ASC']);
     }
 
     private function getBonus(User $user): ?Bonus
@@ -146,16 +102,7 @@ class ReportSaleService
         return $this->entityManager->getRepository(Bonus::class)->getForUser($user);
     }
 
-    private function getTimetables(ReportSaleConfig $config): array
-    {
-        return $this
-            ->entityManager
-            ->getRepository(Timetable::class)
-            ->getRange($config->getTimetableFrom(), $config->getTimetableTo())
-        ;
-    }
-
-    private function createReports(ReportSaleConfig $config): array
+    private function createReports(SaleConfig $config): array
     {
         $customers = $this->getCustomers($config);
 
@@ -180,10 +127,10 @@ class ReportSaleService
     }
 
     /**
-     * @param ReportSaleConfig $config
+     * @param SaleConfig $config
      * @return Contractor[]
      */
-    private function getCustomers(ReportSaleConfig $config): array
+    private function getCustomers(SaleConfig $config): array
     {
         $criteria = [
             'type' => Contractor::CUSTOMER,
@@ -197,19 +144,10 @@ class ReportSaleService
             $criteria['organisation'] = $organisation;
         }
 
-        if ($customer = $config->getCustomer()) {
+        if ($customer = $config->getContractor()) {
             $criteria['id'] = $customer->getId();
         }
 
         return $this->entityManager->getRepository('AppBundle:Contractor')->findBy($criteria, ['name' => 'ASC']);
-    }
-
-    private function isValidOrganisation(Contractor $contractor, Organisation $organisation = null): bool
-    {
-        if (!$organisation) {
-            return true;
-        }
-
-        return $contractor->getOrganisation() === $organisation;
     }
 }
