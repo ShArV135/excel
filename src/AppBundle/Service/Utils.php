@@ -22,6 +22,6 @@ class Utils
 
         $index = $dateTime->format('m')-1;
 
-        return $months[$index-1];
+        return $months[$index];
     }
 }
