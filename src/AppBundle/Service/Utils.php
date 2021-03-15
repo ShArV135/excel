@@ -15,4 +15,13 @@ class Utils
     {
         return  (bool) array_intersect(['ROLE_CUSTOMER_MANAGER', 'ROLE_TOP_CUSTOMER_MANAGER'], $user->getRoles());
     }
+
+    public static function getMonth(\DateTime $dateTime): string
+    {
+        $months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+
+        $index = $dateTime->format('m')-1;
+
+        return $months[$index-1];
+    }
 }

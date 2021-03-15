@@ -81,7 +81,9 @@
                     {% if column in fixed_columns %}
                         {% set class = class ~ ' timetable-fixed-cell' %}
                     {% endif %}
-                    {% if column == 'month' %}
+                    {% if column == 'year' %}
+                        <th data-field="year" data-formatter="cellFormatter" class="{{ class }}">Год</th>
+                    {% elseif column == 'month' %}
                         <th data-field="month" data-formatter="cellFormatter" class="{{ class }}">Месяц</th>
                     {% elseif column == 'manager' %}
                         <th data-field="manager" data-formatter="cellFormatter" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МП</th>
@@ -185,6 +187,7 @@
                                 '<span class="glyphicon glyphicon-remove"></span>' +
                             '</a>';
                     case 'month':
+                    case 'year':
                     case 'object':
                     case 'mechanism':
                     case 'comment':

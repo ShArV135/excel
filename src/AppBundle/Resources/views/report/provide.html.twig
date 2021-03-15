@@ -6,13 +6,14 @@
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
+                <th>Год</th>
                 <th>Месяц</th>
                 <th>Поставщик</th>
                 <th>Наработка</th>
                 <th>Баланс (среднее)</th>
             </tr>
             <tr>
-                <th colspan="2" style="text-align: right">Всего:</th>
+                <th colspan="3" style="text-align: right">Всего:</th>
                 <th>{{ report.salary|number_format(2, '.', ' ') }}</th>
                 <th>{{ report.balance|number_format(2, '.', ' ') }}</th>
             </tr>
@@ -20,7 +21,8 @@
             <tbody>
             {% for data in report.reports %}
                 <tr>
-                    <td>{{ data.timetable.name }}</td>
+                    <td>{{ data.timetable.created|date('Y') }}</td>
+                    <td>{{ data.timetable.created|month() }}</td>
                     <td><a class="nostyle" href="{{ path('contractor_view', {'contractor': data.contractor.id}) }}">{{ data.contractor.name }}</a></td>
                     <td>{{ data.salary|number_format(2, '.', ' ') }}</td>
                     <td class="{{ data.balance < 0 ? 'bg-red text-white' : '' }}">

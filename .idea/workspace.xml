@@ -6,27 +6,18 @@
     <bookmark url="file://$PROJECT_DIR$/src/AppBundle/Form/TimetableRowType.php" line="119" mnemonic="2" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="sale export">
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Form/ReportProvideFilterType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ExportService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ProvideExportService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ProvideService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportObjectInterface.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportProvideObject.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportProvideSummary.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/SaleConfig.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/SummaryInterface.php" afterDir="false" />
+    <list default="true" id="ceff34e6-1eb8-47f5-be5a-72cdbe065977" name="Default" comment="report export">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ReportController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Form/ReportSaleFilterType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Form/ReportSaleFilterType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/TimetableController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/TimetableRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/default/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/provide.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/provide.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/report/sale.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Report/ProvideExportService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ProvideExportService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleExportService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleExportService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleObject.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleObject.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleSummary.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleSummary.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/ReportSaleConfig.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportConfig.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/ReportSaleService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Report/ReportSaleService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/TimetableHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Service/Utils.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Utils.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBundle/Twig/TimetableExtension.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBundle/Twig/TimetableExtension.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -515,14 +506,7 @@
       <workItem from="1614197864047" duration="27015000" />
       <workItem from="1615310500781" duration="39000" />
       <workItem from="1615401649666" duration="592000" />
-      <workItem from="1615402314176" duration="25087000" />
-    </task>
-    <task id="LOCAL-00053" summary="fixes">
-      <created>1521548471689</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1521548471689</updated>
+      <workItem from="1615402314176" duration="26860000" />
     </task>
     <task id="LOCAL-00054" summary="plan labels">
       <created>1521564185479</created>
@@ -860,7 +844,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615629045767</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="report export">
+      <created>1615794247153</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1615794247153</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -943,7 +934,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix bug with time" />
     <MESSAGE value="number format, update timetable process" />
     <MESSAGE value="gitignore" />
     <MESSAGE value="scroll to" />
@@ -968,7 +958,8 @@
     <MESSAGE value="bitrix events" />
     <MESSAGE value="fixes" />
     <MESSAGE value="sale export" />
-    <option name="LAST_COMMIT_MESSAGE" value="sale export" />
+    <MESSAGE value="report export" />
+    <option name="LAST_COMMIT_MESSAGE" value="report export" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1010,7 +1001,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/AppBundle/Service/Report/ProvideExportService.php</url>
-          <line>13</line>
+          <line>15</line>
           <option name="timeStamp" value="119" />
         </line-breakpoint>
       </breakpoints>

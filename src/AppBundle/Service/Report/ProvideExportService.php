@@ -2,11 +2,13 @@
 
 namespace AppBundle\Service\Report;
 
+use AppBundle\Service\Utils;
+
 class ProvideExportService extends ExportService
 {
     protected function buildHeader(): array
     {
-        return ['Месяц', 'Поставщик', 'Наработка', 'Баланс (среднее)'];
+        return ['Год', 'Месяц', 'Поставщик', 'Наработка', 'Баланс (среднее)'];
     }
 
     protected function buildRow(ReportObjectInterface $reportObject): ?array
@@ -16,7 +18,8 @@ class ProvideExportService extends ExportService
         }
 
         return [
-            $reportObject->getTimetable()->getName(),
+            $reportObject->getTimetable()->getCreated()->format('Y'),
+            Utils::getMonth($reportObject->getTimetable()->getCreated()),
             $reportObject->getContractor()->getName(),
             (string) $reportObject->getSalary(),
             (string) $reportObject->getBalance()

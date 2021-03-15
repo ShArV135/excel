@@ -155,6 +155,7 @@ class TimetableHelper
         switch ($show) {
             case 'customer_manager':
                 $columns = [
+                    'year',
                     'month',
                     'customer',
                     'object',
@@ -170,6 +171,7 @@ class TimetableHelper
                 break;
             case 'dispatcher':
                 $columns = [
+                    'year',
                     'month',
                     'manager',
                     'provider_manager',
@@ -189,6 +191,7 @@ class TimetableHelper
                 break;
             case 'provider_manager':
                 $columns = [
+                    'year',
                     'month',
                     'manager',
                     'provider_manager',
@@ -209,6 +212,7 @@ class TimetableHelper
                 break;
             case 'general_manager':
                 $columns = [
+                    'year',
                     'month',
                     'manager',
                     'provider_manager',
@@ -229,6 +233,7 @@ class TimetableHelper
                 break;
             default:
                 $columns = [
+                    'year',
                     'month',
                     'manager',
                     'provider_manager',
@@ -309,8 +314,11 @@ class TimetableHelper
 
         foreach ($columns as $column) {
             switch ($column) {
+                case 'year':
+                    $value = $timetableRow->getTimetable()->getCreated()->format('Y');
+                    break;
                 case 'month':
-                    $value = $timetableRow->getTimetable()->getName();
+                    $value = Utils::getMonth($timetableRow->getTimetable()->getCreated());
                     break;
                 case 'manager':
                     if ($manager) {

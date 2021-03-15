@@ -2,6 +2,8 @@
 
 namespace AppBundle\Service\Report;
 
+use AppBundle\Service\Utils;
+
 class ReportSaleExportService extends ExportService
 {
     private $config;
@@ -19,7 +21,7 @@ class ReportSaleExportService extends ExportService
     protected function buildHeader(): array
     {
         $config = $this->getConfig();
-        $header = ['Месяц'];
+        $header = ['Год', 'Месяц'];
 
         if (!$config->isManagerMode()) {
             $header[] = 'Менеджер';
@@ -53,7 +55,8 @@ class ReportSaleExportService extends ExportService
         }
 
         $row = [
-            $reportObject->getTimetable()->getName(),
+            $reportObject->getTimetable()->getCreated()->format('Y'),
+            Utils::getMonth($reportObject->getTimetable()->getCreated()),
         ];
 
         if (!$config->isManagerMode()) {

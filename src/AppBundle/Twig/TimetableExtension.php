@@ -2,7 +2,9 @@
 
 namespace AppBundle\Twig;
 
+use AppBundle\Service\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\TwigFilter;
 
 class TimetableExtension extends \Twig_Extension
 {
@@ -13,13 +15,17 @@ class TimetableExtension extends \Twig_Extension
         $this->container = $container;
     }
 
-    /**
-     * @return array|\Twig_SimpleFunction[]
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction('get_timetables', [$this, 'getTimetables']),
+        ];
+    }
+
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('month', [$this, 'getMonth']),
         ];
     }
 
@@ -45,5 +51,10 @@ class TimetableExtension extends \Twig_Extension
             'current' => $current,
         ];
 
+    }
+
+    public function getMonth(\DateTime $dateTime): string
+    {
+        return Utils::getMonth($dateTime);
     }
 }

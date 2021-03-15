@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
+use AppBundle\Service\Utils;
 use Doctrine\ORM\EntityRepository;
 use function Doctrine\ORM\QueryBuilder;
 
@@ -76,8 +77,6 @@ class TimetableRepository extends EntityRepository
 
         $timetable = new Timetable();
 
-        $months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-
         /** @var Timetable $lastTimetable */
         $lastTimetable = $this->findOneBy([], ['created' => 'DESC']);
         if ($lastTimetable) {
@@ -87,10 +86,9 @@ class TimetableRepository extends EntityRepository
             $created  = new \DateTime();
         }
 
-        $month = $months[ $created->format('m')-1 ];
         $year = $created->format('Y');
 
-        $name = sprintf('%s %s', $month, $year);
+        $name = sprintf('%s %s', Utils::getMonth($created), $year);
         $timetable
             ->setName($name)
             ->setCreated($created)

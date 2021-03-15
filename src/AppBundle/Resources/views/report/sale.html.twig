@@ -8,6 +8,7 @@
         <table class="table table-striped table-bordered table-report">
             <thead>
             <tr>
+                <th>Год</th>
                 <th>Месяц</th>
                 {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                     <th>Менеджер</th>
@@ -24,9 +25,9 @@
             </tr>
             <tr>
                 {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
-                    <th colspan="3" style="text-align: right">Всего:</th>
+                    <th colspan="4" style="text-align: right">Всего:</th>
                 {% else %}
-                    <th colspan="2" style="text-align: right">Всего:</th>
+                    <th colspan="3" style="text-align: right">Всего:</th>
                 {% endif %}
                 <th>{{ report.salary|number_format(2, '.', ' ') }}</th>
                 <th>{{ report.balance|number_format(2, '.', ' ') }}</th>
@@ -41,7 +42,8 @@
             <tbody>
             {% for id, report_object in report.reports %}
                 <tr class="{{ report_object.balance < 0 ? 'is-debt' : '' }}">
-                    <td>{{ report_object.timetable.name }}</td>
+                    <td>{{ report_object.timetable.created|date('Y') }}</td>
+                    <td>{{ report_object.timetable.created|month }}</td>
                     {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                         <td>{{ report_object.contractor.manager.fullName|default }}</td>
                     {% endif %}

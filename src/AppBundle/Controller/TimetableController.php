@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\TimetableRowTimes;
+use AppBundle\Service\Utils;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -75,6 +76,9 @@ class TimetableController extends Controller
         $row = [];
         foreach ($columns as $index => $column) {
             switch ($column) {
+                case 'year':
+                    $row[] = 'Год';
+                    break;
                 case 'month':
                     $row[] = 'Месяц';
                     break;
@@ -174,14 +178,17 @@ class TimetableController extends Controller
             $row = [];
             foreach ($columns as $index => $column) {
                 switch ($column) {
+                    case 'year':
+                        $value = $timetableRow->getTimetable()->getCreated()->format('Y');
+                        break;
                     case 'month':
-                        $value = $timetableRow->getTimetable()->getName();
+                        $value = Utils::getMonth($timetableRow->getTimetable()->getCreated());
                         break;
                     case 'manager':
-                        $value = $managersById[$manager->getId()];
+                        $value = $manager ? $managersById[$manager->getId()] : '';
                         break;
                     case 'customer':
-                        $value = $customer->getName();
+                        $value = $customer ? $customer->getName() : '';
                         break;
                     case 'provider':
                         if ($provider) {
