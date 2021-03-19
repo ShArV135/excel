@@ -113,8 +113,8 @@ class ProvideService extends ReportService
             'timetable' => $config->getTimetable(),
         ];
 
-        if ($customer = $config->getContractor()) {
-            $criteria['customer'] = $customer;
+        if ($provider = $config->getContractor()) {
+            $criteria['provider'] = $provider;
         }
 
         return $this->entityManager->getRepository(TimetableRow::class)->findBy($criteria);
