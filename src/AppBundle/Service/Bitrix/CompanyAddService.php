@@ -3,6 +3,7 @@
 namespace AppBundle\Service\Bitrix;
 
 use AppBundle\Entity\Contractor;
+use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -56,6 +57,7 @@ class CompanyAddService implements EventServiceInterface
 
         $this->setINN($contractor);
         $this->setAddresses($contractor, $contractor->getBitrix24Id());
+        $this->setOrganization($contractor);
 
         if (!empty($companyData['ASSIGNED_BY_ID'])) {
             $this->setManager($contractor, $companyData['ASSIGNED_BY_ID']);
@@ -102,5 +104,12 @@ class CompanyAddService implements EventServiceInterface
         ]);
 
         $contractor->setManager($manager);
+    }
+
+    private function setOrganization(Contractor $contractor): void
+    {
+        $organization = $this->entityManager->getRepository(Organisation::class)->findOneBy([]);
+
+        $contractor->setOrganisation($organization);
     }
 }
