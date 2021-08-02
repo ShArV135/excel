@@ -84,7 +84,7 @@ class TimetableRowType extends AbstractType
                             $qb = $repository->createQueryBuilder('e');
                             return $qb
                                 ->where($qb->expr()->like('e.roles', ':roles'))
-                                ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
+                                ->setParameter('roles', '%CUSTOMER_MANAGER%')
                                 ;
                         },
                     ]
@@ -101,7 +101,7 @@ class TimetableRowType extends AbstractType
                             $qb = $repository->createQueryBuilder('e');
                             return $qb
                                 ->where($qb->expr()->like('e.roles', ':roles'))
-                                ->setParameter('roles', '%ROLE_PROVIDER_MANAGER%')
+                                ->setParameter('roles', '%PROVIDER_MANAGER%')
                                 ;
                         },
                     ]
