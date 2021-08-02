@@ -20,7 +20,7 @@ class UserRepository extends EntityRepository
      * @param string    $role
      * @return array
      */
-    public function getManagersByFio(Timetable $timetable, $role = 'ROLE_CUSTOMER_MANAGER')
+    public function getManagersByFio(Timetable $timetable, $role = 'CUSTOMER_MANAGER')
     {
         $qb = $this->createQueryBuilder('user');
         $qb

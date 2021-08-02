@@ -57,7 +57,7 @@ class DefaultController extends Controller
         }
 
         if (in_array('provider_manager', $columns)) {
-            $providerManagersByFio = $em->getRepository('AppBundle:User')->getManagersByFio($timetable, 'ROLE_PROVIDER_MANAGER');
+            $providerManagersByFio = $em->getRepository('AppBundle:User')->getManagersByFio($timetable, 'PROVIDER_MANAGER');
         } else {
             $providerManagersByFio = [];
         }
