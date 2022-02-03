@@ -374,7 +374,7 @@ class TimetableHelper
                     break;
                 case 'sum_times':
                     $value = [
-                        'value' => number_format($sumTimes, 0, '.', ' '),
+                        'value' => number_format($sumTimes, 1, '.', ' '),
                         'set_act' => $this->authorizationChecker->isGranted('ROLE_MANAGER')
                             || $this->authorizationChecker->isGranted('ROLE_DISPATCHER'),
                     ];
