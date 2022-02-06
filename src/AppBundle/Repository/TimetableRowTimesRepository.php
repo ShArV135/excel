@@ -62,7 +62,7 @@ class TimetableRowTimesRepository extends EntityRepository
         /** @var TimetableRowTimes $timetableRowTime */
         foreach ($timetableRowTimes as $timetableRowTime) {
             $timetableRow = $timetableRowTime->getTimetableRow();
-            $sumTimes = $this->sumTimes($timetableRowTime->getTimes());
+            $sumTimes = $timetableRowTime->sumTimes();
 
             if ($contractor->getType() == Contractor::PROVIDER) {
                 $total += ($timetableRow->getPriceForProvider() * $sumTimes);

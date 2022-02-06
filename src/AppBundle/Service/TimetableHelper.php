@@ -53,8 +53,7 @@ class TimetableHelper
         $provider = $timetableRow->getProvider();
 
         $timetableRowTimes = $timetableRowTimesRepository->getTimesOrCreate($timetableRow);
-        $times = $timetableRowTimes->getTimes();
-        $sumTimes = $timetableRowTimesRepository->sumTimes($times);
+        $sumTimes = $timetableRowTimes->sumTimes();
         $customerSalary = $timetableRow->getPriceForCustomer() * $sumTimes;
         $providerSalary = $timetableRow->getPriceForProvider() * $sumTimes;
         $marginSum = $customerSalary - $providerSalary;
