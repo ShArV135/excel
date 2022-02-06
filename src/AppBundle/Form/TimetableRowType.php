@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
+use AppBundle\Service\ManagerChoiceService;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -18,6 +19,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TimetableRowType extends AbstractType
 {
+    private $managerChoiceService;
+
+    public function __construct(ManagerChoiceService $managerChoiceService)
+    {
+        $this->managerChoiceService = $managerChoiceService;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -80,13 +88,7 @@ class TimetableRowType extends AbstractType
                         'class' => User::class,
                         'attr' => ['class' => 'select2me'],
                         'choice_label' => 'fullname',
-                        'query_builder' => function(EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            return $qb
-                                ->where($qb->expr()->like('e.roles', ':roles'))
-                                ->setParameter('roles', '%CUSTOMER_MANAGER%')
-                                ;
-                        },
+                        'query_builder' => $this->managerChoiceService->getBuilder(),
                     ]
                 )
                 ->add(
