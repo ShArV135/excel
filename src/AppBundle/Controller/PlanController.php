@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Plan;
 use AppBundle\Entity\Timetable;
+use AppBundle\Service\PlanDataService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,6 +53,12 @@ class PlanController extends Controller
         $currentTimetable = $em->getRepository('AppBundle:Timetable')->getCurrent();
 
         if ($data = $request->get('plans')) {
+            if ($request->get('margin_plan')) {
+                $currentTimetable->setMarginPlan(true);
+            } else {
+                $currentTimetable->setMarginPlan(false);
+            }
+
             if (!is_array($data)) {
                 throw new BadRequestHttpException();
             }
@@ -95,30 +102,29 @@ class PlanController extends Controller
             [
                 'users' => $users,
                 'plans_by_user' => $planByUsers,
+                'timetable' => $timetable,
             ]
         );
     }
 
     /**
      * @Route("/plan-timetable/{timetable}", name="timetable_plan_data", options={"expose"=true})
+     *
      * @param Timetable $timetable
-     * @param Request   $request
+     * @param Request $request
+     * @param PlanDataService $service
      * @return JsonResponse
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function timetableDataAction(Timetable $timetable, Request $request)
+    public function timetableDataAction(Timetable $timetable, Request $request, PlanDataService $service)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
 
-        $timetableHelper = $this->get('timetable.helper');
-
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $planData = $timetableHelper->planDataFormat($timetable, $this->getUser());
+            $planData = $service->getData($timetable, $this->getUser());
         } elseif ($this->isGranted('ROLE_MANAGER')) {
-            $planData = $timetableHelper->planDataFormat($timetable);
+            $planData = $service->getData($timetable);
         } else {
             $planData = [];
         }

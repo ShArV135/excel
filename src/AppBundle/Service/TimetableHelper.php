@@ -4,11 +4,9 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Payment;
-use AppBundle\Entity\Plan;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\TimetableRowTimes;
-use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\NotImplementedException;
@@ -457,97 +455,5 @@ class TimetableHelper
         }
 
         return $row;
-    }
-
-    /**
-     * @param Timetable $timetable
-     * @param User|null $user
-     * @return array
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function planData(Timetable $timetable, User $user = null)
-    {
-        $planAmount = 0;
-        $planCompleted = 0;
-        $planCompletedPercent = 0;
-
-        $qb = $this
-            ->entityManager
-            ->getRepository('AppBundle:Plan')
-            ->createQueryBuilder('plan')
-            ->andWhere('plan.timetable = :timetable')
-            ->setParameter('timetable', $timetable)
-        ;
-        if ($user) {
-            $qb
-                ->andWhere($qb->expr()->eq('plan.user', ':user'))
-                ->setParameter('user', $user)
-            ;
-        }
-        $plans = $qb->getQuery()->getResult();
-
-        /** @var Plan $plan */
-        foreach ($plans as $plan) {
-            $planAmount += $plan->getAmount();
-        }
-
-        $criteria = [
-            'timetable' => $timetable,
-        ];
-        if ($user) {
-            $criteria['manager'] = $user;
-        }
-
-        $timetableRows = $this->entityManager->getRepository('AppBundle:TimetableRow')->findBy($criteria);
-        foreach ($timetableRows as $timetableRow) {
-            $rowData = $this->calculateRowData($timetableRow);
-
-            $planCompleted += $rowData['customer_salary'];
-        }
-
-        if ($planAmount > 0) {
-            $planCompletedPercent = floor($planCompleted * 100 / $planAmount);
-        }
-
-        $data = [
-            'plan_amount' => $planAmount,
-            'plan_completed' => $planCompleted,
-            'plan_completed_percent' => $planCompletedPercent,
-        ];
-
-        if ($planAmount > $planCompleted) {
-            $data['left_amount'] = $planAmount - $planCompleted;
-            $data['left_amount_percent'] = 100 - $planCompletedPercent;
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param Timetable $timetable
-     * @param User|null $user
-     * @return array
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function planDataFormat(Timetable $timetable, User $user = null)
-    {
-        $planData = $this->planData($timetable, $user);
-
-        $data = [
-            'plan_amount' => number_format($planData['plan_amount'], 2, '.', ' ').' руб.',
-            'plan_completed' => number_format($planData['plan_completed'], 2, '.', ' ').' руб.',
-            'plan_completed_percent' => $planData['plan_completed_percent'].'%',
-        ];
-
-        if (isset($planData['left_amount'])) {
-            $data['left_amount'] = number_format( $planData['left_amount'], 2, '.', ' ').' руб.';
-            $data['left_amount_percent'] = $planData['left_amount_percent'].'%';
-        }
-
-        return $data;
     }
 }
