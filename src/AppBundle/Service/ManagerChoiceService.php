@@ -28,7 +28,7 @@ class ManagerChoiceService
 
         if (!$this->authorizationChecker->isGranted('ROLE_MANAGER')) {
             $qb
-                ->where($qb->expr()->like('e.roles', ':roles'))
+                ->where($qb->expr()->like('u.roles', ':roles'))
                 ->setParameter('roles', '%CUSTOMER_MANAGER%')
             ;
         }

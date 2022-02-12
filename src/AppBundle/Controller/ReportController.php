@@ -13,6 +13,7 @@ use AppBundle\Service\Report\ReportConfig;
 use AppBundle\Service\Report\ReportSaleService;
 use AppBundle\Service\Report\SaleConfig;
 use AppBundle\Service\Report\SaleExportConfig;
+use AppBundle\Service\ReportHelper;
 use AppBundle\Service\Utils;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,7 +30,7 @@ class ReportController extends Controller
      * @throws \Doctrine\ORM\ORMException
      * @Route("/report-manager", name="report_manager")
      */
-    public function managerAction(Request $request)
+    public function managerAction(Request $request, ReportHelper $reportHelper)
     {
         if (!$this->isGranted('ROLE_MANAGER')) {
             return $this->redirectToRoute('report_manager_detail', ['user' => $this->getUser()->getId()]);
@@ -41,7 +42,6 @@ class ReportController extends Controller
 
         $report = $reportByOrganisations = $timetable = null;
         if ($timetableFilter->isValid()) {
-            $reportHelper = $this->get('report.helper');
 
             /** @var Timetable $timetable */
             $timetable = $timetableFilter->get('timetable')->getData();
@@ -86,7 +86,7 @@ class ReportController extends Controller
      * @throws \Doctrine\ORM\OptimisticLockException
      * @Route("/report-manager/{user}", name="report_manager_detail")
      */
-    public function managerDetailAction(Request $request, User $user, ReportSaleService $reportSaleService): Response
+    public function managerDetailAction(Request $request, User $user, ReportSaleService $reportSaleService, ReportHelper $reportHelper): Response
     {
         $this->denyAccessUnlessGranted(UserVoter::VIEW_REPORT, $user);
 
@@ -95,7 +95,6 @@ class ReportController extends Controller
 
         $report = $salesData = null;
         if ($timetableFilter->isValid()) {
-            $reportHelper = $this->get('report.helper');
 
             /** @var Timetable $timetable */
             $timetable = $timetableFilter->get('timetable')->getData();

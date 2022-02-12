@@ -8,27 +8,33 @@ use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 class ReportHelper
 {
     private $entityManager;
     private $timetableHelper;
+    private $planDataService;
     private $router;
 
     /**
      * ReportHelper constructor.
-     * @param EntityManager   $entityManager
+     * @param EntityManager $entityManager
      * @param TimetableHelper $timetableHelper
-     * @param Router          $router
+     * @param PlanDataService $planDataService
+     * @param Router $router
      */
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         TimetableHelper $timetableHelper,
-        Router $router
+        PlanDataService $planDataService,
+        RouterInterface $router
     ) {
         $this->entityManager = $entityManager;
         $this->timetableHelper = $timetableHelper;
+        $this->planDataService = $planDataService;
         $this->router = $router;
     }
 
@@ -66,7 +72,7 @@ class ReportHelper
             $providerManagerData[] = $this->getManagerRowData($timetable, $providerManager, $organisation);;
         }
 
-        $planData = $this->timetableHelper->planData($timetable);
+        $planData = $this->planDataService->planData($timetable);
 
         $customerSummaryData = [
             'salary' => array_sum(array_column($customerManagerData, 'salary')),
@@ -258,7 +264,7 @@ class ReportHelper
         $row['contractors'] = count($contractors);
 
         if ($isCustomer) {
-            $planData = $this->timetableHelper->planData($timetable, $user);
+            $planData = $this->planDataService->planData($timetable, $user);
             $row['plan_completed_percent'] = $planData['plan_completed_percent'];
         }
 
