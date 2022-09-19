@@ -1,0 +1,40 @@
+2020/08/07 19:23:28 [27612] receiving file list
+2020/08/07 19:23:28 [35950] cd+++++++++ assets/
+2020/08/07 19:23:28 [35950] cd+++++++++ assets/css/
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/css/bootstrap.css
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/css/bootstrap_bootstrap-editable_7.css
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/css/bootstrap_bootstrap-table-filter-control_4.css
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/css/bootstrap_bootstrap-table-fixed-columns_6.css
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/css/bootstrap_bootstrap-table_3.css
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/css/bootstrap_bootstrap-theme.min_2.css
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/css/bootstrap_bootstrap.min_1.css
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/css/bootstrap_select2.min_5.css
+2020/08/07 19:23:28 [35950] cd+++++++++ assets/fonts/
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular.eot
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular.svg
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular.ttf
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular.woff
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular.woff2
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular_glyphicons-halflings-regular_1.eot
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular_glyphicons-halflings-regular_1.svg
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular_glyphicons-halflings-regular_1.ttf
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular_glyphicons-halflings-regular_1.woff
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/fonts/glyphicons-halflings-regular_glyphicons-halflings-regular_1.woff2
+2020/08/07 19:23:28 [35950] cd+++++++++ assets/img/
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/img/loading.gif
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/img/loading_loading_1.gif
+2020/08/07 19:23:28 [35950] cd+++++++++ assets/js/
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap_bootbox.min_4.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap_bootstrap-editable.min_7.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap_bootstrap-table-filter-control_3.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap_bootstrap-table-fixed-columns_6.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap_bootstrap-table_2.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap_bootstrap_1.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap_custom-bootstrap-table_8.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/bootstrap_select2.min_5.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/jquery.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/jquery_jquery-1.11.1_1.js
+2020/08/07 19:23:28 [35950] >f+++++++++ assets/js/jquery_jquery-ui_2.js
+2020/08/07 19:23:28 [35950] sent 664 bytes  received 3,072,754 bytes  292,706.48 bytes/sec
+2020/08/07 19:23:28 [35950] total size is 3,069,576  speedup is 1.00
