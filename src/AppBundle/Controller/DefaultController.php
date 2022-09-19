@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Contractor;
+use AppBundle\Service\TimetableHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,14 +18,12 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage")
      * @param Request $request
+     * @param TimetableHelper $timetableHelper
      * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, TimetableHelper $timetableHelper): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $timetableHelper = $this->get('timetable.helper');
 
         if ($id = $request->get('id')) {
             $timetable = $em->find('AppBundle:Timetable', $id);

@@ -8,10 +8,13 @@ use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\User;
+use AppBundle\Service\Timetable\RowTimeStorage;
 
 class ReportSaleService extends ReportService
 {
     private $exportService;
+    /** @var RowTimeStorage */
+    private $timeStorage;
 
     /**
      * @required
@@ -20,6 +23,16 @@ class ReportSaleService extends ReportService
     public function setExportService(ReportSaleExportService $exportService): void
     {
         $this->exportService = $exportService;
+    }
+
+    /**
+     * @required
+     * @param RowTimeStorage $timeStorage
+     * @return void
+     */
+    public function setTimeStorage(RowTimeStorage $timeStorage): void
+    {
+        $this->timeStorage = $timeStorage;
     }
 
     public function getExportService(): ReportSaleExportService
@@ -38,6 +51,7 @@ class ReportSaleService extends ReportService
             throw new \LogicException('Incorrect config');
         }
 
+        $this->timeStorage->init($config->getTimetable());
         $reports = $this->createReports($config);
 
         foreach ($this->getTimetableRows($config) as $timetableRow) {
@@ -120,7 +134,7 @@ class ReportSaleService extends ReportService
     private function createReportObject(Timetable $timetable, Contractor $customer): ReportSaleObject
     {
         try {
-            $balance = $this->timetableHelper->contractorBalance($customer);
+            $balance = $this->balanceService->getBalance($customer);
         } catch (\Exception $e) {
             $balance = 0;
         }

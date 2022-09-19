@@ -48,26 +48,6 @@ class TimetableRepository extends EntityRepository
     }
 
     /**
-     * @param Timetable $timetable
-     * @param bool      $include
-     * @return array
-     */
-    public function getAllPrevious(Timetable $timetable, $include = true)
-    {
-        $qb = $this->createQueryBuilder('timetable');
-
-        if ($include) {
-            $qb->where($qb->expr()->lte('timetable.id', ':id'));
-        } else {
-            $qb->where($qb->expr()->lt('timetable.id', ':id'));
-        }
-
-        $qb->setParameter('id', $timetable);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
      * @return Timetable
      * @throws \Doctrine\ORM\OptimisticLockException
      */

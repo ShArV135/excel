@@ -5,17 +5,17 @@ namespace AppBundle\Service\Bitrix;
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
-use AppBundle\Service\TimetableHelper;
+use AppBundle\Service\ContractorBalanceService;
 
 class BalanceUpdateService
 {
     private $provider;
-    private $timetableHelper;
+    private $balanceService;
 
-    public function __construct(CRestProvider $provider, TimetableHelper $timetableHelper)
+    public function __construct(CRestProvider $provider, ContractorBalanceService $balanceService)
     {
         $this->provider = $provider;
-        $this->timetableHelper = $timetableHelper;
+        $this->balanceService = $balanceService;
     }
 
     public function onTimesUpdate(TimetableRow $timetableRow): void
@@ -38,7 +38,7 @@ class BalanceUpdateService
         }
 
         $fields = [
-            'UF_CRM_1613403884' => $this->timetableHelper->contractorBalance($contractor, $timetable),
+            'UF_CRM_1613403884' => $this->balanceService->getBalance($contractor, $timetable),
         ];
 
         $params = [

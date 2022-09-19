@@ -14,19 +14,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class PaymentRepository extends EntityRepository
 {
-    public function getByContractorAndDate(Contractor $contractor, \DateTime $dateTime)
+    public function getContractorTimetablePayments(Contractor $contractor, Timetable $timetable): array
     {
         $qb = $this->createQueryBuilder('payment');
+        $startDate = clone $timetable->getCreated()->modify('first day of');
+        $endDate = clone $timetable->getCreated()->modify('last day of');
 
-        return $qb
-            ->andWhere($qb->expr()->lte('payment.date', ':date'))
+        $qb
+            ->andWhere($qb->expr()->gte('payment.date', ':start_date'))
+            ->andWhere($qb->expr()->lte('payment.date', ':end_date'))
             ->andWhere($qb->expr()->eq('payment.contractor', ':contractor'))
             ->setParameters([
-                'date' => $dateTime,
+                'start_date' => $startDate,
+                'end_date' => $endDate,
                 'contractor' => $contractor
             ])
-            ->getQuery()
-            ->getResult()
         ;
+
+        return $qb->getQuery()->getResult();
     }
 }

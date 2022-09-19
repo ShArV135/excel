@@ -6,10 +6,13 @@ use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
+use AppBundle\Service\Timetable\RowTimeStorage;
 
 class ProvideService extends ReportService
 {
     private $exportService;
+    /** @var RowTimeStorage */
+    private $timeStorage;
 
     /**
      * @required
@@ -18,6 +21,16 @@ class ProvideService extends ReportService
     public function setExportService(ProvideExportService $exportService): void
     {
         $this->exportService = $exportService;
+    }
+
+    /**
+     * @required
+     * @param RowTimeStorage $timeStorage
+     * @return void
+     */
+    public function setTimeStorage(RowTimeStorage $timeStorage): void
+    {
+        $this->timeStorage = $timeStorage;
     }
 
     public function getExportService()
@@ -32,6 +45,7 @@ class ProvideService extends ReportService
 
     protected function getReportsByTimetable(ReportConfig $config): array
     {
+        $this->timeStorage->init($config->getTimetable());
         $reports = $this->createReports($config);
 
         foreach ($this->getTimetableRows($config) as $timetableRow) {
@@ -74,7 +88,7 @@ class ProvideService extends ReportService
     private function createReportObject(Timetable $timetable, Contractor $contractor): ReportProvideObject
     {
         try {
-            $balance = $this->timetableHelper->contractorBalance($contractor);
+            $balance = $this->balanceService->getBalance($contractor);
         } catch (\Exception $e) {
             $balance = 0;
         }

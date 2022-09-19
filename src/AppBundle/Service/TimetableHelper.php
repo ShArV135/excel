@@ -2,12 +2,11 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Contractor;
-use AppBundle\Entity\Payment;
-use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\TimetableRowTimes;
-use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Service\Timetable\ManagerSalaryService;
+use AppBundle\Service\Timetable\MarginSumService;
+use AppBundle\Service\Timetable\RowTimeStorage;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 use Symfony\Component\Routing\RouterInterface;
@@ -15,24 +14,36 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class TimetableHelper
 {
-    private $entityManager;
     private $authorizationChecker;
     private $request;
     private $router;
+    private $balanceService;
+    private $salaryService;
+    private $timeStorage;
+    private $managerNameStorage;
 
     /**
      * TimetableHelper constructor.
-     * @param EntityManagerInterface        $entityManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param RequestStack                  $requestStack
      * @param RouterInterface               $router
      */
-    public function __construct(EntityManagerInterface $entityManager, AuthorizationCheckerInterface $authorizationChecker, RequestStack $requestStack, RouterInterface $router)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        RequestStack $requestStack,
+        RouterInterface $router,
+        ContractorBalanceService $balanceService,
+        ManagerSalaryService $salaryService,
+        RowTimeStorage $timeStorage,
+        ManagerNameStorage $managerNameStorage
+    ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->request = $requestStack->getCurrentRequest();
         $this->router = $router;
+        $this->balanceService = $balanceService;
+        $this->salaryService = $salaryService;
+        $this->timeStorage = $timeStorage;
+        $this->managerNameStorage = $managerNameStorage;
     }
 
     /**
@@ -45,25 +56,24 @@ class TimetableHelper
     public function calculateRowData(TimetableRow $timetableRow)
     {
         $timetable = $timetableRow->getTimetable();
-        $timetableRowTimesRepository = $this->entityManager->getRepository('AppBundle:TimetableRowTimes');
 
         $customer = $timetableRow->getCustomer();
         $provider = $timetableRow->getProvider();
 
-        $timetableRowTimes = $timetableRowTimesRepository->getTimesOrCreate($timetableRow);
+        $timetableRowTimes = $this->timeStorage->get($timetableRow);
         $sumTimes = $timetableRowTimes->sumTimes();
-        $customerSalary = $timetableRow->getPriceForCustomer() * $sumTimes;
-        $providerSalary = $timetableRow->getPriceForProvider() * $sumTimes;
-        $marginSum = $customerSalary - $providerSalary;
+        $customerSalary = $this->salaryService->getSalary($timetableRow->getPriceForCustomer(), $sumTimes);
+        $providerSalary = $this->salaryService->getSalary($timetableRow->getPriceForProvider(), $sumTimes);
+        $marginSum = MarginSumService::getMarginSum($customerSalary, $providerSalary);
 
         if ($customer) {
-            $customerBalance = $this->contractorBalance($customer, $timetable);
+            $customerBalance = $this->balanceService->getBalance($customer, $timetable);
         } else {
             $customerBalance = 0;
         }
 
         if ($provider) {
-            $providerBalance = $this->contractorBalance($provider, $timetable);
+            $providerBalance = $this->balanceService->getBalance($provider, $timetable);
         } else {
             $providerBalance = 0;
         }
@@ -86,35 +96,6 @@ class TimetableHelper
             'customer_id' => $customer ? $customer->getId() : null,
             'provider_id' => $provider ? $provider->getId() : null,
         ];
-    }
-
-    /**
-     * @param Contractor $contractor
-     * @param Timetable  $timetable
-     * @return float|int
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function contractorBalance(Contractor $contractor, Timetable $timetable = null)
-    {
-        $timetableRowTimesRepository = $this->entityManager->getRepository('AppBundle:TimetableRowTimes');
-        $paymentRepository = $this->entityManager->getRepository('AppBundle:Payment');
-
-        if (!$timetable) {
-            $timetable = $this->entityManager->getRepository('AppBundle:Timetable')->getCurrent();
-        }
-
-        $payments = $paymentRepository->getByContractorAndDate($contractor, clone $timetable->getCreated()->modify('last day of'));
-        $paid = 0;
-        /** @var Payment $payment */
-        foreach ($payments as $payment) {
-            $paid += $payment->getAmount();
-        }
-
-        $balance = $paid - $timetableRowTimesRepository->calculateContractorBalance($timetable, $contractor);
-
-        return $balance;
     }
 
     /**
@@ -326,8 +307,7 @@ class TimetableHelper
                     break;
                 case 'manager':
                     if ($manager) {
-                        $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById();
-                        $value = $managersById[$manager->getId()];
+                        $value = $this->managerNameStorage->getCustomer($manager->getId());
                     } else {
                         $value = '';
                     }
@@ -335,8 +315,7 @@ class TimetableHelper
                     break;
                 case 'provider_manager':
                     if ($providerManager) {
-                        $managersById = $this->entityManager->getRepository('AppBundle:User')->getManagersById('ROLE_PROVIDER_MANAGER');
-                        $value = $managersById[$providerManager->getId()];
+                        $value = $this->managerNameStorage->getProvider($providerManager->getId());
                     } else {
                         $value = '';
                     }

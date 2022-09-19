@@ -5,6 +5,7 @@ namespace AppBundle\Service\Report;
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
+use AppBundle\Service\ContractorBalanceService;
 use AppBundle\Service\TimetableHelper;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -12,11 +13,13 @@ abstract class ReportService
 {
     protected $entityManager;
     protected $timetableHelper;
+    protected $balanceService;
 
-    public function __construct(EntityManagerInterface $entityManager, TimetableHelper $timetableHelper)
+    public function __construct(EntityManagerInterface $entityManager, TimetableHelper $timetableHelper, ContractorBalanceService $balanceService)
     {
         $this->entityManager = $entityManager;
         $this->timetableHelper = $timetableHelper;
+        $this->balanceService = $balanceService;
     }
 
     abstract protected function getReportsByTimetable(ReportConfig $config): array;

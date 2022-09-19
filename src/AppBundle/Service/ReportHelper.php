@@ -3,13 +3,15 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Bonus;
-use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Service\Timetable\RowTimeStorage;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Router;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class ReportHelper
@@ -18,24 +20,23 @@ class ReportHelper
     private $timetableHelper;
     private $planDataService;
     private $router;
+    private $balanceService;
+    private $timeStorage;
 
-    /**
-     * ReportHelper constructor.
-     * @param EntityManager $entityManager
-     * @param TimetableHelper $timetableHelper
-     * @param PlanDataService $planDataService
-     * @param Router $router
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         TimetableHelper $timetableHelper,
         PlanDataService $planDataService,
-        RouterInterface $router
+        RouterInterface $router,
+        ContractorBalanceService $balanceService,
+        RowTimeStorage $timeStorage
     ) {
         $this->entityManager = $entityManager;
         $this->timetableHelper = $timetableHelper;
         $this->planDataService = $planDataService;
         $this->router = $router;
+        $this->balanceService = $balanceService;
+        $this->timeStorage = $timeStorage;
     }
 
     /**
@@ -49,6 +50,7 @@ class ReportHelper
      */
     public function getManagerData(Timetable $timetable, Organisation $organisation = null, User $user = null)
     {
+        $this->timeStorage->init($timetable);
         $customerManagers = $providerManagers = [];
         if ($user) {
             if (in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles())) {
@@ -104,84 +106,9 @@ class ReportHelper
     }
 
     /**
-     * @param array        $filter
-     * @param Organisation $organisation
-     * @return array
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function getProvideData(array $filter, Organisation $organisation = null)
-    {
-        $provideData = [];
-        if (!empty($filter['timetable'])) {
-            $timetables = $filter['timetable'];
-        } else {
-            $timetables = $this->entityManager->getRepository('AppBundle:Timetable')->findAll();
-
-            if (empty($filter['provider'])) {
-                $providers = $this->entityManager->getRepository('AppBundle:Contractor')->findBy(['type' => Contractor::PROVIDER], ['name' => 'ASC']);
-                foreach ($providers as $provider) {
-                    if ($organisation && $provider->getOrganisation() !== $organisation) {
-                        continue;
-                    }
-
-                    $provideData[$provider->getId()] = [
-                        'name' => $provider->getName(),
-                        'balance' => $this->timetableHelper->contractorBalance($provider),
-                        'manager' => '',
-                        'salary' => 0,
-                    ];
-                }
-            }
-        }
-
-        $criteria = [
-            'timetable' => $timetables,
-        ];
-        if (!empty($filter['provider'])) {
-            $criteria['provider'] = $filter['provider'];
-        }
-        $timetableRows = $this->entityManager->getRepository('AppBundle:TimetableRow')->findBy($criteria);
-
-        foreach ($timetableRows as $timetableRow) {
-            $provider = $timetableRow->getProvider();
-
-            if (!$provider) {
-                continue;
-            }
-
-            if ($organisation && $provider->getOrganisation() !== $organisation) {
-                continue;
-            }
-
-            if (!isset($provideData[$provider->getId()])) {
-                $provideData[$provider->getId()] = [
-                    'name' => $provider->getName(),
-                    'salary' => 0,
-                    'balance' => $this->timetableHelper->contractorBalance($provider),
-                ];
-            }
-
-            $rowData = $this->timetableHelper->calculateRowData($timetableRow);
-
-            $provideData[$provider->getId()]['salary'] += $rowData['provider_salary'];
-        }
-
-        $summaryData = [
-            'salary' => array_sum(array_column($provideData, 'salary')),
-            'balance' => array_sum(array_column($provideData, 'balance')),
-        ];
-
-        return [
-            'provide_data' => $provideData,
-            'summary_data' => $summaryData,
-        ];
-    }
-
-    /**
-     * @param Timetable         $timetable
-     * @param User              $user
+     * @param RowTimeStorage $timeStorage
+     * @param Timetable $timetable
+     * @param User $user
      * @param Organisation|null $organisation
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -255,7 +182,7 @@ class ReportHelper
         ]);
 
         foreach ($contractors as $contractor) {
-            $balance = $this->timetableHelper->contractorBalance($contractor);
+            $balance = $this->balanceService->getBalance($contractor);
 
             if ($balance < 0) {
                 $row['balance_negative'] += $balance;

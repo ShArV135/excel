@@ -7,7 +7,7 @@ use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
 use AppBundle\Form\ContractorType;
 use AppBundle\Security\ContractorVoter;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Service\ContractorBalanceService;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -308,14 +308,14 @@ class ContractorController extends Controller
 
     /**
      * @Route("/contractors/{contractor}/view", name="contractor_view", requirements={"contractor"="\d+"})
+     *
      * @param Contractor $contractor
-     * @param Request    $request
+     * @param Request $request
+     * @param ContractorBalanceService $balanceService
+     *
      * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function viewAction(Contractor $contractor, Request $request)
+    public function viewAction(Contractor $contractor, Request $request, ContractorBalanceService $balanceService): Response
     {
         $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
 
@@ -323,7 +323,7 @@ class ContractorController extends Controller
             '@App/contractor/view.html.twig',
             [
                 'contractor' => $contractor,
-                'balance' => $this->get('timetable.helper')->contractorBalance($contractor),
+                'balance' => $balanceService->getBalance($contractor),
                 'redirect_to' => $request->get('redirect_to')
             ]
         );

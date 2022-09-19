@@ -8,20 +8,18 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class TimetableRowDeleteService
 {
-    private $helper;
     private $entityManager;
+    private $balanceService;
 
-    public function __construct(TimetableHelper $helper, EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, ContractorBalanceService $balanceService)
     {
-        $this->helper = $helper;
         $this->entityManager = $entityManager;
+        $this->balanceService = $balanceService;
     }
 
     public function checkDelete(TimetableRow $timetableRow): void
     {
-        [
-            'customer_balance' => $customerBalance,
-        ] = $this->helper->calculateRowData($timetableRow);
+        $customerBalance = $this->balanceService->getBalance($timetableRow->getCustomer(), $timetableRow->getTimetable());
 
         if ($customerBalance >= 0) {
             return;

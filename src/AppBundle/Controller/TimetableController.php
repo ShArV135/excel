@@ -5,7 +5,13 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\TimetableRowTimes;
+use AppBundle\Service\Timetable\RowTimeStorage;
+use AppBundle\Service\TimetableHelper;
 use AppBundle\Service\Utils;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -17,17 +23,16 @@ use Symfony\Component\HttpFoundation\Response;
 class TimetableController extends Controller
 {
     /**
-     * @param Timetable $timetable
      * @return JsonResponse
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @Route("/timetable/{timetable}/data", name="timetable_data")
      */
-    public function getDataAction(Timetable $timetable)
+    public function getDataAction(Timetable $timetable, TimetableHelper $timetableHelper, RowTimeStorage $timeStorage): Response
     {
+        $timeStorage->init($timetable);
         $em = $this->getDoctrine()->getManager();
-        $timetableHelper = $this->get('timetable.helper');
 
         $criteria = [
             'timetable' => $timetable,
@@ -52,18 +57,16 @@ class TimetableController extends Controller
 
     /**
      * @Route("/timetable/{timetable}/export", name="timetable_export")
-     * @param Timetable $timetable
-     * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportAction(Timetable $timetable)
+    public function exportAction(Timetable $timetable, TimetableHelper $timetableHelper, RowTimeStorage $timeStorage): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $timetableHelper = $this->get('timetable.helper');
+        $timeStorage->init($timetable);
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();

@@ -5,17 +5,22 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Plan;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
+use AppBundle\Service\Timetable\ManagerSalaryService;
+use AppBundle\Service\Timetable\MarginSumService;
+use AppBundle\Service\Timetable\RowTimeStorage;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PlanDataService
 {
     private $entityManager;
-    private $helper;
+    private $salaryService;
+    private $rowTimeStorage;
 
-    public function __construct(EntityManagerInterface $entityManager, TimetableHelper $helper)
+    public function __construct(EntityManagerInterface $entityManager, ManagerSalaryService $salaryService, RowTimeStorage $rowTimeStorage)
     {
         $this->entityManager = $entityManager;
-        $this->helper = $helper;
+        $this->salaryService = $salaryService;
+        $this->rowTimeStorage = $rowTimeStorage;
     }
 
     public function getData(Timetable $timetable, User $user = null): array
@@ -38,6 +43,8 @@ class PlanDataService
 
     public function planData(Timetable $timetable, User $user = null): array
     {
+        $this->rowTimeStorage->init($timetable);
+        $marginSumService = new MarginSumService($this->salaryService);
         $planAmount = 0;
         $planCompleted = 0;
         $planCompletedPercent = 0;
@@ -58,12 +65,10 @@ class PlanDataService
 
         $timetableRows = $this->entityManager->getRepository('AppBundle:TimetableRow')->findBy($criteria);
         foreach ($timetableRows as $timetableRow) {
-            $rowData = $this->helper->calculateRowData($timetableRow);
-
             if ($timetable->isMarginPlan()) {
-                $planCompleted += $rowData['margin_sum'];
+                $planCompleted += $marginSumService->rowMarginSum($timetableRow);
             } else {
-                $planCompleted += $rowData['customer_salary'];
+                $planCompleted += $this->salaryService->rowCustomSalary($timetableRow);
             }
         }
 
