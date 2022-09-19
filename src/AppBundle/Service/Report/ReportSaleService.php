@@ -73,6 +73,8 @@ class ReportSaleService extends ReportService
             }
         }
 
+        $reports = $this->filterZeroSalary($reports);
+
         return $reports;
     }
 
@@ -149,5 +151,18 @@ class ReportSaleService extends ReportService
         }
 
         return $this->entityManager->getRepository('AppBundle:Contractor')->findBy($criteria, ['name' => 'ASC']);
+    }
+
+    private function filterZeroSalary(array $reports): array
+    {
+        $filtered = [];
+        /** @var ReportSaleObject $report */
+        foreach ($reports as $id => $report) {
+            if ($report->getSalary() > 0.0 || $report->getBalance() !== 0.0) {
+                $filtered[$id] = $report;
+            }
+        }
+
+        return $filtered;
     }
 }

@@ -42,13 +42,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>
-                        Информация о контрагенте
+                        Адреса
                     </h4>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <p><b>Бренд:</b> {{ contractor.brand }}</p>
+                            <p><b>Почтовый адрес:</b> {{ contractor.brand }}</p>
                         </div>
                         <div class="col-md-6">
                             <p><b>Юридический адрес:</b> {{ contractor.businessAddress }}</p>
@@ -73,16 +73,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>
-                        Объекты
+                        Дополнительная информация 
                     </h4>
                 </div>
                 <div class="panel-body">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Адрес</th>
-                            <th>Описание объекта</th>
-                            <th>Описание работ на объекте</th>
+                            <th>* Поле 1</th>
+                            <th>* Поле 2</th>
+                            <th>* Поле 3</th>
                             <th class="col-sm-1">&nbsp;</th>
                         </tr>
                         </thead>
@@ -103,7 +103,7 @@
                     </table>
                 </div>
                 <div class="panel-footer">
-                    <a href="{{ path('object_create', {'contractor': contractor.id}) }}" class="btn btn-primary">Добавить объект</a>
+                    <a href="{{ path('object_create', {'contractor': contractor.id}) }}" class="btn btn-primary">Добавить информацию</a>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -155,6 +155,7 @@
                     <h4>
                         Оплата
                         <div class="pull-right">
+                        <a href="{{ path('payment_create', {'contractor': contractor.id}) }}" class="btn btn-primary">Добавить оплату</a>
                             <span class="label {{ balance > 0 ? 'label-success' : 'label-danger' }}">Баланс: {{ balance|number_format(2, '.', ' ')  }}</span>
                         </div>
                     </h4>

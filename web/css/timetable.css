@@ -25,13 +25,33 @@
     width: 30px !important;
 }
 
+.timetable .year {
+    width: 40px !important;
+   
+}
+.timetable .month {
+    width: 70px !important;
+   
+}
+.timetable .margin_percent {
+    width: 58px !important;
+}
+
 .timetable .manager,
 .timetable .provider_manager {
     width: 51px !important;
 }
-
+.timetable .customer {
+    width: 130px !important;
+}
+.timetable .provider {
+    width: 130px !important;
+}
+    .timetable .object {
+    width: 100px !important;
+}
 .timetable .mechanism {
-    width: 180px !important;
+    width: 170px !important;
 }
 .timetable .comment {
     width: 71px !important;

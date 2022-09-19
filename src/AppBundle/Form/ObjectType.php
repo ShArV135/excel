@@ -13,13 +13,13 @@ class ObjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('address', TextType::class, ['label' => 'Адрес'])
+            ->add('address', TextType::class, ['label' => '* Поле 1'])
             ->add(
                 'description',
                 TextareaType::class,
                 [
-                    'label' => 'Описание объекта',
-                    'required' => false,
+                    'label' => '* Поле 2',
+                    
                     'attr' => [
                         'class' => 'noresize',
                         'rows' => 5,
@@ -30,8 +30,8 @@ class ObjectType extends AbstractType
                 'workDescription',
                 TextareaType::class,
                 [
-                    'label' => 'Описание работ на объекте',
-                    'required' => false,
+                    'label' => '* Поле 3',
+                    
                     'attr' => [
                         'class' => 'noresize',
                         'rows' => 5,

@@ -43,7 +43,7 @@ class ContactController extends Controller
                 $em->persist($contact);
                 $em->flush();
 
-                $this->addFlash('success', 'Контакт успешно добавлена');
+                $this->addFlash('success', 'Контакт успешно добавлен');
                 return $this->redirectToRoute('contractor_view', ['contractor' => $contractor->getId()]);
             } catch (\Exception $e) {
                 $this->addFlash('warning', 'При сохранении возникла ошибка.');

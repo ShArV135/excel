@@ -71,6 +71,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/zendframework/zend-eventmanager" />
       <excludeFolder url="file://$MODULE_DIR$/web/assets" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bitrix-tools/crest" />
+      <excludeFolder url="file://$MODULE_DIR$/var/sessions/dev" />
+      <excludeFolder url="file://$MODULE_DIR$/var/sessions/prod" />
+      <excludeFolder url="file://$MODULE_DIR$/web/bundles" />
+      <excludeFolder url="file://$MODULE_DIR$/components" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -50,6 +50,13 @@ class Timetable
      */
     private $updated;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="margin_plan", type="boolean")
+     */
+    private $marginPlan = false;
+
     public function __construct()
     {
         $this->rows = new ArrayCollection();
@@ -144,5 +151,15 @@ class Timetable
         $this->updated = $updated;
 
         return $this;
+    }
+
+    public function isMarginPlan(): bool
+    {
+        return $this->marginPlan;
+    }
+
+    public function setMarginPlan(bool $marginPlan): void
+    {
+        $this->marginPlan = $marginPlan;
     }
 }

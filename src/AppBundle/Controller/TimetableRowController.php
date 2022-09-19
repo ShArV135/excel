@@ -7,6 +7,7 @@ use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Form\TimetableRowType;
 use AppBundle\Security\TimetableRowVoter;
+use AppBundle\Service\TimetableRowDeleteService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -94,17 +95,21 @@ class TimetableRowController extends Controller
     /**
      * @Route("/timetable-row/{timetableRow}/delete", name="timetable_row_delete")
      * @param TimetableRow $timetableRow
+     * @param TimetableRowDeleteService $deleteService
      * @return RedirectResponse
      */
-    public function deleteAction(TimetableRow $timetableRow)
+    public function deleteAction(TimetableRow $timetableRow, TimetableRowDeleteService $deleteService)
     {
         $this->denyAccessUnlessGranted(TimetableRowVoter::DELETE, $timetableRow);
 
         try {
+            $deleteService->checkDelete($timetableRow);
             $em = $this->getDoctrine()->getManager();
             $em->remove($timetableRow);
             $em->flush();
             $this->addFlash('success', 'Запись удалена.');
+        } catch (\RuntimeException $e) {
+            $this->addFlash('warning', $e->getMessage());
         } catch (\Exception $e) {
             $this->addFlash('warning', 'При удалении возникла ошибка.');
         }

@@ -4,8 +4,9 @@ textarea.noresize {
 
 #fixed_alerts {
     position: fixed;
-    right: 0;
-    bottom: 0;
+    right: 25px;
+    bottom: 5px;
+    z-index: 1;
 }
 
 .form-inline .form-control-label { padding: 0 5px; }

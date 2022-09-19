@@ -4,11 +4,9 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Payment;
-use AppBundle\Entity\Plan;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\TimetableRowTimes;
-use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\NotImplementedException;
@@ -53,8 +51,7 @@ class TimetableHelper
         $provider = $timetableRow->getProvider();
 
         $timetableRowTimes = $timetableRowTimesRepository->getTimesOrCreate($timetableRow);
-        $times = $timetableRowTimes->getTimes();
-        $sumTimes = $timetableRowTimesRepository->sumTimes($times);
+        $sumTimes = $timetableRowTimes->sumTimes();
         $customerSalary = $timetableRow->getPriceForCustomer() * $sumTimes;
         $providerSalary = $timetableRow->getPriceForProvider() * $sumTimes;
         $marginSum = $customerSalary - $providerSalary;
@@ -181,12 +178,15 @@ class TimetableHelper
                     'mechanism',
                     'comment',
                     'price_for_customer',
+                    'price_for_provider',
                     'sum_times',
                     'times',
                     'customer_salary',
-                    'customer_organisation',
+                    'provider_salary',
                     'customer_balance',
                     'provider_balance',
+                    'customer_organisation',
+                    'provider_organisation',
                 ];
                 break;
             case 'provider_manager':
@@ -222,13 +222,17 @@ class TimetableHelper
                     'mechanism',
                     'comment',
                     'price_for_customer',
+                    'price_for_provider',
                     'sum_times',
                     'times',
                     'customer_salary',
+                    'provider_salary',
                     'customer_balance',
+                    'provider_balance',
                     'margin_sum',
                     'margin_percent',
                     'customer_organisation',
+                    'provider_organisation',
                 ];
                 break;
             default:
@@ -249,11 +253,11 @@ class TimetableHelper
                     'customer_salary',
                     'provider_salary',
                     'customer_balance',
-                    'provider_organisation',
                     'provider_balance',
                     'margin_sum',
                     'margin_percent',
                     'customer_organisation',
+                    'provider_organisation',
                 ];
                 break;
         }
@@ -374,7 +378,7 @@ class TimetableHelper
                     break;
                 case 'sum_times':
                     $value = [
-                        'value' => number_format($sumTimes, 0, '.', ' '),
+                        'value' => number_format($sumTimes, 1, '.', ' '),
                         'set_act' => $this->authorizationChecker->isGranted('ROLE_MANAGER')
                             || $this->authorizationChecker->isGranted('ROLE_DISPATCHER'),
                     ];
@@ -458,97 +462,5 @@ class TimetableHelper
         }
 
         return $row;
-    }
-
-    /**
-     * @param Timetable $timetable
-     * @param User|null $user
-     * @return array
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function planData(Timetable $timetable, User $user = null)
-    {
-        $planAmount = 0;
-        $planCompleted = 0;
-        $planCompletedPercent = 0;
-
-        $qb = $this
-            ->entityManager
-            ->getRepository('AppBundle:Plan')
-            ->createQueryBuilder('plan')
-            ->andWhere('plan.timetable = :timetable')
-            ->setParameter('timetable', $timetable)
-        ;
-        if ($user) {
-            $qb
-                ->andWhere($qb->expr()->eq('plan.user', ':user'))
-                ->setParameter('user', $user)
-            ;
-        }
-        $plans = $qb->getQuery()->getResult();
-
-        /** @var Plan $plan */
-        foreach ($plans as $plan) {
-            $planAmount += $plan->getAmount();
-        }
-
-        $criteria = [
-            'timetable' => $timetable,
-        ];
-        if ($user) {
-            $criteria['manager'] = $user;
-        }
-
-        $timetableRows = $this->entityManager->getRepository('AppBundle:TimetableRow')->findBy($criteria);
-        foreach ($timetableRows as $timetableRow) {
-            $rowData = $this->calculateRowData($timetableRow);
-
-            $planCompleted += $rowData['customer_salary'];
-        }
-
-        if ($planAmount > 0) {
-            $planCompletedPercent = floor($planCompleted * 100 / $planAmount);
-        }
-
-        $data = [
-            'plan_amount' => $planAmount,
-            'plan_completed' => $planCompleted,
-            'plan_completed_percent' => $planCompletedPercent,
-        ];
-
-        if ($planAmount > $planCompleted) {
-            $data['left_amount'] = $planAmount - $planCompleted;
-            $data['left_amount_percent'] = 100 - $planCompletedPercent;
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param Timetable $timetable
-     * @param User|null $user
-     * @return array
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function planDataFormat(Timetable $timetable, User $user = null)
-    {
-        $planData = $this->planData($timetable, $user);
-
-        $data = [
-            'plan_amount' => number_format($planData['plan_amount'], 2, '.', ' ').' руб.',
-            'plan_completed' => number_format($planData['plan_completed'], 2, '.', ' ').' руб.',
-            'plan_completed_percent' => $planData['plan_completed_percent'].'%',
-        ];
-
-        if (isset($planData['left_amount'])) {
-            $data['left_amount'] = number_format( $planData['left_amount'], 2, '.', ' ').' руб.';
-            $data['left_amount_percent'] = $planData['left_amount_percent'].'%';
-        }
-
-        return $data;
     }
 }

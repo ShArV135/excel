@@ -140,4 +140,14 @@ class TimetableRowTimes
 
         return $this;
     }
+
+    public function sumTimes(): float
+    {
+        $sumTimes = 0;
+        foreach ($this->times as $time) {
+            $sumTimes += (float) $time;
+        }
+
+        return $sumTimes;
+    }
 }

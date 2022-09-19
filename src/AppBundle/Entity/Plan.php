@@ -51,6 +51,16 @@ class Plan
     private $amount;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="margin", type="float")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type(type="float", message="Цена должна быть вещественным числом.")
+     */
+    private $margin;
+
+    /**
      * @return int
      */
     public function getId()
@@ -113,5 +123,15 @@ class Plan
         $this->amount = $amount;
 
         return $this;
+    }
+
+    public function getMargin(): ?float
+    {
+        return $this->margin;
+    }
+
+    public function setMargin(float $margin): void
+    {
+        $this->margin = $margin;
     }
 }

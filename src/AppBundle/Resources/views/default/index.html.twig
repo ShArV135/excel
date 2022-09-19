@@ -62,11 +62,13 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
+                   
                     <li><a href="{{ path('homepage') }}">Обычный</a></li>
                     <li><a href="{{ path('homepage', {'show': 'customer_manager', 'id': timetable.id}) }}">Менеджер по продажам</a></li>
                     <li><a href="{{ path('homepage', {'show': 'provider_manager', 'id': timetable.id}) }}">Менеджер по снабжению</a></li>
                     <li><a href="{{ path('homepage', {'show': 'dispatcher', 'id': timetable.id}) }}">Диспетчер</a></li>
-                    <li><a href="{{ path('homepage', {'show': 'all', 'id': timetable.id}) }}">Показать всё</a></li>
+{#               <li><a href="{{ path('homepage', {'show': 'all', 'id': timetable.id}) }}">Показать всё</a></li>     #}
+                    
                 </ul>
             {% endif %}
         </div>
@@ -81,11 +83,14 @@
                     {% if column in fixed_columns %}
                         {% set class = class ~ ' timetable-fixed-cell' %}
                     {% endif %}
-                    {% if column == 'year' %}
-                        <th data-field="year" data-formatter="cellFormatter" class="{{ class }}">Год</th>
+
+{#                  {% if column == 'year' %}
+                    <th data-field="year" data-formatter="cellFormatter" class="{{ class }}">Год</th>     
                     {% elseif column == 'month' %}
-                        <th data-field="month" data-formatter="cellFormatter" class="{{ class }}">Месяц</th>
-                    {% elseif column == 'manager' %}
+                    <th data-field="month" data-formatter="cellFormatter" class="{{ class }}">Месяц</th>
+                    {% endif %}                                                                             #}
+
+                    {% if column == 'manager' %}
                         <th data-field="manager" data-formatter="cellFormatter" data-filter-data="json:{{ managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МП</th>
                     {% elseif column == 'provider_manager' %}
                         <th data-field="provider_manager" data-formatter="cellFormatter" data-filter-data="json:{{ provider_managers_by_fio|json_encode }}" data-filter-control="select" class="{{ class }}">МС</th>

@@ -10,12 +10,6 @@ services:
             - '@security.authorization_checker'
             - '@request_stack'
             - '@router'
-    report.helper:
-            class: AppBundle\Service\ReportHelper
-            arguments:
-                - '@doctrine.orm.entity_manager'
-                - '@timetable.helper'
-                - '@router'
     acme.twig.acme_extension:
         class: AppBundle\Twig\TimetableExtension
         public: false

@@ -110,7 +110,7 @@ class ContractorController extends Controller
                     EntityType::class,
                     [
                         'required' => false,
-                        'placeholder' => '--Менеджер по продажам--',
+                        'placeholder' => '--Ответственный--',
                         'class' => User::class,
                         'attr' => ['class' => 'select2me'],
                         'choice_label' => 'fullname',

@@ -43,7 +43,7 @@ class ObjectController extends Controller
                 $em->persist($object);
                 $em->flush();
 
-                $this->addFlash('success', 'Объект успешно добавлена');
+                $this->addFlash('success', 'Информация успешно добавлена');
                 return $this->redirectToRoute('contractor_view', ['contractor' => $contractor->getId()]);
             } catch (\Exception $e) {
                 $this->addFlash('warning', 'При сохранении возникла ошибка.');
@@ -53,7 +53,7 @@ class ObjectController extends Controller
         return $this->render(
             '@App/object/save.html.twig',
             [
-                'page_header' => 'Создать объект',
+                'page_header' => 'Добавление информации',
                 'form' => $form->createView(),
             ]
         );
@@ -73,7 +73,7 @@ class ObjectController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($object);
             $em->flush();
-            $this->addFlash('success', 'Объект удален.');
+            $this->addFlash('success', 'Информация удалена.');
         } catch (\Exception $e) {
             $this->addFlash('warning', 'При удалении возникла ошибка.');
         }

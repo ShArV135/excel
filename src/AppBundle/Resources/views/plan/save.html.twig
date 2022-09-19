@@ -2,6 +2,14 @@
     <div class="panel panel-default">
         <div class="panel-heading"><h4>Установка планов продаж</h4></div>
         <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form-inline">
+                        <label class="form-check-label">План по марже</label>
+                        <input type="checkbox" name="margin_plan" id="{{ timetable.marginPlan ? 'test1' : 'test2' }}" {{ timetable.marginPlan ? 'checked' : '' }} class="form-check-input" id="exampleCheck1">
+                    </div>
+                </div>
+            </div>
             <table class="table">
                 <tr>
                     <th class="col-md-8">Менеджеры отдела продаж</th>
