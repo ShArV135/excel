@@ -17,6 +17,6 @@
 /components/
 /web/bundles/
 /web/assets/
-/.idea
+.idea
 .htaccess
 /web/.htaccess
