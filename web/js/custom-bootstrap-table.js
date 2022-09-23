@@ -69,6 +69,7 @@
         this.initBody(true);
     };
 
+    $.fn.bootstrapTable.methods.push('updatePlanData');
     BootstrapTable.prototype.updatePlanData = function () {
         var timetableId = $('#timetable').data('id');
 

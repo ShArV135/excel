@@ -4,14 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\TimetableRowTimes;
 use AppBundle\Security\TimetableRowVoter;
-use AppBundle\Service\Bitrix\BalanceUpdateService;
-use AppBundle\Service\Timetable\RowTimeStorage;
-use AppBundle\Service\TimetableHelper;
 use AppBundle\Service\TimeUpdateService;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,15 +20,10 @@ class TimetableRowTimesController extends Controller
      * @Route("/timetable-row-times/{timetableRowTimes}/update", name="timetable_row_times_update", options={"expose"=true})
      * @param TimetableRowTimes $timetableRowTimes
      * @param Request $request
-     * @param BalanceUpdateService $balanceUpdateService
-     * @param TimetableHelper $timetableHelper
-     * @param RowTimeStorage $timeStorage
+     * @param TimeUpdateService $updateService
      * @return Response
-     * @throws NonUniqueResultException
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
-    public function updateAction(TimetableRowTimes $timetableRowTimes, Request $request, TimetableHelper $timetableHelper, RowTimeStorage $timeStorage, TimeUpdateService $updateService): Response
+    public function updateAction(TimetableRowTimes $timetableRowTimes, Request $request, TimeUpdateService $updateService): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw new AccessDeniedHttpException();
@@ -52,13 +41,9 @@ class TimetableRowTimesController extends Controller
         }
 
         $updateService->update($timetableRowTimes, $day, $value);
-        $timeStorage->init($timetableRowTimes->getTimetableRow()->getTimetable());
-        $show = $timetableHelper->getShowMode();
-        $columns = $timetableHelper->getColumnsByShow($show);
 
         return new JsonResponse([
             'status' => 'OK',
-            'data' => $timetableHelper->timetableRowFormat($timetableRowTimes->getTimetableRow(), $columns),
         ]);
     }
 
