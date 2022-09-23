@@ -24,11 +24,16 @@ class DefaultController extends Controller
     public function indexAction(Request $request, TimetableHelper $timetableHelper): Response
     {
         $em = $this->getDoctrine()->getManager();
+        $currentTimetable = $em->getRepository('AppBundle:Timetable')->getCurrent();
 
         if ($id = $request->get('id')) {
             $timetable = $em->find('AppBundle:Timetable', $id);
+
+            if ($timetable === $currentTimetable) {
+                return $this->redirectToRoute('homepage');
+            }
         } else {
-            $timetable = $em->getRepository('AppBundle:Timetable')->getCurrent();
+            $timetable = $currentTimetable;
         }
 
         $fixedColumns = [
