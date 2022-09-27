@@ -142,6 +142,7 @@ class UserController extends Controller
                 'Диспетчер' => 'ROLE_DISPATCHER',
                 'Генеральный менеджер' => 'ROLE_GENERAL_MANAGER',
                 'Управляющий' => 'ROLE_MANAGER',
+                'Менеджер по аренде техники' => 'ROLE_RENT_MANAGER',
             ];
         } else {
             $roles = [
@@ -150,6 +151,7 @@ class UserController extends Controller
                 'Менеджер по снабжению' => 'ROLE_PROVIDER_MANAGER',
                 'Старший менеджер по снабжению' => 'ROLE_TOP_PROVIDER_MANAGER',
                 'Диспетчер' => 'ROLE_DISPATCHER',
+                'Менеджер по аренде техники' => 'ROLE_RENT_MANAGER',
             ];
         }
 
