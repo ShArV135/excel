@@ -2,26 +2,36 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Entity\Timetable;
+use AppBundle\Event\PaymentEvent;
 use AppBundle\Event\TimeEvent;
 use AppBundle\Service\ContractorBalanceCalculateService;
 use AppBundle\Service\ContractorBalanceService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class TimeUpdateSubscriber implements EventSubscriberInterface
+class BalanceCalculateSubscriber implements EventSubscriberInterface
 {
     private $balanceCalculateService;
     private $balanceService;
+    private $entityManager;
 
-    public function __construct(ContractorBalanceCalculateService $balanceCalculateService, ContractorBalanceService $balanceService)
+    public function __construct(
+        ContractorBalanceCalculateService $balanceCalculateService,
+        ContractorBalanceService $balanceService,
+        EntityManagerInterface $entityManager
+    )
     {
         $this->balanceCalculateService = $balanceCalculateService;
         $this->balanceService = $balanceService;
+        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             TimeEvent::UPDATE => ['onTimeUpdate', 9999],
+            PaymentEvent::UPDATE => 'onPaymentUpdate',
         ];
     }
 
@@ -40,5 +50,16 @@ class TimeUpdateSubscriber implements EventSubscriberInterface
         }
 
         $this->balanceService->invalidate();
+    }
+
+    public function onPaymentUpdate(PaymentEvent $event): void
+    {
+        $payment = $event->getPayment();
+        $contractor = $payment->getContractor();
+        $date = $payment->getDate();
+
+        if ($timetable = $this->entityManager->getRepository(Timetable::class)->findOneByDate($date)) {
+            $this->balanceCalculateService->update($contractor, $timetable);
+        }
     }
 }

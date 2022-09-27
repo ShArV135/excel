@@ -19,7 +19,7 @@
                 {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
                     <button type="button" class="btn btn-default show-empty">Только незаполненные</button>
                 {% endif %}
-                {% if is_granted('ROLE_MANAGER') %}
+                {% if viewHelper.marginButton %}
                     <button class="btn btn-default margin-checker">
                         <i class="state-icon glyphicon glyphicon-unchecked"></i>
                         Показать маржу
@@ -56,19 +56,16 @@
             <a class="btn btn-default" href="{{ path('timetable_export', {'timetable': timetable.id, 'show': view_mode}) }}">
                 Экспорт
             </a>
-            {% if is_granted('ROLE_MANAGER') %}
+            {% set showModes = viewHelper.showModes(timetable.id) %}
+            {% if showModes|length %}
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Изменить вид
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                   
-                    <li><a href="{{ path('homepage') }}">Обычный</a></li>
-                    <li><a href="{{ path('homepage', {'show': 'customer_manager', 'id': timetable.id}) }}">Менеджер по продажам</a></li>
-                    <li><a href="{{ path('homepage', {'show': 'provider_manager', 'id': timetable.id}) }}">Менеджер по снабжению</a></li>
-                    <li><a href="{{ path('homepage', {'show': 'dispatcher', 'id': timetable.id}) }}">Диспетчер</a></li>
-{#               <li><a href="{{ path('homepage', {'show': 'all', 'id': timetable.id}) }}">Показать всё</a></li>     #}
-                    
+                    {% for route in showModes %}
+                        <li><a href="{{ route.path }}">{{ route.name }}</a></li>
+                    {% endfor %}
                 </ul>
             {% endif %}
         </div>

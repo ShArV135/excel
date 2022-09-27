@@ -20,7 +20,11 @@ class ManagerSalaryService
 
     public function rowProviderSalary(TimetableRow $timetableRow): float
     {
-        return $this->getSalary($timetableRow->getPriceForProvider(), $this->getSumTimes($timetableRow));
+        if ($price = $timetableRow->getPriceForProvider()) {
+            return $this->getSalary($price, $this->getSumTimes($timetableRow));
+        } else {
+            return 0;
+        }
     }
 
     public function getSalary(float $price, float $times): float

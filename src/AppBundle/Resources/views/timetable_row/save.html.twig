@@ -44,16 +44,18 @@
                         </div>
                     </div>
                 {% endif %}
-                {% if form.manager is defined %}
-                    <div class="row">
+                <div class="row">
+                    {% if form.manager is defined %}
                         <div class="col-md-6">
                             {{ form_row(form.manager) }}
                         </div>
+                    {% endif %}
+                    {% if form.providerManager is defined %}
                         <div class="col-md-6">
                             {{ form_row(form.providerManager) }}
                         </div>
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         {{ form_row(form.bitrix24Id) }}

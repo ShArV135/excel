@@ -43,7 +43,7 @@ class ContractorBalanceService
         }
 
         $this->init($timetable);
-        return $this->getOne($contractor, $timetable);
+        return $this->getOne($contractor, $timetable) ?? 0.0;
     }
 
     private function getOne(Contractor $contractor, Timetable $timetable): ?float

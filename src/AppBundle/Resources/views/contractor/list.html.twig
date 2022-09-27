@@ -30,10 +30,10 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    {% if not is_granted('ROLE_PROVIDER_MANAGER') %}
+                    {% if viewHelper.canCreateCustomer %}
                         <li><a href="{{ path('contractor_create', {'type': 'customer'}) }}">Заказчика</a></li>
                     {% endif %}
-                    {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
+                    {% if viewHelper.canCreateProvider %}
                         <li><a href="{{ path('contractor_create', {'type': 'provider'}) }}">Поставщика</a></li>
                     {% endif %}
                 </ul>

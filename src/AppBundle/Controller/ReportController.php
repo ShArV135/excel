@@ -13,6 +13,7 @@ use AppBundle\Service\Report\ReportConfig;
 use AppBundle\Service\Report\ReportSaleService;
 use AppBundle\Service\Report\SaleConfig;
 use AppBundle\Service\Report\SaleExportConfig;
+use AppBundle\Service\Report\SaleViewHelper;
 use AppBundle\Service\ReportHelper;
 use AppBundle\Service\Utils;
 use Doctrine\ORM\EntityNotFoundException;
@@ -131,7 +132,7 @@ class ReportController extends Controller
      * @param ReportSaleService $reportSaleService
      * @return Response
      */
-    public function saleAction(Request $request, ReportSaleService $reportSaleService): Response
+    public function saleAction(Request $request, ReportSaleService $reportSaleService, SaleViewHelper $viewHelper): Response
     {
         $timetableFilter = $this->createForm(
             ReportSaleFilterType::class,
@@ -176,6 +177,7 @@ class ReportController extends Controller
             [
                 'timetable_filter' => $timetableFilter->createView(),
                 'reports' => $reports,
+                'viewHelper' => $viewHelper,
             ]
         );
     }

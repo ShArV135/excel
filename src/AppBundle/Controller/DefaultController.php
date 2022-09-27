@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Contractor;
+use AppBundle\Service\Timetable\ViewHelper;
 use AppBundle\Service\TimetableHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,9 +20,10 @@ class DefaultController extends Controller
      * @Route("/", name="homepage")
      * @param Request $request
      * @param TimetableHelper $timetableHelper
+     * @param ViewHelper $viewHelper
      * @return Response
      */
-    public function indexAction(Request $request, TimetableHelper $timetableHelper): Response
+    public function indexAction(Request $request, TimetableHelper $timetableHelper, ViewHelper $viewHelper): Response
     {
         $em = $this->getDoctrine()->getManager();
         $currentTimetable = $em->getRepository('AppBundle:Timetable')->getCurrent();
@@ -30,7 +32,13 @@ class DefaultController extends Controller
             $timetable = $em->find('AppBundle:Timetable', $id);
 
             if ($timetable === $currentTimetable) {
-                return $this->redirectToRoute('homepage');
+                $params = [];
+
+                if ($show = $request->get('show')) {
+                    $params['show'] = $show;
+                }
+
+                return $this->redirectToRoute('homepage', $params);
             }
         } else {
             $timetable = $currentTimetable;
@@ -89,6 +97,7 @@ class DefaultController extends Controller
                 'customers' => $customers,
                 'providers' => $providers,
                 'view_mode' => $show,
+                'viewHelper' => $viewHelper,
             ]
         );
     }

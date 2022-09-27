@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * ContractorRepository
@@ -61,16 +62,11 @@ class ContractorRepository extends EntityRepository
         return $result;
     }
 
-    public function search($criteria)
+    public function search($criteria, QueryBuilder $qb)
     {
-        $qb = $this
-            ->createQueryBuilder('contractor')
-            ->addOrderBy('contractor.name', 'ASC')
-        ;
-
         if (!empty($criteria['type'])) {
             $qb
-                ->where($qb->expr()->eq('contractor.type', ':type'))
+                ->andWhere($qb->expr()->eq('contractor.type', ':type'))
                 ->setParameter('type', $criteria['type'])
             ;
         }

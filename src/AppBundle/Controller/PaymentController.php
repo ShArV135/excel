@@ -8,6 +8,8 @@ use AppBundle\Entity\Timetable;
 use AppBundle\Form\PaymentType;
 use AppBundle\Form\TimetablePaymentType;
 use AppBundle\Security\ContractorVoter;
+use AppBundle\Service\Contractor\GetListService;
+use AppBundle\Service\Payment\SaveService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,7 +27,7 @@ class PaymentController extends Controller
      * @param Contractor $contractor
      * @return RedirectResponse|Response
      */
-    public function createContractorAction(Request $request, Contractor $contractor)
+    public function createContractorAction(Request $request, Contractor $contractor, SaveService $saveService)
     {
         $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
 
@@ -39,11 +41,8 @@ class PaymentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
             try {
-                $em->persist($payment);
-                $em->flush();
+                $saveService->save($payment);
 
                 $this->addFlash('success', 'Оплата успешно добавлена');
                 return $this->redirectToRoute('contractor_view', ['contractor' => $contractor->getId()]);
@@ -63,52 +62,27 @@ class PaymentController extends Controller
 
     /**
      * @Route("/timetable/{timetable}/payments/create", name="timetable_payment_create", requirements={"timetable"="\d+"})
-     * @param Request   $request
+     * @param Request $request
      * @param Timetable $timetable
+     * @param GetListService $getListService
      * @return RedirectResponse|Response
      */
-    public function createTimetableAction(Request $request, Timetable $timetable)
+    public function createTimetableAction(Request $request, Timetable $timetable, GetListService $getListService, SaveService $saveService)
     {
         $payment = new Payment();
-
-        $qb = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository('AppBundle:Contractor')
-            ->createQueryBuilder('contractor')
-            ->addOrderBy('contractor.name', 'ASC')
-        ;
-
-        switch (true) {
-            case $this->isGranted('ROLE_CUSTOMER_MANAGER'):
-                $qb
-                    ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
-                    ->setParameter('manager', $this->getUser())
-                ;
-                break;
-            case $this->isGranted('ROLE_PROVIDER_MANAGER'):
-                $qb
-                    ->andWhere($qb->expr()->eq('contractor.type', ':type'))
-                    ->setParameter('type', Contractor::PROVIDER)
-                ;
-                break;
-        }
 
         $form = $this->createForm(
             TimetablePaymentType::class,
             $payment,
             [
-                'contractors_qb' => $qb
+                'contractors_qb' => $getListService->createQueryBuilder()
             ]
         );
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
             try {
-                $em->persist($payment);
-                $em->flush();
+                $saveService->save($payment);
 
                 $this->addFlash('success', 'Оплата успешно добавлена');
                 return $this->redirectToRoute('homepage', ['id' => $timetable->getId()]);

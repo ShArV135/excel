@@ -5,8 +5,9 @@ namespace AppBundle\Form;
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
+use AppBundle\Service\Contractor\GetListService;
 use AppBundle\Service\ManagerChoiceService;
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Service\TimetableRow\UpdateFormAccessService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -15,15 +16,18 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TimetableRowType extends AbstractType
 {
     private $managerChoiceService;
+    private $accessService;
+    private $getListService;
 
-    public function __construct(ManagerChoiceService $managerChoiceService)
+    public function __construct(ManagerChoiceService $managerChoiceService, UpdateFormAccessService $accessService, GetListService $getListService)
     {
         $this->managerChoiceService = $managerChoiceService;
+        $this->accessService = $accessService;
+        $this->getListService = $getListService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -70,7 +74,7 @@ class TimetableRowType extends AbstractType
                     'required' => false,
                     'label' => 'Заказчик',
                     'attr' => ['class' => 'timetable-row-contractor customer'],
-                    'choices' => $options['customers'],
+                    'choices' => $this->getListService->getCustomers(),
                     'class' => Contractor::class,
                     'choice_label' => 'name',
                 ]
@@ -78,7 +82,7 @@ class TimetableRowType extends AbstractType
             ->add('save', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn-primary']])
         ;
 
-        if ($options['choice_manager']) {
+        if ($this->accessService->customerManager()) {
             $builder
                 ->add(
                     'manager',
@@ -88,30 +92,30 @@ class TimetableRowType extends AbstractType
                         'class' => User::class,
                         'attr' => ['class' => 'select2me'],
                         'choice_label' => 'fullname',
-                        'query_builder' => $this->managerChoiceService->getBuilder(),
+                        'query_builder' => $this->managerChoiceService->getCustomerManagerBuilder(),
                     ]
                 )
+            ;
+        }
+
+        if ($this->accessService->providerManager()) {
+            $builder
                 ->add(
                     'providerManager',
                     EntityType::class,
                     [
                         'label' => 'Менеджер по снабжению',
                         'class' => User::class,
+                        'required' => false,
                         'attr' => ['class' => 'select2me'],
                         'choice_label' => 'fullname',
-                        'query_builder' => function(EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            return $qb
-                                ->where($qb->expr()->like('e.roles', ':roles'))
-                                ->setParameter('roles', '%PROVIDER_MANAGER%')
-                                ;
-                        },
+                        'query_builder' => $this->managerChoiceService->getProviderManagerBuilder(),
                     ]
                 )
             ;
         }
 
-        if ($options['choice_provider']) {
+        if ($this->accessService->provider()) {
             $builder
                 ->add(
                     'price_for_provider',
@@ -128,7 +132,7 @@ class TimetableRowType extends AbstractType
                         'required' => false,
                         'label' => 'Поставщик',
                         'attr' => ['class' => 'timetable-row-contractor provider'],
-                        'choices' => $options['providers'],
+                        'choices' => $this->getListService->getProviders(),
                         'class' => Contractor::class,
                         'choice_label' => 'name',
                     ]
@@ -151,16 +155,5 @@ class TimetableRowType extends AbstractType
     public function getBlockPrefix()
     {
         return null;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'choice_manager' => false,
-            'customer_choice_criteria' => [],
-            'choice_provider' => false,
-            'customers' => [],
-            'providers' => [],
-        ]);
     }
 }

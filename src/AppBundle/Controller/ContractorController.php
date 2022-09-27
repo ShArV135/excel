@@ -7,6 +7,9 @@ use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
 use AppBundle\Form\ContractorType;
 use AppBundle\Security\ContractorVoter;
+use AppBundle\Service\Contractor\CreateAccessService;
+use AppBundle\Service\Contractor\GetListService;
+use AppBundle\Service\Contractor\ViewHelper;
 use AppBundle\Service\ContractorBalanceService;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,32 +32,13 @@ class ContractorController extends Controller
     /**
      * @Route("/contractors/{page}", name="contractor_list")
      * @param Request $request
-     * @param int     $page
+     * @param GetListService $getListService
+     * @param int $page
      * @return Response
      */
-    public function listAction(Request $request, $page = 1)
+    public function listAction(Request $request, GetListService $getListService, ViewHelper $viewHelper, int $page = 1): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em
-            ->getRepository('AppBundle:Contractor')
-            ->createQueryBuilder('contractor')
-            ->addOrderBy('contractor.name', 'ASC')
-        ;
-
-        switch (true) {
-            case $this->isGranted('ROLE_CUSTOMER_MANAGER'):
-                $qb
-                    ->andWhere($qb->expr()->eq('contractor.manager', ':manager'))
-                    ->setParameter('manager', $this->getUser())
-                ;
-                break;
-            case $this->isGranted('ROLE_PROVIDER_MANAGER'):
-                $qb
-                    ->andWhere($qb->expr()->eq('contractor.type', ':type'))
-                    ->setParameter('type', Contractor::PROVIDER)
-                ;
-                break;
-        }
+        $qb = $getListService->createQueryBuilder();
 
         $filterForm = $this->createFormBuilder(
             null,
@@ -167,6 +151,7 @@ class ContractorController extends Controller
             [
                 'pagination' => $pagination,
                 'form' => $filterForm->createView(),
+                'viewHelper' => $viewHelper,
             ]
         );
     }
@@ -174,11 +159,15 @@ class ContractorController extends Controller
     /**
      * @Route("/contractors/create/{type}", name="contractor_create", requirements={"type"="\w+"})
      * @param Request $request
+     * @param CreateAccessService $accessService
      * @param         $type
      * @return RedirectResponse|Response
      */
-    public function createAction(Request $request, $type)
+    public function createAction(Request $request, CreateAccessService $accessService, $type)
     {
+        if (!$accessService->canCreate($type)) {
+            throw new AccessDeniedException('Access denied.');
+        }
         $contractor = new Contractor();
         $choiceManager = false;
 
@@ -195,9 +184,6 @@ class ContractorController extends Controller
                 }
                 break;
             case Contractor::PROVIDER:
-                if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-                    throw new AccessDeniedException('Access denied.');
-                }
                 $pageHeader = 'Добавить поставщика';
                 $successMessage = 'Поставщик успешно добавлен.';
                 $contractor->setType(Contractor::PROVIDER);
@@ -352,10 +338,11 @@ class ContractorController extends Controller
 
     /**
      * @param Request $request
+     * @param GetListService $getListService
      * @return JsonResponse
      * @Route("/contractors-ajax", name="contractor_ajax_search", options={"expose"=true})
      */
-    public function ajaxSearchAction(Request $request)
+    public function ajaxSearchAction(Request $request, GetListService $getListService)
     {
         $repository = $this->getDoctrine()->getRepository(Contractor::class);
 
@@ -368,11 +355,7 @@ class ContractorController extends Controller
             $criteria['name'] = $name;
         }
 
-        if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
-            $criteria['manager'] = $this->getUser();
-        }
-
-        $contractors = $repository->search($criteria);
+        $contractors = $repository->search($criteria, $getListService->createQueryBuilder());
 
         $result = [];
         /** @var Contractor $contractor */

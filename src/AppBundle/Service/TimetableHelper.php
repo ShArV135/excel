@@ -62,8 +62,8 @@ class TimetableHelper
 
         $timetableRowTimes = $this->timeStorage->get($timetableRow);
         $sumTimes = $timetableRowTimes->sumTimes();
-        $customerSalary = $this->salaryService->getSalary($timetableRow->getPriceForCustomer(), $sumTimes);
-        $providerSalary = $this->salaryService->getSalary($timetableRow->getPriceForProvider(), $sumTimes);
+        $customerSalary = $this->salaryService->rowCustomSalary($timetableRow);
+        $providerSalary = $this->salaryService->rowProviderSalary($timetableRow);
         $marginSum = MarginSumService::getMarginSum($customerSalary, $providerSalary);
 
         if ($customer) {
@@ -104,6 +104,9 @@ class TimetableHelper
     public function getShowMode()
     {
         switch (true) {
+            case $this->authorizationChecker->isGranted('ROLE_RENT_MANAGER'):
+                $show = $this->request->get('show', 'rent_manager');
+                break;
             case $this->authorizationChecker->isGranted('ROLE_CUSTOMER_MANAGER'):
                 $show = 'customer_manager';
                 break;
@@ -131,6 +134,28 @@ class TimetableHelper
     public function getColumnsByShow($show)
     {
         switch ($show) {
+            case 'rent_manager':
+                $columns = [
+                    'year',
+                    'month',
+                    'customer',
+                    'provider',
+                    'object',
+                    'mechanism',
+                    'comment',
+                    'price_for_customer',
+                    'price_for_provider',
+                    'sum_times',
+                    'times',
+                    'customer_salary',
+                    'customer_balance',
+                    'provider_salary',
+                    'provider_balance',
+                    'customer_organisation',
+                    'margin_sum',
+                    'margin_percent',
+                ];
+                break;
             case 'customer_manager':
                 $columns = [
                     'year',
@@ -243,7 +268,7 @@ class TimetableHelper
                 break;
         }
 
-        if (!$this->authorizationChecker->isGranted('ROLE_GENERAL_MANAGER')) {
+        if (!$this->authorizationChecker->isGranted('ROLE_GENERAL_MANAGER') && !$this->authorizationChecker->isGranted('ROLE_RENT_MANAGER')) {
             $index = array_search('margin_sum', $columns);
 
             if ($index !== false) {

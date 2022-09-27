@@ -8,10 +8,6 @@ use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
 use AppBundle\Service\Timetable\RowTimeStorage;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class ReportHelper
@@ -53,7 +49,7 @@ class ReportHelper
         $this->timeStorage->init($timetable);
         $customerManagers = $providerManagers = [];
         if ($user) {
-            if (in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles())) {
+            if (in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles(), true) || in_array('ROLE_RENT_MANAGER', $user->getRoles(), true)) {
                 $customerManagers = [$user];
             } else {
                 $providerManagers = [$user];
@@ -243,7 +239,7 @@ class ReportHelper
 
     private function isCustomer(User $user)
     {
-        return  (bool) array_intersect(['ROLE_CUSTOMER_MANAGER', 'ROLE_TOP_CUSTOMER_MANAGER'], $user->getRoles());
+        return  (bool) array_intersect(['ROLE_CUSTOMER_MANAGER', 'ROLE_TOP_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER'], $user->getRoles());
     }
 
     private function isTop(User $user)

@@ -6,7 +6,6 @@ use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Service\Utils;
 use Doctrine\ORM\EntityRepository;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * TimetableRepository
@@ -23,22 +22,7 @@ class TimetableRepository extends EntityRepository
      */
     public function getCurrent()
     {
-        $qb = $this->createQueryBuilder('timetable');
-
-        $date = new \DateTime();
-
-        $timetable = $qb
-            ->andWhere($qb->expr()->gte('timetable.created', ':from'))
-            ->andWhere($qb->expr()->lte('timetable.created', ':to'))
-            ->setParameters([
-                'to' => clone $date->modify('last day of')->setTime(0, 0),
-                'from' => clone $date->modify('first day of')->setTime(0, 0),
-            ])
-            ->orderBy('timetable.id', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $timetable = $this->findOneByDate(new \DateTime());
 
         if (!$timetable) {
             $timetable = $this->create();
@@ -114,5 +98,23 @@ class TimetableRepository extends EntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findOneByDate(\DateTime $date): ?Timetable
+    {
+        $qb = $this->createQueryBuilder('timetable');
+
+        return $qb
+            ->andWhere($qb->expr()->gte('timetable.created', ':from'))
+            ->andWhere($qb->expr()->lte('timetable.created', ':to'))
+            ->setParameters([
+                'to' => clone $date->modify('last day of')->setTime(0, 0),
+                'from' => clone $date->modify('first day of')->setTime(0, 0),
+            ])
+            ->orderBy('timetable.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Form\TimetableRowType;
@@ -28,7 +27,7 @@ class TimetableRowController extends Controller
         $timetableRow = new TimetableRow();
         $timetableRow->setTimetable($timetable);
 
-        $form = $this->getForm($timetableRow, $request);
+        $form = $this->getForm($timetableRow);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -65,7 +64,7 @@ class TimetableRowController extends Controller
     {
         $this->denyAccessUnlessGranted(TimetableRowVoter::EDIT, $timetableRow);
 
-        $form = $this->getForm($timetableRow, $request);
+        $form = $this->getForm($timetableRow);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -136,53 +135,16 @@ class TimetableRowController extends Controller
         return new JsonResponse(['has_act' => $timetableRow->isHasAct()]);
     }
 
-    private function getForm(TimetableRow $timetableRow, Request $request)
+    private function getForm(TimetableRow $timetableRow)
     {
-        $contractorRepository = $this->getDoctrine()->getRepository(Contractor::class);
-        $choiceManager = false;
-        $choiceProvider = false;
-        $providers = [];
-
-        if (!$organization = $request->get('organization')) {
-            if ($organization = $timetableRow->getOrganization()) {
-                $organization = $organization->getId();
-            } else {
-                $organization = null;
-            }
-        }
-
         if ($this->isGranted('ROLE_CUSTOMER_MANAGER')) {
             $user = $this->getUser();
-
             $timetableRow->setManager($user);
-            $customers = $contractorRepository->search([
-                'type' => Contractor::CUSTOMER,
-                'organisation' => $organization,
-                'manager' => $user,
-            ]);
-        } else {
-            $choiceManager = true;
-            $choiceProvider = true;
-            $providers = $contractorRepository->search([
-                'type' => Contractor::PROVIDER,
-            ]);
-            $customers = $contractorRepository->search([
-                'type' => Contractor::CUSTOMER,
-                'organisation' => $organization,
-            ]);
         }
 
-        $form = $this->createForm(
+        return $this->createForm(
             TimetableRowType::class,
-            $timetableRow,
-            [
-                'choice_manager' => $choiceManager,
-                'customers' => $customers,
-                'providers' => $providers,
-                'choice_provider' => $choiceProvider,
-            ]
+            $timetableRow
         );
-
-        return $form;
     }
 }
