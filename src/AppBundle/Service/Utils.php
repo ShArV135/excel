@@ -13,7 +13,12 @@ class Utils
 
     public static function isCustomerManager(User $user): bool
     {
-        return  (bool) array_intersect(['ROLE_CUSTOMER_MANAGER', 'ROLE_TOP_CUSTOMER_MANAGER'], $user->getRoles());
+        return  (bool) array_intersect(['ROLE_CUSTOMER_MANAGER', 'ROLE_TOP_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER'], $user->getRoles());
+    }
+
+    public static function isRentManager(User $user): bool
+    {
+        return  (bool) array_intersect(['ROLE_RENT_MANAGER'], $user->getRoles());
     }
 
     public static function getMonth(\DateTime $dateTime): string

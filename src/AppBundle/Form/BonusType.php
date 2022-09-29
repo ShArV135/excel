@@ -12,9 +12,10 @@ class BonusType extends AbstractType
     {
         $types = [
             'customer' => 'Менеджеры по продажам',
-            'top_customer' => 'Старший менеджеры по продажам',
+            'top_customer' => 'Старшиe менеджеры по продажам',
             'provider' => 'Менеджеры по снабжению',
-            'top_provider' => 'Старший менеджеры по снабжению'
+            'top_provider' => 'Старшиe менеджеры по снабжению',
+            'rent_manager' => 'Менеджеры по аренде техники',
         ];
 
         foreach ($types as $type => $label) {

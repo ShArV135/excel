@@ -152,6 +152,7 @@ class TimetableHelper
                     'provider_salary',
                     'provider_balance',
                     'customer_organisation',
+                    'provider_organisation',
                     'margin_sum',
                     'margin_percent',
                 ];

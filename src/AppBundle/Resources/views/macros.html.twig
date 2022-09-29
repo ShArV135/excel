@@ -1,4 +1,4 @@
-{% macro manager_report(report, i, list_mode) %}
+{% macro manager_report(report, i, list_mode, viewHelper) %}
     {% set customer_summary_data = report.customer_summary_data %}
     {% set provider_summary_data = report.provider_summary_data %}
     {% set customer_manager_data = report.customer_manager_data %}
@@ -24,11 +24,13 @@
                             <th>ФИО</th>
                             <th class="col-md-1">Заказчиков</th>
                             <th class="col-md-1">Выполнение<br>плана продаж</th>
-                            <th class="col-md-1">Наработка</th>
-                            {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                            {% if viewHelper.salaryColumn %}
+                                <th class="col-md-1">Наработка</th>
+                            {% endif %}
+                            {% if viewHelper.marginSumColumn %}
                                 <th class="col-md-1">Маржа</th>
                             {% endif %}
-                            {% if is_granted('ROLE_MANAGER') %}
+                            {% if viewHelper.marginPercentColumn %}
                                 <th class="col-md-1">Маржа, %</th>
                             {% endif %}
                             <th class="col-md-1">Бонус</th>
@@ -60,11 +62,13 @@
                                 </td>
                                 <td>{{ customer_row.contractors }}</td>
                                 <td class="nowrap">{{ customer_row.plan_completed_percent~'%' }}</td>
-                                <td class="nowrap">{{ customer_row.salary|number_format(2, '.', ' ') }}</td>
-                                {% if is_granted('ROLE_GENERAL_MANAGER') %}
+                                {% if viewHelper.salaryColumn %}
+                                    <td class="nowrap">{{ customer_row.salary|number_format(2, '.', ' ') }}</td>
+                                {% endif %}
+                                {% if viewHelper.marginSumColumn %}
                                     <td class="nowrap">{{ customer_row.margin_sum|number_format(2, '.', ' ') }}</td>
                                 {% endif %}
-                                {% if is_granted('ROLE_MANAGER') %}
+                                {% if viewHelper.marginPercentColumn %}
                                     <td class="nowrap">{{ customer_row.margin_percent|number_format(2, '.', ' ') }}</td>
                                 {% endif %}
                                 <td class="nowrap">{{ customer_row.bonus|number_format(2, '.', ' ') }}</td>

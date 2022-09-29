@@ -15,7 +15,7 @@
             {{ form_end(timetable_filter) }}
         </div>
         {% if report %}
-            {{ macros.manager_report(report, 0, false) }}
+            {{ macros.manager_report(report, 0, false, viewHelper) }}
         {% endif %}
         {% if sales_data %}
             <div class="row">

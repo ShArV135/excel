@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Plan;
 use AppBundle\Entity\Timetable;
+use AppBundle\Entity\User;
 use AppBundle\Service\PlanDataService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -75,6 +76,7 @@ class PlanController extends Controller
                     $plan->setUser($em->find('AppBundle:User', $userId));
                     $plan->setTimetable($currentTimetable);
                     $em->persist($plan);
+                    $plan->setMargin($amount);
                 }
 
                 $plan->setAmount($amount);
@@ -83,7 +85,7 @@ class PlanController extends Controller
             $em->flush();
         }
 
-        $users = $em->getRepository('AppBundle:User')->getManagers();
+        $users = $em->getRepository(User::class)->getManagers(['ROLE_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER']);
         $plans = $em->getRepository('AppBundle:Plan')->findBy(['timetable' => $timetable]);
         $planByUsers = [];
         foreach ($plans as $plan) {

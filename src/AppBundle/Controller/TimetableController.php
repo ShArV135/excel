@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Entity\TimetableRowTimes;
+use AppBundle\Entity\User;
 use AppBundle\Service\Timetable\RowTimeStorage;
 use AppBundle\Service\TimetableHelper;
 use AppBundle\Service\Utils;
@@ -154,8 +155,8 @@ class TimetableController extends Controller
         }
         $timetableRows = $em->getRepository('AppBundle:TimetableRow')->findBy($criteria, ['customer' => 'ASC', 'object' => 'ASC']);
 
-        if (in_array('manager', $columns)) {
-            $managersById = $em->getRepository('AppBundle:User')->getManagersById();
+        if (in_array('manager', $columns, true)) {
+            $managersById = $em->getRepository(User::class)->getManagersById();
         } else {
             $managersById = [];
         }

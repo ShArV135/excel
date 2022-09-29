@@ -61,14 +61,14 @@ class DefaultController extends Controller
         $columns = $timetableHelper->getColumnsByShow($show);
         $numOfFixed = count(array_intersect($columns, $fixedColumns));
 
-        if (in_array('manager', $columns)) {
+        if (in_array('manager', $columns, true)) {
             $managersByFio = $em->getRepository('AppBundle:User')->getManagersByFio($timetable);
         } else {
             $managersByFio = [];
         }
 
-        if (in_array('provider_manager', $columns)) {
-            $providerManagersByFio = $em->getRepository('AppBundle:User')->getManagersByFio($timetable, 'ROLE_PROVIDER_MANAGER');
+        if (in_array('provider_manager', $columns, true)) {
+            $providerManagersByFio = $em->getRepository('AppBundle:User')->getManagersByFio($timetable, ['ROLE_PROVIDER_MANAGER', 'ROLE_RENT_MANAGER']);
         } else {
             $providerManagersByFio = [];
         }

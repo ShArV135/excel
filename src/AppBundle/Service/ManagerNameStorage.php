@@ -20,7 +20,7 @@ class ManagerNameStorage
     public function init(): void
     {
         $this->customerStorage = $this->entityManager->getRepository(User::class)->getManagersById();
-        $this->providerStorage = $this->entityManager->getRepository(User::class)->getManagersById('ROLE_PROVIDER_MANAGER');
+        $this->providerStorage = $this->entityManager->getRepository(User::class)->getManagersById(['ROLE_PROVIDER_MANAGER', 'ROLE_RENT_MANAGER']);
     }
 
     public function getCustomer(int $id): string

@@ -15,12 +15,12 @@
             {{ form_end(timetable_filter) }}
         </div>
         {% if report %}
-            {{ macros.manager_report(report, 0, true) }}
+            {{ macros.manager_report(report, 0, true, viewHelper) }}
         {% endif %}
         {% if report_by_organisations %}
             {% for i, report_by_organisation in report_by_organisations %}
                 <h3>{{ report_by_organisation.organisation.name }}</h3>
-                {{ macros.manager_report(report_by_organisation.report, i, true) }}
+                {{ macros.manager_report(report_by_organisation.report, i, true, viewHelper) }}
             {% endfor %}
         {% endif %}
     </div>

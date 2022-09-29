@@ -8,6 +8,7 @@ use AppBundle\Form\ReportManagerFilterType;
 use AppBundle\Form\ReportProvideFilterType;
 use AppBundle\Form\ReportSaleFilterType;
 use AppBundle\Security\UserVoter;
+use AppBundle\Service\Report\ManagerViewHelper;
 use AppBundle\Service\Report\ProvideService;
 use AppBundle\Service\Report\ReportConfig;
 use AppBundle\Service\Report\ReportSaleService;
@@ -17,6 +18,9 @@ use AppBundle\Service\Report\SaleViewHelper;
 use AppBundle\Service\ReportHelper;
 use AppBundle\Service\Utils;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +35,7 @@ class ReportController extends Controller
      * @throws \Doctrine\ORM\ORMException
      * @Route("/report-manager", name="report_manager")
      */
-    public function managerAction(Request $request, ReportHelper $reportHelper)
+    public function managerAction(Request $request, ReportHelper $reportHelper, ManagerViewHelper $viewHelper)
     {
         if (!$this->isGranted('ROLE_MANAGER')) {
             return $this->redirectToRoute('report_manager_detail', ['user' => $this->getUser()->getId()]);
@@ -41,7 +45,7 @@ class ReportController extends Controller
         $timetableFilter = $this->createForm(ReportManagerFilterType::class);
         $timetableFilter->handleRequest($request);
 
-        $report = $reportByOrganisations = $timetable = null;
+        $report = $reportByOrganisations = null;
         if ($timetableFilter->isValid()) {
 
             /** @var Timetable $timetable */
@@ -72,22 +76,31 @@ class ReportController extends Controller
                 'timetable_filter' => $timetableFilter->createView(),
                 'report' => $report,
                 'report_by_organisations' => $reportByOrganisations,
+                'viewHelper' => $viewHelper,
             ]
         );
     }
 
     /**
-     * @param Request           $request
-     * @param User              $user
+     * @param Request $request
+     * @param User $user
      * @param ReportSaleService $reportSaleService
+     * @param ReportHelper $reportHelper
+     * @param ManagerViewHelper $viewHelper
      * @return Response
      * @throws EntityNotFoundException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @Route("/report-manager/{user}", name="report_manager_detail")
      */
-    public function managerDetailAction(Request $request, User $user, ReportSaleService $reportSaleService, ReportHelper $reportHelper): Response
+    public function managerDetailAction(
+        Request $request,
+        User $user,
+        ReportSaleService $reportSaleService,
+        ReportHelper $reportHelper,
+        ManagerViewHelper $viewHelper
+    ): Response
     {
         $this->denyAccessUnlessGranted(UserVoter::VIEW_REPORT, $user);
 
@@ -122,6 +135,7 @@ class ReportController extends Controller
                 'report' => $report,
                 'user' => $user,
                 'sales_data' => $salesData,
+                'viewHelper' => $viewHelper,
             ]
         );
     }

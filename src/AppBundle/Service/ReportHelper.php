@@ -6,6 +6,7 @@ use AppBundle\Entity\Bonus;
 use AppBundle\Entity\Organisation;
 use AppBundle\Entity\Timetable;
 use AppBundle\Entity\User;
+use AppBundle\Service\Bonus\BonusCalculator;
 use AppBundle\Service\Timetable\RowTimeStorage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -55,9 +56,9 @@ class ReportHelper
                 $providerManagers = [$user];
             }
         } else {
-            $customerManagers = $this->entityManager->getRepository('AppBundle:User')->getManagers();
+            $customerManagers = $this->entityManager->getRepository(User::class)->getManagers(['ROLE_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER']);
 
-            $providerManagers = $this->entityManager->getRepository('AppBundle:User')->getManagers('ROLE_PROVIDER_MANAGER');
+            $providerManagers = $this->entityManager->getRepository(User::class)->getManagers(['ROLE_PROVIDER_MANAGER']);
         }
         $customerManagerData = [];
         /** @var User $customerManager */
@@ -191,30 +192,9 @@ class ReportHelper
             $row['plan_completed_percent'] = $planData['plan_completed_percent'];
         }
 
-        $isTop = $this->isTop($user);
-        if ($isCustomer) {
-            if ($isTop) {
-                $bonusType = Bonus::MANAGER_TYPE_TOP_CUSTOMER;
-            } else {
-                $bonusType = Bonus::MANAGER_TYPE_CUSTOMER;
-            }
-        } elseif ($isTop) {
-            $bonusType = Bonus::MANAGER_TYPE_TOP_PROVIDER;
-        } else {
-            $bonusType = Bonus::MANAGER_TYPE_PROVIDER;
-        }
-
-        if ($bonus = $this->getBonus($bonusType)) {
-            switch ($bonus->getType()) {
-                case Bonus::TYPE_FROM_SALARY:
-                    $row['bonus'] = $row['salary'] * $bonus->getValue() / 100;
-                    break;
-                case Bonus::TYPE_FROM_MARGIN:
-                    $row['bonus'] = $row['margin_sum'] * $bonus->getValue() / 100;
-                    break;
-                default:
-                    $row['bonus'] = 0;
-            }
+        if ($bonus = $this->entityManager->getRepository(Bonus::class)->getForUser($user)) {
+            $calculator = new BonusCalculator($bonus, $row['salary'], $row['margin_sum']);
+            $row['bonus'] = $calculator->calculate();
         } else {
             $row['bonus'] = 0;
         }

@@ -55,10 +55,7 @@ class ManagerChoiceService
                 ->setParameter('id', $user->getId())
             ;
         } else {
-            $qb
-                ->where($qb->expr()->like('u.roles', ':roles'))
-                ->setParameter('roles', '%PROVIDER_MANAGER%')
-            ;
+            return $this->entityManager->getRepository(User::class)->getManagerQueryBuilder(['PROVIDER_MANAGER', 'RENT_MANAGER']);
         }
 
         return $qb;

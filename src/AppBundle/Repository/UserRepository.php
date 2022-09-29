@@ -15,18 +15,9 @@ use Doctrine\ORM\QueryBuilder;
  */
 class UserRepository extends EntityRepository
 {
-    /**
-     * @param Timetable $timetable
-     * @param string    $role
-     * @return array
-     */
-    public function getManagersByFio(Timetable $timetable, $role = 'ROLE_CUSTOMER_MANAGER')
+    public function getManagersByFio(Timetable $timetable, $roles = ['ROLE_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER']): array
     {
-        $qb = $this->createQueryBuilder('user');
-        $qb
-            ->where($qb->expr()->like('user.roles', ':roles'))
-            ->setParameter('roles', '%'.$role.'%')
-        ;
+        $qb = $this->getManagerQueryBuilder($roles);
 
         $subQb = $this
             ->getEntityManager()
@@ -48,8 +39,8 @@ class UserRepository extends EntityRepository
 
         $qb
             ->andWhere($qb->expr()->orX(
-                $qb->expr()->in('user.id', $subQb->getDQL()),
-                $qb->expr()->in('user.id', $subQb2->getDQL())
+                $qb->expr()->in('entity.id', $subQb->getDQL()),
+                $qb->expr()->in('entity.id', $subQb2->getDQL())
             ))
             ->setParameter('timetable', $timetable)
         ;
@@ -65,13 +56,9 @@ class UserRepository extends EntityRepository
         return $managersByFio;
     }
 
-    /**
-     * @param string $role
-     * @return array
-     */
-    public function getManagersById($role = 'ROLE_CUSTOMER_MANAGER')
+    public function getManagersById($roles = ['ROLE_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER']): array
     {
-        $managers = $this->getManagers($role);
+        $managers = $this->getManagers($roles);
 
         $managersById = [];
         /** @var User $manager */
@@ -82,11 +69,7 @@ class UserRepository extends EntityRepository
         return $managersById;
     }
 
-    /**
-     * @param string $role
-     * @return array
-     */
-    public function getManagers($role = 'ROLE_CUSTOMER_MANAGER')
+    public function getManagers($role = ['ROLE_CUSTOMER_MANAGER']): array
     {
         return
             $this->getManagerQueryBuilder($role)
@@ -96,14 +79,16 @@ class UserRepository extends EntityRepository
         ;
     }
 
-    public function getManagerQueryBuilder($role = 'ROLE_CUSTOMER_MANAGER'): QueryBuilder
+    public function getManagerQueryBuilder($roles = ['ROLE_CUSTOMER_MANAGER']): QueryBuilder
     {
         $qb = $this->createQueryBuilder('entity');
 
-        return
-            $qb
-            ->where($qb->expr()->like('entity.roles', ':roles'))
-            ->setParameter('roles', '%'.$role.'%')
-        ;
+        $orX = $qb->expr()->orX();
+        foreach ($roles as $i => $role) {
+            $orX->add($qb->expr()->like('entity.roles', ':roles'.$i));
+            $qb->setParameter('roles'.$i, '%'.$role.'%');
+        }
+
+        return $qb->andWhere($orX);
     }
 }

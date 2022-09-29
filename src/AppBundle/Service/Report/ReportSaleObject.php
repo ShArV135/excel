@@ -5,6 +5,7 @@ namespace AppBundle\Service\Report;
 use AppBundle\Entity\Bonus;
 use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Timetable;
+use AppBundle\Service\Bonus\BonusCalculator;
 
 class ReportSaleObject implements ReportObjectInterface
 {
@@ -70,12 +71,8 @@ class ReportSaleObject implements ReportObjectInterface
 
     public function calculateBonus(Bonus $bonus): void
     {
-        $value = $bonus->getValue();
-        if ($bonus->getType() === Bonus::TYPE_FROM_SALARY) {
-            $this->bonus = ($value * $this->salary) / 100;
-        } elseif ($bonus->getType() === Bonus::TYPE_FROM_MARGIN) {
-            $this->bonus = ($value * $this->marginSum) / 100;
-        }
+        $calculator = new BonusCalculator($bonus, $this->salary, $this->marginSum);
+        $this->bonus = $calculator->calculate();
     }
 
     public function getBonus(): float

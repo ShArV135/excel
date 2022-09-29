@@ -20,15 +20,23 @@ class BonusRepository extends EntityRepository
         $isTop = Utils::isTopManager($user);
 
         if ($isCustomer) {
+            $isRent = Utils::isRentManager($user);
+
+            if ($isRent) {
+                return Bonus::MANAGER_TYPE_RENT;
+            }
+
             if ($isTop) {
                 return Bonus::MANAGER_TYPE_TOP_CUSTOMER;
-            } else {
-                return Bonus::MANAGER_TYPE_CUSTOMER;
             }
-        } elseif ($isTop) {
-            return Bonus::MANAGER_TYPE_TOP_PROVIDER;
-        } else {
-            return Bonus::MANAGER_TYPE_PROVIDER;
+
+            return Bonus::MANAGER_TYPE_CUSTOMER;
         }
+
+        if ($isTop) {
+            return Bonus::MANAGER_TYPE_TOP_PROVIDER;
+        }
+
+        return Bonus::MANAGER_TYPE_PROVIDER;
     }
 }

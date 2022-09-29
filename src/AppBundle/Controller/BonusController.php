@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Bonus;
 use AppBundle\Form\BonusType;
+use Beta\B;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,7 @@ class BonusController extends Controller
             Bonus::MANAGER_TYPE_TOP_CUSTOMER => new Bonus(),
             Bonus::MANAGER_TYPE_PROVIDER => new Bonus(),
             Bonus::MANAGER_TYPE_TOP_PROVIDER => new Bonus(),
+            Bonus::MANAGER_TYPE_RENT => new Bonus(),
         ];
         $data = [];
         foreach ($bonuses as $bonus) {
