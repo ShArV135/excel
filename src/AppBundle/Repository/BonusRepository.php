@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 class BonusRepository extends EntityRepository
 {
-    public function getForUser(User $user): Bonus
+    public function getForUser(User $user): ?Bonus
     {
         return $this->findOneBy(['managerType' => $this->getBonusType($user)]);
     }
