@@ -6,12 +6,12 @@ use AppBundle\Entity\Contractor;
 use AppBundle\Entity\Organisation;
 use AppBundle\Entity\User;
 use AppBundle\Form\ContractorType;
+use AppBundle\Repository\UserRepository;
 use AppBundle\Security\ContractorVoter;
 use AppBundle\Service\Contractor\CreateAccessService;
 use AppBundle\Service\Contractor\GetListService;
 use AppBundle\Service\Contractor\ViewHelper;
 use AppBundle\Service\ContractorBalanceService;
-use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -98,12 +98,8 @@ class ContractorController extends Controller
                         'class' => User::class,
                         'attr' => ['class' => 'select2me'],
                         'choice_label' => 'fullname',
-                        'query_builder' => function(EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            return $qb
-                                ->where($qb->expr()->like('e.roles', ':roles'))
-                                ->setParameter('roles', '%ROLE_CUSTOMER_MANAGER%')
-                                ;
+                        'query_builder' => function(UserRepository $repository) {
+                            return $repository->getManagerQueryBuilder(['ROLE_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER']);
                         },
                     ]
                 )

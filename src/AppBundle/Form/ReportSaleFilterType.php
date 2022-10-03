@@ -95,7 +95,7 @@ class ReportSaleFilterType extends AbstractType
                         'choice_label' => 'fullname',
                         'label' => 'Менеджер',
                         'query_builder' => function(UserRepository $repository) {
-                            return $repository->getManagerQueryBuilder();
+                            return $repository->getManagerQueryBuilder(['ROLE_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER']);
                         },
                     ]
                 )
