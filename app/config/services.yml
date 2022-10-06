@@ -38,3 +38,7 @@ services:
     AppBundle\Service\Bitrix\CRestProvider:
         arguments:
             $webhookUrl: '%crest_webhook_url%'
+
+    AppBundle\Security\ContractorVoter:
+        arguments:
+            $roleHierarchy: '@security.role_hierarchy'

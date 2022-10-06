@@ -19,13 +19,14 @@ class TimetableRowDeleteService
 
     public function checkDelete(TimetableRow $timetableRow): void
     {
+        $this->checkTimes($timetableRow);
+
         $customerBalance = $this->balanceService->getBalance($timetableRow->getCustomer(), $timetableRow->getTimetable());
 
         if ($customerBalance >= 0) {
             return;
         }
 
-        $this->checkTimes($timetableRow);
         $this->checkSiblings($timetableRow);
     }
 
@@ -41,7 +42,7 @@ class TimetableRowDeleteService
         }
 
         if ($times->sumTimes() > 0) {
-            throw new \RuntimeException('Невозможно удалить запись с отрицательным балансом. Есть работы.');
+            throw new \RuntimeException('Невозможно удалить запись, если сумма часов больше нуля.');
         }
     }
 

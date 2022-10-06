@@ -137,9 +137,7 @@
                                 <td>{{ contact.email }}</td>
                                 <td>{{ contact.comment }}</td>
                                 <td>
-                                    {% if is_granted('ROLE_MANAGER') %}
-                                        <a href="{{ path('contact_delete', {'contact': contact.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
-                                    {% endif %}
+                                    <a href="{{ path('contact_update', {'contact': contact.id, 'contractor': contractor.id}) }}" class="btn-sm btn btn-default">Ред.</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -177,9 +175,7 @@
                                 <td>{{ payment.amount }}</td>
                                 <td>{{ payment.comment }}</td>
                                 <td>
-                                    {% if is_granted('ROLE_MANAGER') %}
-                                        <a href="{{ path('payment_delete', {'payment': payment.id}) }}" class="btn-sm btn btn-danger">Удалить</a>
-                                    {% endif %}
+                                    <a href="{{ path('payment_update', {'payment': payment.id, 'contractor': contractor.id}) }}" class="btn-sm btn btn-default">Ред.</a>
                                 </td>
                             </tr>
                         {% endfor %}

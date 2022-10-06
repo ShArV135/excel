@@ -31,6 +31,8 @@ class UserReportRouteService
                 return $this->customerManagerReports();
             case $this->authorizationChecker->isGranted('ROLE_PROVIDER_MANAGER'):
                 return $this->providerManagerReports();
+            case $this->authorizationChecker->isGranted('ROLE_DISPATCHER'):
+                return $this->dispatcherReports();
             default:
                 return [];
         }
@@ -66,6 +68,14 @@ class UserReportRouteService
     {
         return [
             new Route($this->router->generate('report_manager', ['user' => $this->userService->getUser()]), 'Эффективность'),
+            new Route($this->router->generate('report_provide'), 'По снабжению'),
+        ];
+    }
+
+    private function dispatcherReports(): array
+    {
+        return [
+            new Route($this->router->generate('report_sale'), 'По продажам'),
             new Route($this->router->generate('report_provide'), 'По снабжению'),
         ];
     }

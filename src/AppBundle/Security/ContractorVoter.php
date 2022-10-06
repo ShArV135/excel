@@ -6,14 +6,23 @@ use AppBundle\Entity\Contractor;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 class ContractorVoter extends Voter
 {
-    const VIEW = 'view';
-    const EDIT = 'edit';
-    const DELETE = 'delete';
+    public const VIEW = 'view';
+    public const EDIT = 'edit';
+    public const DELETE = 'delete';
 
-    protected function supports($attribute, $subject)
+    private $roleHierarchy;
+
+    public function __construct(RoleHierarchyInterface $roleHierarchy)
+    {
+        $this->roleHierarchy = $roleHierarchy;
+    }
+
+    protected function supports($attribute, $subject): bool
     {
         if (!in_array($attribute, array(self::VIEW, self::EDIT, self::DELETE))) {
             return false;
@@ -36,7 +45,7 @@ class ContractorVoter extends Voter
      *
      * @return bool
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
 
@@ -48,19 +57,34 @@ class ContractorVoter extends Voter
             return false;
         }
 
-        if ($attribute === self::VIEW) {
-            if (in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles())) {
-                return $user === $subject->getManager();
-            }
-
-            if (in_array('ROLE_PROVIDER_MANAGER', $user->getRoles())) {
-                return $subject->getType() === Contractor::PROVIDER;
-            }
-
-            return true;
+        if ($attribute === self::DELETE) {
+            return $this->isGranted($user, 'ROLE_MANAGER');
         }
 
-        return in_array('ROLE_MANAGER', $user->getRoles())
-            || in_array('ROLE_GENERAL_MANAGER', $user->getRoles());
+        if (in_array('ROLE_CUSTOMER_MANAGER', $user->getRoles(), true)) {
+            return $user === $subject->getManager();
+        }
+
+        if (in_array('ROLE_PROVIDER_MANAGER', $user->getRoles(), true)) {
+            return $subject->getType() === Contractor::PROVIDER;
+        }
+
+        return true;
+    }
+
+    private function isGranted(User $user, string $roleCheck): bool
+    {
+        $roles = array_map(static function(string $role) {
+            return new Role($role);
+        }, $user->getRoles());
+        $roles = $this->roleHierarchy->getReachableRoles($roles);
+
+        foreach ($roles as $role) {
+            if ($role->getRole() === $roleCheck) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

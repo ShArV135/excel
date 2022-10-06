@@ -65,9 +65,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if is_granted('ROLE_MANAGER') %}
-                            <a href="{{ path('contractor_update', {'contractor': contractor.id, 'redirect_to': app.request.uri}) }}" class="btn-sm btn btn-default">Редактировать</a>
-                        {% endif %}
+                        <a href="{{ path('contractor_update', {'contractor': contractor.id, 'redirect_to': app.request.uri}) }}" class="btn-sm btn btn-default">Редактировать</a>
                     </td>
                 </tr>
             {% endfor %}

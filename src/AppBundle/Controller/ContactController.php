@@ -60,26 +60,41 @@ class ContactController extends Controller
     }
 
     /**
-     * @Route("/contacts/{contact}/delete", name="contact_delete", requirements={"contact"="\d+"})
-     * @param Contact $contact
+     * @Route("/contractors/{contractor}/contacts/{contact}", name="contact_update", requirements={"contractor"="\d+"})
      * @param Request $request
-     * @return RedirectResponse
+     * @param Contractor $contractor
+     * @param Contact $contact
+     * @return RedirectResponse|Response
      */
-    public function deleteAction(Contact $contact, Request $request)
+    public function updateAction(Request $request, Contractor $contractor, Contact $contact): Response
     {
-        $this->denyAccessUnlessGranted(ContractorVoter::DELETE, $contact->getContractor());
+        $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
 
-        try {
+        $form = $this->createForm(
+            ContactType::class,
+            $contact
+        );
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($contact);
-            $em->flush();
-            $this->addFlash('success', 'Контакт удален.');
-        } catch (\Exception $e) {
-            $this->addFlash('warning', 'При удалении возникла ошибка.');
+
+            try {
+                $em->flush();
+
+                $this->addFlash('success', 'Контакт успешно изменен');
+                return $this->redirectToRoute('contractor_view', ['contractor' => $contractor->getId()]);
+            } catch (\Exception $e) {
+                $this->addFlash('warning', 'При сохранении возникла ошибка.');
+            }
         }
 
-        $referer = $request->headers->get('referer');
-
-        return $this->redirect($request->get('redirect_url', $referer));
+        return $this->render(
+            '@App/contact/save.html.twig',
+            [
+                'page_header' => 'Создать контакт',
+                'form' => $form->createView(),
+            ]
+        );
     }
 }

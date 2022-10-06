@@ -101,26 +101,40 @@ class PaymentController extends Controller
     }
 
     /**
-     * @Route("/payments/{payment}/delete", name="payment_delete", requirements={"payment"="\d+"})
-     * @param Payment $payment
+     * @Route("/contractors/{contractor}/payments/{payment}", name="payment_update", requirements={"contractor"="\d+"})
      * @param Request $request
-     * @return RedirectResponse
+     * @param Contractor $contractor
+     * @param SaveService $saveService
+     * @param Payment $payment
+     * @return RedirectResponse|Response
      */
-    public function deleteAction(Payment $payment, Request $request)
+    public function updateAction(Request $request, Contractor $contractor, SaveService $saveService, Payment $payment): Response
     {
-        $this->denyAccessUnlessGranted(ContractorVoter::DELETE, $payment->getContractor());
+        $this->denyAccessUnlessGranted(ContractorVoter::VIEW, $contractor);
 
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($payment);
-            $em->flush();
-            $this->addFlash('success', 'Оплата удалена.');
-        } catch (\Exception $e) {
-            $this->addFlash('warning', 'При удалении возникла ошибка.');
+        $form = $this->createForm(
+            PaymentType::class,
+            $payment
+        );
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            try {
+                $saveService->save($payment);
+
+                $this->addFlash('success', 'Оплата успешно изменена');
+                return $this->redirectToRoute('contractor_view', ['contractor' => $contractor->getId()]);
+            } catch (\Exception $e) {
+                $this->addFlash('warning', 'При сохранении возникла ошибка.');
+            }
         }
 
-        $referer = $request->headers->get('referer');
-
-        return $this->redirect($request->get('redirect_url', $referer));
+        return $this->render(
+            '@App/payment/save.html.twig',
+            [
+                'page_header' => 'Создать оплату',
+                'form' => $form->createView(),
+            ]
+        );
     }
 }
