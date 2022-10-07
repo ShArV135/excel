@@ -41,8 +41,8 @@ class TimetableRowDeleteService
             return;
         }
 
-        if ($times->sumTimes() > 0) {
-            throw new \RuntimeException('Невозможно удалить запись, если сумма часов больше нуля.');
+        if ($times->sumTimes() !== 0.0) {
+            throw new \RuntimeException('Удаление запрещено.');
         }
     }
 
@@ -62,6 +62,6 @@ class TimetableRowDeleteService
             return;
         }
 
-        throw new \RuntimeException('Невозможно удалить запись с отрицательным балансом. Это последняя запись с данным заказчиком.');
+        throw new \RuntimeException('Удаление запрещено.');
     }
 }
