@@ -23,20 +23,15 @@ class ManagerChoiceService
 
     public function getCustomerManagerBuilder(): QueryBuilder
     {
-        $qb = $this
+        if (!$this->authorizationChecker->isGranted('ROLE_MANAGER')) {
+            return $this->entityManager->getRepository(User::class)->getManagerQueryBuilder(['ROLE_CUSTOMER_MANAGER', 'ROLE_RENT_MANAGER']);
+        }
+
+        return $this
             ->entityManager
             ->getRepository(User::class)
             ->createQueryBuilder('u')
         ;
-
-        if (!$this->authorizationChecker->isGranted('ROLE_MANAGER')) {
-            $qb
-                ->where($qb->expr()->like('u.roles', ':roles'))
-                ->setParameter('roles', '%CUSTOMER_MANAGER%')
-            ;
-        }
-
-        return $qb;
     }
 
     public function getProviderManagerBuilder(): QueryBuilder
