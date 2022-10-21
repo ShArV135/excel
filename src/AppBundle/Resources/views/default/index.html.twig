@@ -16,9 +16,10 @@
                 <button type="button" class="btn btn-default selectable-close hidden">
                     <span class="glyphicon glyphicon-ok"></span>
                 </button>
-                {% if not is_granted('ROLE_CUSTOMER_MANAGER') %}
-                    <button type="button" class="btn btn-default show-empty">Только незаполненные</button>
+                {% if viewHelper.showEmptyButton %}
+                    <button type="button" class="btn btn-default show-empty">Поставщики - </button>
                 {% endif %}
+                <button type="button" class="btn btn-default show-incomplete">Документы -</button>
                 {% if viewHelper.marginButton %}
                     <button class="btn btn-default margin-checker">
                         <i class="state-icon glyphicon glyphicon-unchecked"></i>
@@ -361,6 +362,7 @@
             }, 20000);
 
             $('.show-empty').click(function() {
+                $('.show-incomplete').removeClass('active');
                 var isActive = $(this).hasClass('active');
                 $(this).toggleClass('active');
 
@@ -370,6 +372,18 @@
                     $('#timetable').bootstrapTable('filterBy', {
                         provider: null
                     });
+                }
+            });
+
+            $('.show-incomplete').click(function() {
+                $('.show-empty').removeClass('active');
+                var isActive = $(this).hasClass('active');
+                $(this).toggleClass('active');
+
+                if (isActive) {
+                    $('#timetable').bootstrapTable('showIncomplete', false);
+                } else {
+                    $('#timetable').bootstrapTable('showIncomplete', true);
                 }
             });
 

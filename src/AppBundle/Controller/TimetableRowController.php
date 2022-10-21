@@ -6,6 +6,7 @@ use AppBundle\Entity\Timetable;
 use AppBundle\Entity\TimetableRow;
 use AppBundle\Form\TimetableRowType;
 use AppBundle\Security\TimetableRowVoter;
+use AppBundle\Service\ContractorBalanceCalculateService;
 use AppBundle\Service\TimetableRowDeleteService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -60,7 +61,7 @@ class TimetableRowController extends Controller
      * @param Request      $request
      * @return RedirectResponse|Response
      */
-    public function updateAction(TimetableRow $timetableRow, Request $request)
+    public function updateAction(TimetableRow $timetableRow, Request $request, ContractorBalanceCalculateService $balanceCalculateService)
     {
         $this->denyAccessUnlessGranted(TimetableRowVoter::EDIT, $timetableRow);
 
@@ -68,6 +69,12 @@ class TimetableRowController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            if ($contractor = $timetableRow->getCustomer()) {
+                $balanceCalculateService->update($contractor, $timetableRow->getTimetable());
+            }
+            if ($contractor = $timetableRow->getProvider()) {
+                $balanceCalculateService->update($contractor, $timetableRow->getTimetable());
+            }
             $em = $this->getDoctrine()->getManager();
 
             try {

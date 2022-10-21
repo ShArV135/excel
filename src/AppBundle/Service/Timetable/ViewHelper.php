@@ -24,4 +24,9 @@ class ViewHelper
     {
         return $this->showModeRouteService->getModes($timetableId);
     }
+
+    public function showEmptyButton(): bool
+    {
+        return !$this->authorizationChecker->isGranted('ROLE_CUSTOMER_MANAGER') || $this->authorizationChecker->isGranted('ROLE_RENT_MANAGER');
+    }
 }

@@ -31,44 +31,6 @@
 
     };
 
-    $.fn.bootstrapTable.methods.push('updateTimetable');
-    BootstrapTable.prototype.updateTimetable = function (row) {
-        var id = row.id || null;
-        var customer_id = row.customer_id || null;
-        var provider_id = row.provider_id || null;
-
-        if (!id) {
-            return;
-        }
-
-        var rowId = $.inArray(this.getRowByUniqueId(id), this.options.data);
-        this.options.data[rowId] = row;
-
-        if (customer_id) {
-            for (var i = 0; i < this.options.data.length; i++) {
-                if (this.options.data[i]['customer_id'] === customer_id) {
-                    this.options.data[i]['customer_balance'] = row.customer_balance;
-                    if (row._customer_balance_class) {
-                        this.options.data[i]['_customer_balance_class'] = row._customer_balance_class;
-                    }
-                }
-
-                if (this.options.data[i]['provider_id'] === provider_id) {
-                    this.options.data[i]['provider_balance'] = row.provider_balance;
-                    if (row._provider_balance_class) {
-                        this.options.data[i]['_provider_balance_class'] = row._provider_balance_class;
-                    }
-                }
-            }
-        }
-
-        this.updatePlanData();
-        this.initSearch();
-        this.initPagination();
-        this.initSort();
-        this.initBody(true);
-    };
-
     $.fn.bootstrapTable.methods.push('updatePlanData');
     BootstrapTable.prototype.updatePlanData = function () {
         var timetableId = $('#timetable').data('id');
@@ -115,6 +77,8 @@
 
         this.$tableBody.find('.times-comment').editable({
             container: 'body',
+            placeholder: `ТОЛЬКО ДЛЯ УКАЗАНИЯ ДОКУМЕНТОВ ОТ ПОСТАВЩИКОВ
+Для указания любых других  комментариев используйте соответствующее поле в свойствах записи.`,
             display: function() {
                 return '';
             },
@@ -186,6 +150,50 @@
         } else {
             localStorage.removeItem('filterColumnsDefaults');
         }
-
     };
+
+    $.fn.bootstrapTable.methods.push('showIncomplete');
+    BootstrapTable.prototype.showIncomplete = function (enable) {
+        if (enable) {
+            this.searchText = 'showIncomplete';
+            this.options.customSearch = 'showIncomplete';
+        }
+
+        this.initSearch();
+        this.updatePagination();
+
+        this.searchText = null;
+        this.options.customSearch = $.noop;
+    }
 })(jQuery);
+
+function showIncomplete () {
+    this.data = $.grep(this.options.data, function (item) {
+        if (item.sum_times.value === '0.0') {
+            return false;
+        }
+
+        for (let i = 1; i <= 31; i++) {
+            const cell = item[`times_${i}`];
+
+            const hasColor = cell.withColor || false;
+            const withTime = cell.time !== '';
+            const withComment = cell.comment !== '';
+            let hasIncomplete = false;
+
+            if (hasColor && withTime && withComment) {
+                hasIncomplete = true;
+            }
+
+            if (!hasColor && !withTime && !withComment) {
+                hasIncomplete = true;
+            }
+
+            if (hasIncomplete) {
+                return true;
+            }
+        }
+
+        return false;
+    });
+}
