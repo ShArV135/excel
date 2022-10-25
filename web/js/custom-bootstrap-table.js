@@ -181,12 +181,10 @@ function showIncomplete () {
             const withComment = cell.comment !== '';
             let hasIncomplete = false;
 
-            if (hasColor && withTime && withComment) {
-                hasIncomplete = true;
-            }
-
-            if (!hasColor && !withTime && !withComment) {
-                hasIncomplete = true;
+            if (hasColor || withTime || withComment) {
+                if (!hasColor || !withTime || !withComment) {
+                    hasIncomplete = true;
+                }
             }
 
             if (hasIncomplete) {
