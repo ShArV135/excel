@@ -157,13 +157,13 @@
         if (enable) {
             this.searchText = 'showIncomplete';
             this.options.customSearch = 'showIncomplete';
+        } else {
+            this.searchText = null;
+            this.options.customSearch = $.noop;
         }
 
         this.initSearch();
         this.updatePagination();
-
-        this.searchText = null;
-        this.options.customSearch = $.noop;
     }
 })(jQuery);
 
