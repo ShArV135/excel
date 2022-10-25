@@ -340,19 +340,39 @@ class TimetableController extends Controller
     }
 
     /**
+     * @param TimetableHelper $timetableHelper
      * @param Timetable $timetable
+     * @param RowTimeStorage $timeStorage
      * @param           $time
      * @return JsonResponse
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @Route("/timetable/{timetable}/check-update/{time}", name="timetable_check_update", options={"expose"=true}, defaults={"time": 0})
      */
-    public function checkUpdateAction(Timetable $timetable, $time)
+    public function checkUpdateAction(TimetableHelper $timetableHelper, Timetable $timetable, RowTimeStorage $timeStorage, $time): Response
     {
-        $time = (new \DateTime())->setTimestamp($time);
+        $timeStorage->init($timetable);
+        $show = $timetableHelper->getShowMode();
+        $columns = $timetableHelper->getColumnsByShow($show);
 
-        if ($timetable->getUpdated() > $time ) {
-            return new JsonResponse($timetable->getUpdated()->getTimestamp());
+        $data = [];
+        $newTimestamp = $time;
+
+        /** @var TimetableRow $row */
+        foreach ($timetable->getRows() as $row) {
+            if ($updated = $row->getUpdated()) {
+                $rowTimestamp = $updated->getTimestamp();
+                if ($rowTimestamp > $time) {
+                    $data[] = $timetableHelper->timetableRowFormat($row, $columns);
+                    $newTimestamp = max($rowTimestamp, $newTimestamp);
+                }
+            }
         }
 
-        return new JsonResponse('OK');
+        return new JsonResponse([
+            'timestamp' => $newTimestamp,
+            'data' => $data,
+        ]);
     }
 }

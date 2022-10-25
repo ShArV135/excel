@@ -152,6 +152,38 @@
         }
     };
 
+    $.fn.bootstrapTable.methods.push('partialRefresh');
+    BootstrapTable.prototype.partialRefresh = function (data) {
+        if (data.length === 0) {
+            return;
+        }
+
+        const searchIndex = (id) => {
+            for (let i = 0; i < this.options.data.length; i++) {
+                const item = this.options.data[i];
+                if (item.id === id) {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        data.forEach((item) => {
+            const index = searchIndex(item.id);
+            if (index >= 0) {
+                this.options.data[index] = item;
+            } else {
+                this.options.data.push(item);
+            }
+
+            const $tr = this.initRow(item, index);
+            const $oldTr = this.$body.find(`[data-row=${item.id}]`);
+
+            $oldTr.replaceWith($tr);
+        });
+    }
+
     $.fn.bootstrapTable.methods.push('showIncomplete');
     BootstrapTable.prototype.showIncomplete = function (enable) {
         if (enable) {

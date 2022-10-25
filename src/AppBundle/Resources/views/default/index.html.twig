@@ -349,17 +349,13 @@
             setInterval(function() {
                 $.ajax({
                     url: Routing.generate('timetable_check_update', {timetable: timetableId, time: timetableUpdated || 0}),
-                    success: function (response) {
-                        if (response !== 'OK') {
-                            timetableUpdated = response;
-
-                            showLoader();
-                            $('#timetable').bootstrapTable('updatePlanData');
-                            $('#timetable').bootstrapTable('refresh', {silent: true});
-                        }
+                    success: function ({ timestamp, data }) {
+                        timetableUpdated = timestamp;
+                        $('#timetable').bootstrapTable('updatePlanData');
+                        $('#timetable').bootstrapTable('partialRefresh', data);
                     }
                 });
-            }, 20000);
+            }, 5000);
 
             $('.show-empty').click(function() {
                 $('.show-incomplete').removeClass('active');

@@ -131,6 +131,18 @@ class TimetableRow implements Bitrix24AwareInterface
     private $showAllProviders = false;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+
+    public function __construct()
+    {
+        $this->updated = new \DateTime();
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -379,14 +391,22 @@ class TimetableRow implements Bitrix24AwareInterface
         $this->showAllProviders = $showAllProviders;
     }
 
+    public function getUpdated(): ?\DateTime
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+    }
+
     /**
      * @ORM\PreFlush()
      * @throws \Exception
      */
     public function preFlush()
     {
-        if ($timetable = $this->getTimetable()) {
-            $timetable->setUpdated(new \DateTime());
-        }
+        $this->setUpdated(new \DateTime());
     }
 }

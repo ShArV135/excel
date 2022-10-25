@@ -44,13 +44,6 @@ class Timetable
     private $created;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated", type="datetime")
-     */
-    private $updated;
-
-    /**
      * @var boolean
      *
      * @ORM\Column(name="margin_plan", type="boolean")
@@ -96,9 +89,6 @@ class Timetable
         return $this->name;
     }
 
-    /**
-     * @return ArrayCollection
-     */
     public function getRows()
     {
         return $this->rows;
@@ -134,23 +124,15 @@ class Timetable
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getUpdated()
+    public function getUpdated(): \DateTime
     {
-        return $this->updated;
-    }
+        $updated = new \DateTime();
+        /** @var TimetableRow $row */
+        foreach ($this->rows as $row) {
+            $updated = max($updated, $row->getUpdated());
+        }
 
-    /**
-     * @param \DateTime $updated
-     * @return Timetable
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
+        return $updated;
     }
 
     public function isMarginPlan(): bool
