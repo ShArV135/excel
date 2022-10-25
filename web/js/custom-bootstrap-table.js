@@ -177,7 +177,7 @@ function showIncomplete () {
             const cell = item[`times_${i}`];
 
             const hasColor = cell.withColor || false;
-            const withTime = cell.time !== '';
+            const withTime = cell.time !== '' && cell.time !== 0;
             const withComment = cell.comment !== '';
             let hasIncomplete = false;
 
